@@ -1,0 +1,15 @@
+html,body {
+    height: 100vh;
+}
+
+.bg {
+    /* The image used */
+    background-image: url("https://images.unsplash.com/photo-1602513720916-0ca41dbf2cdc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=2005&q=80");
+    /* Full height */
+    height: 100vh;
+    /* Center and scale the image nicely */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
