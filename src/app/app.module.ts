@@ -10,11 +10,13 @@ import {AngularFireDatabaseModule} from "angularfire2/database";
 import {environment} from '../environments/environment';
 //servicio 
 import {LoginService} from "./services/login.service";
+import { InicioComponent } from './inicio/inicio.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    routingComponents
+    routingComponents,
+    InicioComponent
   ],
   imports: [
     BrowserModule,
