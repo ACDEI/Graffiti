@@ -12,6 +12,7 @@ export class MapComponent implements OnInit {
 
   ngOnInit(): void {
     this.map.buildMap();
+    this.map.map.setPitch(50);
   }
 
 }
