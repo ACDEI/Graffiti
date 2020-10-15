@@ -2,8 +2,37 @@
     <h1>GRAFFITI</h1>
     <a href="">Inicio</a>
  </nav>
+<form #userForm="ngForm"  (ngSubmit)="onSubmit(userForm)">
+<div class="form-group">
 
-<div>
-    Usuario: <input type="text">
-    Contraseña: <input type="password">
+    <input type="email"
+    class="form-control"
+    name="email"
+    #email="ngModel"
+    [(ngModel)]="loginService.userSelected.email"
+    placeholder="Add email"
+    required
+    >
+    
 </div>
+<div class="form-group">
+
+    <input type="password"
+    class="form-control"
+    name="password"
+    #email="ngModel"
+    [(ngModel)]="loginService.userSelected.password"
+    placeholder="Add password"
+    required
+   >
+    
+</div>
+<div class="form-group">
+<button class="btn btn-primary" type="submit">Añadir</button>
+<button class="btn btn-secondary" type="reset"
+(click)="resetForm(userForm)"
+>
+Reset
+</button>
+</div>
+</form>
