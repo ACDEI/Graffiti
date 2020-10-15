@@ -1,0 +1,121 @@
+* {
+    padding: 0;
+    margin: 0;
+  }
+
+  .wrapper {
+    width: 100%;
+    margin: auto;
+    overflow:hidden;
+  }
+
+  header {
+    background: rgba(0,0,0,1);
+    width: 100%;
+    position: fixed;
+    z-index: 10;
+  }
+  
+  nav {
+    float: left; /* Desplazamos el nav hacia la izquierda */
+  }
+  nav ul {
+    list-style: none;
+    overflow: hidden; /* Limpiamos errores de float */
+  }
+
+  nav ul li {
+    float: left;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+  }
+
+  nav ul li a {
+    display: block; /* Convertimos los elementos a en elementos bloque para manipular el padding */
+    padding: 20px;
+    color: #fff;
+    text-decoration: none;
+  }
+  nav ul li:hover {
+    background: #df6f14;
+  }
+
+
+img{
+    margin: 5px;
+    height: 51px;
+    border-radius: 100%;
+    float: left;
+    background-color: white;
+}
+
+#register{
+    margin: 5px;
+    font-weight: bold;
+    float: right;
+    padding: 5px;
+    margin-top: 15px;
+}
+
+#login{
+    margin: 5px;
+    float: right;
+    font-weight: bold;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 15px;
+}
+
+/*
+.nav-wrapper{
+    background-color: black;
+    border-bottom: white;
+    border-bottom: 2px;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-style: dotted;
+    padding-bottom: 6%;
+}
+
+.nav-content{
+    position: relative;
+    background-color: black;
+}
+
+.tabs .tab {
+    text-align:center;
+    padding:0;
+    margin:0;
+    text-transform:none;
+    font-style: white;
+    font-size: 12pt;
+    font-weight: bold;
+}
+
+#buscador{
+    color: black;
+    border-radius: 5%;
+    background-color: white;
+}
+
+#lupaBtn{
+    padding-top: 5px;
+    padding-bottom: 15px; 
+    margin-bottom: 5px;
+    padding-right: 10px;
+    margin-right: 10px;
+    background-color: aquamarine;
+}
+
+#buscador {
+    background-color: white;
+    border-radius: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+    margin-bottom: 0px;
+    width: 70%;
+    height: 35px;
+}
+*/
