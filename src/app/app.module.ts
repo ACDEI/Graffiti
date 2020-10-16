@@ -14,6 +14,7 @@ import {environment} from '../environments/environment';
 import {LoginService} from "./services/login.service";
 import { InicioComponent } from './inicio/inicio.component';
 import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.component';
+import { NavbarRegisterComponent } from './components/navbar-register/navbar-register.component';
 
 
 
@@ -22,7 +23,8 @@ import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.componen
     AppComponent,
     routingComponents,
     InicioComponent,
-    ListaUsuariosComponent
+    ListaUsuariosComponent,
+    NavbarRegisterComponent
   ],
   imports: [
     BrowserModule,
