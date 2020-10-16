@@ -3,50 +3,49 @@
     margin: 0;
   }
 
-  .wrapper {
+.wrapper {
     width: 100%;
     margin: auto;
     overflow:hidden;
   }
 
-  header {
+header {
     background: rgba(0,0,0,1);
     width: 100%;
     position: fixed;
     z-index: 10;
   }
   
-  nav {
+nav {
     float: left; /* Desplazamos el nav hacia la izquierda */
   }
-  nav ul {
+
+nav ul {
     list-style: none;
     overflow: hidden; /* Limpiamos errores de float */
   }
 
-  nav ul li {
+nav ul li {
     float: left;
     font-family: Arial, sans-serif;
     font-size: 14px;
   }
 
-  nav ul li a {
+nav ul li a {
     display: block; /* Convertimos los elementos a en elementos bloque para manipular el padding */
     padding: 20px;
     color: #fff;
     text-decoration: none;
   }
-  nav ul li:hover {
+
+nav ul li:hover {
     background: #df6f14;
   }
-
 
 img{
     margin: 5px;
     height: 51px;
-    border-radius: 100%;
     float: left;
-    background-color: white;
 }
 
 #register{
@@ -65,6 +64,14 @@ img{
     padding-left: 10px;
     padding-right: 10px;
     margin-top: 15px;
+}
+
+#solvedSpace{
+  height: 65px;
+}
+
+#ico{
+  
 }
 
 /*
