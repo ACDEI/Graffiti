@@ -10,7 +10,7 @@
   }
 
 header {
-    background: rgba(0,0,0,1);
+    background: rgba(235, 233, 233, 0.733);
     width: 100%;
     position: fixed;
     z-index: 10;
@@ -34,12 +34,13 @@ nav ul li {
 nav ul li a {
     display: block; /* Convertimos los elementos a en elementos bloque para manipular el padding */
     padding: 20px;
-    color: #fff;
+    color: rgb(0, 0, 0);
     text-decoration: none;
   }
 
 nav ul li:hover {
-    background: #df6f14;
+    background: #14d6dd;
+    color: white;
   }
 
 img{
@@ -67,11 +68,7 @@ img{
 }
 
 #solvedSpace{
-  height: 65px;
-}
-
-#ico{
-  
+  height: 61px;
 }
 
 /*
