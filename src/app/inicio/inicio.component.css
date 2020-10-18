@@ -23,7 +23,9 @@ img{
 
 .hero{
     background-image: url("https://d1ez3020z2uu9b.cloudfront.net/imagecache/blog-photos/5615_Fill_800_800.jpg");
-    height: 90.2vh;
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 *{
