@@ -8,7 +8,7 @@ import { AppComponent } from './app.component';
 
 //firebase
 import {AngularFireModule} from "angularfire2";
-import {AngularFireDatabaseModule} from "angularfire2/database";
+import {AngularFirestoreModule} from "angularfire2/firestore";
 import {environment} from '../environments/environment';
 //servicio 
 import {LoginService} from "./services/login.service";
@@ -30,7 +30,7 @@ import { NavbarRegisterComponent } from './components/navbar-register/navbar-reg
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireDatabaseModule,
+    AngularFirestoreModule,
     FormsModule
  
     

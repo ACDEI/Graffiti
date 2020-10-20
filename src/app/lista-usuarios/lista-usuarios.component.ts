@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {LoginService} from "../services/login.service";
 import {User} from "../models/user";
-import {AngularFireList} from "angularfire2/database";
+import { AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 
 @Component({
   selector: 'app-lista-usuarios',
@@ -10,15 +10,17 @@ import {AngularFireList} from "angularfire2/database";
 })
 export class ListaUsuariosComponent implements OnInit {
 
-  usersList: AngularFireList<User>;  
+ 
   listaUsuarios: User[] ;
+  users : AngularFirestoreDocument<User>;
 
   constructor(private loginService: LoginService) { 
   
   }
 
   ngOnInit(): void {
-   
+  
+  /*
   this.loginService.getUsers().snapshotChanges().forEach(lambda => {
    this.listaUsuarios = [];
    lambda.forEach(child => {
@@ -27,7 +29,15 @@ export class ListaUsuariosComponent implements OnInit {
      this.listaUsuarios.push(user as User);
    });
   });
-    
+    */
+
+   this.loginService.getUsers().subscribe(users => {
+     this.listaUsuarios = users; 
+   })
+  
+ 
+
+  
   }
 
  

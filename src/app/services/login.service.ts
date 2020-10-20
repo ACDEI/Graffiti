@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 
-import {AngularFireDatabase, AngularFireList} from "angularfire2/database";
+import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from "angularfire2/firestore";
+import { Observable } from 'rxjs';
+
 import { User } from '../models/user';
 
 @Injectable({
@@ -8,18 +10,24 @@ import { User } from '../models/user';
 })
 export class LoginService {
 
-  usuariosList: AngularFireList<User>;
+  coleccionUsuarios: AngularFirestoreCollection<User>;
+  usuariosObservables: Observable<any[]>;
   userSelected: User = new User(); 
   
-  constructor(private firebase: AngularFireDatabase) { }
+  constructor(public firestore: AngularFirestore) {
+    
+    this.usuariosObservables = this.firestore.collection("usuarios").valueChanges();
+    
+   }
 
   getUsers(){
-    return this.usuariosList = this.firebase.list("usuarios");
+    return this.usuariosObservables;
   }
 
   insertUser(user: User){
-     this.usuariosList.push({email: user.email,
-     password: user.password});
+    
+     return this.firestore.collection("usuarios").add({email: user.email, password : user.password});
   }
+
 
 }
