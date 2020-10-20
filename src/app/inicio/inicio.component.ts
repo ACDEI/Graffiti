@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { LoginComponent } from '../components/login/login.component';
 
 @Component({
   selector: 'app-inicio',
@@ -7,9 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InicioComponent implements OnInit {
 
+  viewButtons : boolean = true;
+
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  loginVisible(value : boolean){
+    console.log("value:" + value);
+    this.viewButtons = value;
+  }
 }

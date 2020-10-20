@@ -1,0 +1,32 @@
+<p>Inserta tus Datos:</p>
+
+<form #userForm="ngForm"  (ngSubmit)="onSubmit(userForm)">
+    <div class="form-group">
+
+        <input type="email"
+        class="form-control"
+        name="email"
+        #email="ngModel"
+        [(ngModel)]="loginService.userSelected.email"
+        placeholder="Correo Electrónico"
+        required>
+    </div>
+    
+    <div class="form-group">
+        <input type="password"
+        class="form-control"
+        name="password"
+        #email="ngModel"
+        [(ngModel)]="loginService.userSelected.password"
+        placeholder="Password"
+        required>
+    </div>
+    <div class="form-group">
+        <button id="entrar" class="btn" type="submit">Entrar</button>
+        <button id="back" class="btn" (click)="goingBack()" >Atrás</button>
+        <button id="reset" class="btn" type="reset" (click)="resetForm(userForm)">Reset</button>
+    </div>
+</form>
+
+<p>Ver Lista de Usuarios</p>
+<br><a class="btn btn-primary" href="listaUsuarios">Lista Usuarios</a>

@@ -15,6 +15,7 @@ import {LoginService} from "./services/login.service";
 import { InicioComponent } from './inicio/inicio.component';
 import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.component';
 import { NavbarRegisterComponent } from './components/navbar-register/navbar-register.component';
+import { ButtonLoginComponent } from './components/button-login/button-login.component';
 
 
 
@@ -24,7 +25,8 @@ import { NavbarRegisterComponent } from './components/navbar-register/navbar-reg
     routingComponents,
     InicioComponent,
     ListaUsuariosComponent,
-    NavbarRegisterComponent
+    NavbarRegisterComponent,
+    ButtonLoginComponent
   ],
   imports: [
     BrowserModule,

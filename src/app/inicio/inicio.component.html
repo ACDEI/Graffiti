@@ -4,7 +4,8 @@
     
     <div class="container">
         <div id="bloque">
-            <p style="text-align: center;"><b>¡Bienvenido a MalagArt!</b></p>
+            <p style="text-align: center;"><b>¡Bienvenido a MalagArt!
+            </b></p>
             <br>
             <img src="https://i.imgur.com/MwuTo4e.png" alt="Graffiti ACDEI | Tu Red Social Artística">
             <p><b>Conoce un mundo nuevo en el que podrás
@@ -12,21 +13,8 @@
                 urbano de Málaga.</b></p>
         </div>
         <div id="bloque">
-            <ul>
-                <li><p style="text-align: center;"><b>¿Quieres entrar? Hazlo con:</b></p></li>
-                <li><a href="login" class="login btn btn-danger">
-                    <i class="fas fa-home"></i>
-                    Login Normal</a></li>
-                <li><a href="" id="facebook" class="btn">
-                    <i class="fab fa-facebook-square"></i>
-                    Facebook</a></li>
-                <li><a href="" id="twitter" class="btn">
-                    <i class="fab fa-twitter-square"></i>
-                    Twitter</a></li>
-                <li><a href="" id="google" class="btn">
-                    <i class="fab fa-google"></i>
-                    Google</a></li>
-            </ul>
+                <app-button-login (passData)="loginVisible($event)" *ngIf="viewButtons != false"></app-button-login>
+                <app-login (passData)="loginVisible($event)" *ngIf="viewButtons == false"></app-login>
         </div>
     </div>
 </section>

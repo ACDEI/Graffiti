@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { User } from 'src/app/models/user';
-import {LoginService} from "../../../services/login.service";
+import {LoginService} from "../../services/login.service";
 
 @Component({
   selector: 'app-login',
   templateUrl: 'login.component.html' ,
-  styles: [
-  ]
+  styleUrls: [ './login.component.css' ]
 })
+
 export class LoginComponent implements OnInit {
+
+  @Output() passData : EventEmitter<boolean> = new EventEmitter<boolean>();
+  viewButton : boolean = false;
 
   constructor(public loginService: LoginService) { }
 
@@ -28,6 +31,11 @@ export class LoginComponent implements OnInit {
       userForm.reset();
        this.loginService.userSelected = new User(); 
     }
+  }
+
+  goingBack(){
+    this.viewButton = !this.viewButton;
+    this.passData.emit(this.viewButton);
   }
 
 }
