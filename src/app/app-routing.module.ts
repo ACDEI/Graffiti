@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
+import { LoginFacebookComponent } from './components/login-facebook/login-facebook.component';
 import { LoginComponent } from './components/login/login.component';
 import { InicioComponent } from './inicio/inicio.component';
 import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.component';
@@ -9,7 +10,8 @@ import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.componen
 const routes: Routes = [
   {path:"" , component: InicioComponent},
   {path:"login" , component: LoginComponent},
-  {path:"listaUsuarios",component: ListaUsuariosComponent}
+  {path:"listaUsuarios",component: ListaUsuariosComponent},
+  {path: "loginFacebook" , component: LoginFacebookComponent}
 ];
 
 @NgModule({

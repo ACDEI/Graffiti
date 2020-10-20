@@ -16,6 +16,9 @@ import { InicioComponent } from './inicio/inicio.component';
 import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.component';
 import { NavbarRegisterComponent } from './components/navbar-register/navbar-register.component';
 import { ButtonLoginComponent } from './components/button-login/button-login.component';
+import { LoginFacebookComponent } from './components/login-facebook/login-facebook.component';
+
+
 
 
 
@@ -26,18 +29,20 @@ import { ButtonLoginComponent } from './components/button-login/button-login.com
     InicioComponent,
     ListaUsuariosComponent,
     NavbarRegisterComponent,
-    ButtonLoginComponent
+    ButtonLoginComponent,
+    LoginFacebookComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    FormsModule
+    FormsModule,
+   
  
     
   ],
-  providers: [LoginService],
+  providers: [LoginService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
