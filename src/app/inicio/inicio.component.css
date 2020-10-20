@@ -7,8 +7,11 @@
 }
 
 p {
-    background-color: rgb(255, 187, 0);
+    background-color: rgba(0, 57, 143, 0.795);
     display: inline-block;
+    border-radius: 10%;
+    width: 70%;
+    font-size: 14pt;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     text-emphasis: bold;
 }
@@ -19,10 +22,12 @@ img{
     margin-left: 10%;
     margin-top: 10%;
     margin-bottom: 10%;
+    border-radius: 20%;
+    background-color: white;
 }
 
 .hero{
-    background-image: url("https://d1ez3020z2uu9b.cloudfront.net/imagecache/blog-photos/5615_Fill_800_800.jpg");
+    background-image: url("https://i.imgur.com/JhSHihu.jpg");
     height: 100vh;
     background-repeat: no-repeat;
     background-size: cover;
@@ -33,18 +38,30 @@ img{
 }
 
 .btn{
-    margin-bottom: 10px;
-    font-size: 18pt;
+    margin-bottom: 4%;
+    font-size: 150%;
     font-weight: bold;
-    text-align: center;
-    height: 60px;
+    text-align: left;
     vertical-align: middle;
+    width: 70%;
+    padding-top: 2%;
 }
 
-.login{
-    padding-right: 40%;
+#twitter{
+    background-color: rgb(29,161,242);
+    color: white;
 }
 
-.register{
-    padding-right: 30%;
+#facebook{
+    background-color: rgb(66,103,178);
+    color: white;
+}
+
+#google{
+    background-color: rgb(15,157,88);
+    color: white;
+}
+
+.fab{
+    margin-right: 5%;
 }
