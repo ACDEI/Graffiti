@@ -46,7 +46,11 @@ export class MapService {
     // Asignamos el token desde las variables de entorno
     this.mapbox.accessToken = environment.mapBoxToken;
   }
-  buildMap() {
+  buildMap(latitude, longitude) {
+    if(latitude != null){
+      this.lat = latitude;
+      this.lng = longitude;
+    }
     this.map = new mapboxgl.Map({
       container: 'map',
       style: this.style,

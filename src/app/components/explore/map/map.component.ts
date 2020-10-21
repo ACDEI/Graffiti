@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MapService } from '@core/services/map.service';
+import { LocationService } from '@core/services/location.service'
 import * as mapboxgl from 'mapbox-gl';
 
 @Component({
@@ -9,7 +10,7 @@ import * as mapboxgl from 'mapbox-gl';
 })
 export class MapComponent implements OnInit {
 
-  constructor(private map: MapService) { }
+  constructor(private map: MapService, private location: LocationService) { }
 
   latitud;
 
@@ -17,9 +18,16 @@ export class MapComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.map.buildMap();
-    this.map.map.setPitch(50);
+    
+    //this.map.map.setPitch(50);
 
+    this.location.getPosition().then(pos=>
+      {
+         console.log(`Positon: ${pos.lng} ${pos.lat}`);
+         this.map.buildMap(pos.lat, pos.lng);
+      });
+
+      /*
     this.map.geojson.features.forEach(function(marker) {
 
       // create a HTML element for each feature
@@ -31,7 +39,7 @@ export class MapComponent implements OnInit {
         .setLngLat(marker.geometry.coordinates)
         .addTo(this.map.map);
     });
-
+    */
   }
 
 }

@@ -5,7 +5,6 @@ import {FormsModule} from '@angular/forms';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-
 //firebase
 import {AngularFireModule} from "angularfire2";
 import {AngularFirestoreModule} from "angularfire2/firestore";
@@ -17,10 +16,8 @@ import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.componen
 import { NavbarRegisterComponent } from './components/navbar-register/navbar-register.component';
 import { ButtonLoginComponent } from './components/button-login/button-login.component';
 import { LoginFacebookComponent } from './components/login-facebook/login-facebook.component';
-
-
-
-
+import { ExploreComponent } from '@core/components/explore/explore.component'
+import { MapComponent } from '@core/components/explore/map/map.component'
 
 @NgModule({
   declarations: [
@@ -30,7 +27,9 @@ import { LoginFacebookComponent } from './components/login-facebook/login-facebo
     ListaUsuariosComponent,
     NavbarRegisterComponent,
     ButtonLoginComponent,
-    LoginFacebookComponent
+    LoginFacebookComponent,
+    ExploreComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
