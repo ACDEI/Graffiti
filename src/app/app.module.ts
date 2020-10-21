@@ -37,7 +37,6 @@ import { MapComponent } from '@core/components/explore/map/map.component'
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     FormsModule,
-   
  
     
   ],

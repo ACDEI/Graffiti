@@ -18,14 +18,9 @@ export class MapComponent implements OnInit {
 
 
   ngOnInit(): void {
-    
     //this.map.map.setPitch(50);
 
-    this.location.getPosition().then(pos=>
-      {
-         console.log(`Positon: ${pos.lng} ${pos.lat}`);
-         this.map.buildMap(pos.lat, pos.lng);
-      });
+    this.map.buildMap();
 
       /*
     this.map.geojson.features.forEach(function(marker) {
