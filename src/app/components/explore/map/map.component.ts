@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MapService } from '@core/services/map.service';
 import { LocationService } from '@core/services/location.service'
 import * as mapboxgl from 'mapbox-gl';
+import { ExplorationService } from '@core/services/exploration.service';
 
 @Component({
   selector: 'app-map',
@@ -10,17 +11,10 @@ import * as mapboxgl from 'mapbox-gl';
 })
 export class MapComponent implements OnInit {
 
-  constructor(private map: MapService, private location: LocationService) { }
-
-  latitud;
-
-  longitud;
-
+  constructor(private exploration: ExplorationService) { }
 
   ngOnInit(): void {
     //this.map.map.setPitch(50);
-
-    this.map.buildMap();
 
       /*
     this.map.geojson.features.forEach(function(marker) {
