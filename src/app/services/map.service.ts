@@ -3,6 +3,7 @@ import { environment } from '@env/environment';
 import * as mapboxgl from 'mapbox-gl';
 import { LocationService } from '@core/services/location.service';
 import { switchMap } from 'rxjs/operators';
+import { type } from 'os';
 
 @Injectable({
   providedIn: 'root'
@@ -39,20 +40,42 @@ export class MapService {
       center: [lng,lat],
       antialias: true
     });
+
   }
 
-    // // add markers to map
-    // this.geojson.features.forEach(function(marker) {
+  setOnClick() {
+    let self = this;
 
-    //   // create a HTML element for each feature
-    //   var el = document.createElement('div');
-    //   el.className = 'marker';
+    let aux:mapboxgl.Marker;
 
-    //   // make a marker for each feature and add to the map
-    //   new mapboxgl.Marker(el)
-    //     .setLngLat(marker.geometry.coordinates)
-    //     .addTo(this.map);
-    // });
-  //}
+    this.map.on("click", function (e) {
+
+      console.log(e);
+
+      if(aux != undefined){
+        aux.remove();
+      }
+
+      aux = new mapboxgl.Marker()
+        .setLngLat(e.lngLat)
+        .addTo(self.map);
+      });
+  }
+
+  showPoint(photo) {
+      // make a marker for each feature and add to the map
+      console.log("Probando show: ", photo.pos);
+
+      // create the popup
+      var popup = new mapboxgl.Popup({ offset: 25 })
+      .setHTML(
+        '<h1>Hola</h1>'
+      );
+
+      new mapboxgl.Marker()
+        .setLngLat([photo.pos.h_, photo.pos.u_])
+        .setPopup(popup)
+        .addTo(this.map);
+  }
 
 }

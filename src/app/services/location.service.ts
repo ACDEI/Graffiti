@@ -1,15 +1,12 @@
 import { Injectable, Query } from '@angular/core';
 import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from "angularfire2/firestore";
 import * as firebase from 'firebase/app';
-import * as geofirex from "geofirex";
 import { firestore } from 'firebase';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AngularFireModule } from '@angular/fire';
 import { LngLatLike } from 'mapbox-gl';
 import { MapService } from './map.service';
-
-const geo = geofirex.init(firebase);
 
 @Injectable({
   providedIn: 'root'
@@ -42,7 +39,7 @@ export class LocationService {
         },
         {
           enableHighAccuracy: true,
-          timeout: 5000,
+          timeout: 20000,
           maximumAge: 0,
         });
       } else {

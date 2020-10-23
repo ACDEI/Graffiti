@@ -17,6 +17,7 @@ import { NavbarRegisterComponent } from './components/navbar-register/navbar-reg
 import { ButtonLoginComponent } from './components/button-login/button-login.component';
 import { ExploreComponent } from '@core/components/explore/explore.component'
 import { MapComponent } from '@core/components/explore/map/map.component'
+import { GeoFirestore } from 'geofirestore';
 
 @NgModule({
   declarations: [
@@ -35,8 +36,6 @@ import { MapComponent } from '@core/components/explore/map/map.component'
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     FormsModule,
- 
-    
   ],
   providers: [LoginService ],
   bootstrap: [AppComponent]
