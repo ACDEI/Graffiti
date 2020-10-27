@@ -12,7 +12,6 @@ export class ListaUsuariosComponent implements OnInit {
 
  
   listaUsuarios: User[] ;
-  users : AngularFirestoreDocument<User>;
 
   constructor(private loginService: LoginService) { 
   

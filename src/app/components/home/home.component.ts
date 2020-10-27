@@ -10,19 +10,18 @@ import * as firebase from 'firebase';
 })
 export class HomeComponent implements OnInit {
 
-  sub:any;
-  uid:number; 
+
+  uid:string; 
 
   constructor(private route: ActivatedRoute, private loginservice: LoginService ) {
-
-    this.sub = this.route.params.subscribe(params => {
-      this.uid = params.uid;
-    })
-
    }
  
   ngOnInit(): void {
-    
+
+    this.route.params.subscribe(params => {
+      this.uid = params.uid;
+    })
+ 
   }
 
    signOut(): void {
