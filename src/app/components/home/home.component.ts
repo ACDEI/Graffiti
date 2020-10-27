@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   sub:any;
   uid:number; 
 
-  constructor(private route: ActivatedRoute, private loginservice: LoginService) {
+  constructor(private route: ActivatedRoute, private loginservice: LoginService ) {
 
     this.sub = this.route.params.subscribe(params => {
       this.uid = params.uid;
@@ -27,6 +27,8 @@ export class HomeComponent implements OnInit {
 
    signOut(): void {
     firebase.auth().signOut; 
+    this.uid = null; 
+    
   }
 
 }
