@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { LoginService } from '@core/services/login.service';
+import {Router} from '@angular/router';
 import * as firebase from 'firebase';
 
 @Component({
@@ -12,7 +13,7 @@ export class ButtonLoginComponent implements OnInit {
   @Output() passData : EventEmitter<boolean> = new EventEmitter<boolean>();
   viewButton : boolean = true;
 
-  constructor(private loginService: LoginService) { }
+  constructor(private loginService: LoginService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -25,15 +26,11 @@ export class ButtonLoginComponent implements OnInit {
   loginFacebook(){
     var provider = new firebase.auth.FacebookAuthProvider();
     
-
+    let self = this;
     firebase.auth().signInWithPopup(provider).then(function(result){
-
-       	
-    
-  
       var token = result.credential;
-      console.log(result.user.email);
-      
+      //console.log(result.user.email);
+      self.router.navigate(['home',result.user.uid]);
 
     }).catch(function(error){
       // Handle Errors here.
@@ -43,6 +40,7 @@ export class ButtonLoginComponent implements OnInit {
       var email = error.email;
       // The firebase.auth.AuthCredential type that was used.
       var credential = error.credential;
+      console.log(errorMessage);
     })
   }
 

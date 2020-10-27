@@ -21,7 +21,7 @@
     "@angular/platform-browser-dynamic": "^10.2.0",
     "@angular/router": "^10.2.0",
     "angularfire2": "^5.4.2",
-    "angularx-social-login": "^3.2.2",
+    "angularx-social-login": "^3.3.1",
     "firebase": "^7.24.0",
     "geofirestore": "^4.3.0",
     "git": "^0.1.5",
@@ -33,7 +33,7 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^0.1001.7",
-    "@angular/cli": "^10.1.7",
+    "@angular/cli": "^10.2.0",
     "@angular/compiler-cli": "^10.2.0",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
@@ -50,6 +50,6 @@
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
-    "typescript": "~4.0.2"
+    "typescript": "^4.0.5"
   }
 }

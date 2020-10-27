@@ -18,6 +18,7 @@ import { ButtonLoginComponent } from './components/button-login/button-login.com
 import { ExploreComponent } from '@core/components/explore/explore.component'
 import { MapComponent } from '@core/components/explore/map/map.component'
 import { GeoFirestore } from 'geofirestore';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { GeoFirestore } from 'geofirestore';
     NavbarRegisterComponent,
     ButtonLoginComponent,
     ExploreComponent,
-    MapComponent
+    MapComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
