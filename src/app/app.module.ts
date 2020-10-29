@@ -17,8 +17,8 @@ import { NavbarRegisterComponent } from './components/navbar-register/navbar-reg
 import { ButtonLoginComponent } from './components/button-login/button-login.component';
 import { ExploreComponent } from '@core/components/explore/explore.component'
 import { MapComponent } from '@core/components/explore/map/map.component'
-import { GeoFirestore } from 'geofirestore';
 import { HomeComponent } from './components/home/home.component';
+import {User} from './models/user';
 
 @NgModule({
   declarations: [
@@ -39,7 +39,7 @@ import { HomeComponent } from './components/home/home.component';
     AngularFirestoreModule,
     FormsModule,
   ],
-  providers: [LoginService ],
+  providers: [LoginService, User],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

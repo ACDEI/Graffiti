@@ -26,7 +26,14 @@ export class LoginService {
 
   insertUser(user: User){
     
-     return this.firestore.collection("usuarios").add({email: user.email, password : user.password});
+     return this.firestore.collection("usuarios").add({email: user.email, uid: user.uid, name: user.name});
+  }
+
+  getUser(uid: string){
+    //devolver si esta usuario en bd o no esta 
+     return this.firestore.collection('usuarios').doc(uid).get().subscribe();
+     //return  this.firestore.doc('usuarios/' + uid).get();
+     
   }
 
 

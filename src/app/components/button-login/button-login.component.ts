@@ -1,7 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { LoginService } from '@core/services/login.service';
-import {Router} from '@angular/router';
+import {Router, NavigationExtras} from '@angular/router';
 import * as firebase from 'firebase';
+import { rejects } from 'assert';
+import { User } from '@core/models/user';
 
 @Component({
   selector: 'app-button-login',
@@ -25,12 +27,27 @@ export class ButtonLoginComponent implements OnInit {
 
   loginFacebook(){
     var provider = new firebase.auth.FacebookAuthProvider();
-    
     let self = this;
     firebase.auth().signInWithPopup(provider).then(function(result){
-      var token = result.credential;
-      //console.log(result.user.email);
-      self.router.navigate(['home',result.user.uid]);
+
+      var yaRegistrado = self.loginService.getUser(result.user.uid);
+
+      console.log(yaRegistrado);
+
+      self.loginService.userSelected = {"name":result.user.displayName,"email":result.user.email,"uid":result.user.uid};
+
+      if(yaRegistrado == null){
+  
+      self.loginService.insertUser(self.loginService.userSelected);
+
+      }
+
+      let navigationExtras: NavigationExtras = {
+        queryParams: self.loginService.userSelected
+      }
+
+      self.router.navigate(['home'], navigationExtras);
+     
 
     }).catch(function(error){
       // Handle Errors here.
@@ -41,6 +58,7 @@ export class ButtonLoginComponent implements OnInit {
       // The firebase.auth.AuthCredential type that was used.
       var credential = error.credential;
       console.log(errorMessage);
+     
     })
   }
 

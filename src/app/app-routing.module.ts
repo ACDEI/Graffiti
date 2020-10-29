@@ -8,12 +8,13 @@ import { InicioComponent } from './inicio/inicio.component';
 import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.component';
 
 
+
 const routes: Routes = [
   {path:"" , component: InicioComponent},
   {path:"login" , component: LoginComponent},
   {path:"listaUsuarios",component: ListaUsuariosComponent},
   {path: "explore", component: ExploreComponent},
-  {path: "home/:uid", component: HomeComponent}
+  {path: "home", component: HomeComponent}
 ];
 
 @NgModule({
