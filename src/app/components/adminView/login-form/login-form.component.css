@@ -1,6 +1,6 @@
 form{
-    margin-top: 5%;
-    width: 70%;
+    width: 90%;
+    margin-left: 5%;
 }
 
 button{
@@ -29,7 +29,7 @@ p {
     background-color: rgba(0, 57, 143, 0.795);
     display: inline-block;
     border-radius: 10%;
-    width: 70%;
+    width: 100%;
     font-size: 14pt;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     text-emphasis: bold;

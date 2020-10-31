@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-
+import * as firebase from 'firebase';
+import {Router, NavigationExtras} from '@angular/router';
 import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from "angularfire2/firestore";
 import { Observable } from 'rxjs';
 
@@ -14,33 +15,123 @@ export class LoginService {
   usuariosObservables: Observable<any[]>;
   userSelected: User = new User(); 
   
-  constructor(public firestore: AngularFirestore) {
+  constructor(private router: Router, public firestore: AngularFirestore) {
     
     this.usuariosObservables = this.firestore.collection("usuarios").valueChanges();
-    
+
    }
 
-  getUsers(){
+  getUsers(){ //Obtener la lista de todos los Usuarios
     return this.usuariosObservables;
   }
 
-  insertUser(user: User){
-
-   
-
+  insertUser(user: User){ //Insertar un usuario en la BD
      return this.firestore.collection("usuarios").doc(user.uid).set({
       email: user.email,
-      name: user.name ,
+      name: user.name,
       uid: user.uid
   })
   }
 
-  getUser(uid: string){
-    //devolver si esta usuario en bd o no esta 
+  getUser(uid: string){ //Devolver si esta o no en la BD 
      return this.firestore.collection('usuarios').doc(uid).get().subscribe();
      //return  this.firestore.doc('usuarios/' + uid).get();
      
   }
+
+  //Facebook LogIn
+  loginFacebook(){
+    var provider = new firebase.auth.FacebookAuthProvider();
+    let self = this;
+    firebase.auth().signInWithPopup(provider).then(function(result){
+
+      var yaRegistrado = self.getUser(result.user.uid);
+
+      console.log(yaRegistrado);
+
+      self.userSelected = {"name":result.user.displayName,"email":result.user.email,"uid":result.user.uid};
+  
+      self.insertUser(self.userSelected);
+
+      /*
+
+      let navigationExtras: NavigationExtras = {
+        queryParams: self.loginService.userSelected
+      }
+      self.router.navigate(['home'], navigationExtras);
+
+      */
+     
+     //window.sessionStorage.setItem("idusuario", self.loginService.userSelected.uid);
+     
+     window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
+
+      self.router.navigate(['home']);
+     
+
+    }).catch(function(error){
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      var email = error.email;  // The email of the user's account used.
+      var credential = error.credential;  // The firebase.auth.AuthCredential type that was used.
+      console.log(errorMessage);
+     
+    })
+  }
+  //Twitter LogIn
+  loginTwitter(){
+    var provider = new firebase.auth.TwitterAuthProvider();
+
+    firebase.auth().signInWithRedirect(provider);
+    firebase.auth().getRedirectResult().then(function(result) {
+      if (result.credential) {
+        // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
+        // You can use these server side with your app's credentials to access the Twitter API.
+        var token = result.credential;
+        // var secret = result.credential.secret;
+        // ...
+      }
+      var user = result.user; // The signed-in user info.
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      var email = error.email;  // The email of the user's account used.
+      var credential = error.credential;  // The firebase.auth.AuthCredential type that was used.
+    })
+  }
+
+  //Google LogIn
+
+  //Admin (Email, Pass) LogIn - LogOut
+  signIn(email: string, pass: string){
+
+    let self = this;
+    firebase.auth().signInWithEmailAndPassword(email, pass)
+    .then(function(firebaseUser) {
+      // Success 
+      console.log(firebaseUser);
+      self.router.navigate(['adminHome']);
+    }).catch(function(error) {
+      // Error Handling
+      var error = error.code;
+      var errorMessage = error.message;
+      console.log(error.code);
+ });
+}
+
+signOut(){
+
+  let self = this;
+  firebase.auth().signOut().then(function() {
+    // Sign-out successful.
+    self.router.navigate(['admin']);
+  }).catch(function(error) {
+    // An error happened.
+  });
+  
+}
 
 
 }

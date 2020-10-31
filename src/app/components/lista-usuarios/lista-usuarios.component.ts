@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {LoginService} from "../services/login.service";
-import {User} from "../models/user";
+import {LoginService} from "../../services/login.service";
+import {User} from "../../models/user";
 import { AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 
 @Component({

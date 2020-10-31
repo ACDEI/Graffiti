@@ -9,16 +9,24 @@ import { AppComponent } from './app.component';
 import {AngularFireModule} from "angularfire2";
 import {AngularFirestoreModule} from "angularfire2/firestore";
 import {environment} from '../environments/environment';
-//servicio 
+import { AngularFireAuthModule } from '@angular/fire/auth';
+
+//Servicios
 import {LoginService} from "./services/login.service";
-import { InicioComponent } from './inicio/inicio.component';
-import { ListaUsuariosComponent } from './lista-usuarios/lista-usuarios.component';
-import { NavbarRegisterComponent } from './components/navbar-register/navbar-register.component';
-import { ButtonLoginComponent } from './components/button-login/button-login.component';
+
+//Clases - Models
+import {User} from './models/user';
+
+//Componentes
+import { InicioComponent } from './components/loginZone/inicio/inicio.component';
+import { ListaUsuariosComponent } from './components/lista-usuarios/lista-usuarios.component';
+import { NavbarRegisterComponent } from './components/loginZone/navbar-register/navbar-register.component';
+import { ButtonLoginComponent } from './components/loginZone/button-login/button-login.component';
 import { ExploreComponent } from '@core/components/explore/explore.component'
 import { MapComponent } from '@core/components/explore/map/map.component'
 import { HomeComponent } from './components/home/home.component';
-import {User} from './models/user';
+import { AdminLoginComponent } from './components/adminView/admin-login/admin-login.component';
+import { AdminInicioComponent } from './components/adminView/admin-inicio/admin-inicio.component';
 
 @NgModule({
   declarations: [
@@ -30,13 +38,16 @@ import {User} from './models/user';
     ButtonLoginComponent,
     ExploreComponent,
     MapComponent,
-    HomeComponent
+    HomeComponent,
+    AdminLoginComponent,
+    AdminInicioComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireAuthModule,
     FormsModule,
   ],
   providers: [LoginService, User],
