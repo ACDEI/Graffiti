@@ -47,8 +47,9 @@ export class ButtonLoginComponent implements OnInit {
 
       */
      
-     window.sessionStorage.setItem("idusuario", self.loginService.userSelected.uid);
-    
+     //window.sessionStorage.setItem("idusuario", self.loginService.userSelected.uid);
+     
+     window.sessionStorage.setItem("usuario",JSON.stringify(self.loginService.userSelected));
 
       self.router.navigate(['home']);
      

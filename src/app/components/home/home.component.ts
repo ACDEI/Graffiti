@@ -23,7 +23,13 @@ export class HomeComponent implements OnInit {
     })
     */
 
-    this.uid = window.sessionStorage.getItem("idusuario");
+    //this.uid = window.sessionStorage.getItem("idusuario");
+
+    var usuario = JSON.parse(window.sessionStorage.getItem("usuario"));
+
+    this.uid = usuario.uid; 
+
+    console.log(loginservice.userSelected.uid); 
 
   }
  
