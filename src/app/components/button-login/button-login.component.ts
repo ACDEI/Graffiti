@@ -35,12 +35,9 @@ export class ButtonLoginComponent implements OnInit {
       console.log(yaRegistrado);
 
       self.loginService.userSelected = {"name":result.user.displayName,"email":result.user.email,"uid":result.user.uid};
-
-      if(yaRegistrado == null){
   
       self.loginService.insertUser(self.loginService.userSelected);
 
-      }
 
       let navigationExtras: NavigationExtras = {
         queryParams: self.loginService.userSelected

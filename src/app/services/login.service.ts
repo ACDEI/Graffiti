@@ -25,8 +25,12 @@ export class LoginService {
   }
 
   insertUser(user: User){
-    
-     return this.firestore.collection("usuarios").add({email: user.email, uid: user.uid, name: user.name});
+
+     return this.firestore.collection("usuarios").doc(user.uid).set({
+      email: user.email,
+      name: user.name ,
+      uid: user.uid
+  })
   }
 
   getUser(uid: string){
