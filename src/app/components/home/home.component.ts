@@ -16,11 +16,15 @@ export class HomeComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private loginservice: LoginService, private _data: User ) {
   
+    /*
     this.route.queryParams.subscribe(params => {
       console.log(params);
       this.uid = params.uid; 
     })
-    
+    */
+
+    this.uid = window.sessionStorage.getItem("idusuario");
+
   }
  
   ngOnInit(): void {

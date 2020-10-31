@@ -38,12 +38,19 @@ export class ButtonLoginComponent implements OnInit {
   
       self.loginService.insertUser(self.loginService.userSelected);
 
+      /*
 
       let navigationExtras: NavigationExtras = {
         queryParams: self.loginService.userSelected
       }
-
       self.router.navigate(['home'], navigationExtras);
+
+      */
+     
+     window.sessionStorage.setItem("idusuario", self.loginService.userSelected.uid);
+    
+
+      self.router.navigate(['home']);
      
 
     }).catch(function(error){
