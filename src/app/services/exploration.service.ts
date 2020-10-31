@@ -46,7 +46,6 @@ export class ExplorationService {
       });
     })
 
-
   }
 
   getNearPoints() {
@@ -57,9 +56,5 @@ export class ExplorationService {
     return this.colleccionFotos.valueChanges();
     //return geo.query(this.colleccionFotos).within(center, radius, field);
   }
-
-  
-
-
 
 }
