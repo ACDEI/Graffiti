@@ -15,7 +15,7 @@ import { AngularFireAuthModule } from '@angular/fire/auth';
 import {LoginService} from "./services/login.service";
 
 //Clases - Models
-import {User} from './models/user';
+import {User} from './models/user.model';
 
 //Componentes
 import { InicioComponent } from './components/loginZone/inicio/inicio.component';

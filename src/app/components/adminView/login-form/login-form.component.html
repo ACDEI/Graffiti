@@ -3,8 +3,7 @@
         <input type="email"
         class="form-control"
         name="email"
-        #email="ngModel"
-        [(ngModel)]="loginService.userSelected.email"
+        [(ngModel)]="email"
         placeholder="Correo Electrónico"
         required>
     </div>
@@ -12,9 +11,8 @@
     <div class="form-group">
         <input type="password"
         class="form-control"
-        name="name"
-        #name="ngModel"
-        [(ngModel)]="loginService.userSelected.name"
+        name="password"
+        (ngModel)="password"
         placeholder="Contraseña"
         required>
     </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import {Router, NavigationExtras} from '@angular/router';
-import { User } from 'src/app/models/user';
+import { User } from 'src/app/models/user.model';
 import {LoginService} from "../../../services/login.service";
 
 import * as firebase from 'firebase';
@@ -13,6 +13,9 @@ import * as firebase from 'firebase';
 })
 
 export class LoginFormComponent implements OnInit {
+
+  email: string;
+  password: string;
 
   constructor(public loginService: LoginService, private router: Router) { }
 

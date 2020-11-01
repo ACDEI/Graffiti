@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import { LoginService } from '@core/services/login.service';
-import {User} from '../../models/user';
+import {User} from '../../models/user.model';
 import * as firebase from 'firebase';
 
 @Component({

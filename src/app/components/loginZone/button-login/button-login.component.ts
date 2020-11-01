@@ -3,7 +3,7 @@ import { LoginService } from '@core/services/login.service';
 import {Router, NavigationExtras} from '@angular/router';
 import * as firebase from 'firebase';
 import { rejects } from 'assert';
-import { User } from '@core/models/user';
+import { User } from '@core/models/user.model';
 
 @Component({
   selector: 'app-button-login',

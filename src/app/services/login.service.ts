@@ -4,7 +4,7 @@ import {Router, NavigationExtras} from '@angular/router';
 import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from "angularfire2/firestore";
 import { Observable } from 'rxjs';
 
-import { User } from '../models/user';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -28,7 +28,7 @@ export class LoginService {
   insertUser(user: User){ //Insertar un usuario en la BD
      return this.firestore.collection("usuarios").doc(user.uid).set({
       email: user.email,
-      name: user.name,
+      name: user.fullName,
       uid: user.uid
   })
   }
@@ -49,7 +49,9 @@ export class LoginService {
 
       console.log(yaRegistrado);
 
-      self.userSelected = {"name":result.user.displayName,"email":result.user.email,"uid":result.user.uid};
+      self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
+                            "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
+                            "likes": [], "followers": [], "followed": [], "visited": [] };
   
       self.insertUser(self.userSelected);
 
