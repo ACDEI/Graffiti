@@ -106,7 +106,25 @@ export class LoginService {
 
   //Google LogIn
 
-  //Admin (Email, Pass) LogIn - LogOut
+    //Admin (Email, Pass) 
+    // Register  
+    signUp(email: string, password: string){
+      let self = this;
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then((result) => {
+          window.alert("You have been successfully registered!");
+          console.log(result.user);
+  
+          self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":"",
+                              "nickName": "", "photoURL": "", "isAdmin": false, 
+                              "likes": [], "followers": [], "followed": [], "visited": [] };
+  
+          this.insertUser(self.userSelected);
+        }).catch((error) => {
+          window.alert(error.message)
+        })
+    }
+      // LogIn - LogOut
   signIn(email: string, pass: string){
 
     let self = this;
@@ -114,7 +132,7 @@ export class LoginService {
     .then(function(firebaseUser) {
       // Success 
       console.log(firebaseUser);
-      self.router.navigate(['adminHome']);
+      self.router.navigate(['admin/home']);
     }).catch(function(error) {
       // Error Handling
       var error = error.code;

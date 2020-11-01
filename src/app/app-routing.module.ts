@@ -15,7 +15,7 @@ const routes: Routes = [
   {path: "explore", component: ExploreComponent},
   {path: "home", component: HomeComponent},
   {path: "admin", component: AdminLoginComponent},
-  {path: "adminHome", component: AdminInicioComponent}
+  {path: "admin/home", component: AdminInicioComponent}
 ];
 
 @NgModule({

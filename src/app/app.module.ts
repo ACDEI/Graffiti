@@ -27,6 +27,7 @@ import { MapComponent } from '@core/components/explore/map/map.component'
 import { HomeComponent } from './components/home/home.component';
 import { AdminLoginComponent } from './components/adminView/admin-login/admin-login.component';
 import { AdminInicioComponent } from './components/adminView/admin-inicio/admin-inicio.component';
+import { AdminNavbarComponent } from './components/adminView/admin-navbar/admin-navbar.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { AdminInicioComponent } from './components/adminView/admin-inicio/admin-
     MapComponent,
     HomeComponent,
     AdminLoginComponent,
-    AdminInicioComponent
+    AdminInicioComponent,
+    AdminNavbarComponent
   ],
   imports: [
     BrowserModule,

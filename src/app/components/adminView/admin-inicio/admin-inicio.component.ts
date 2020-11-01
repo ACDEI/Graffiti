@@ -13,8 +13,4 @@ export class AdminInicioComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  signOut(){
-    this.loginService.signOut();
-  }
-
 }

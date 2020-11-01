@@ -1,0 +1,10 @@
+img{
+    margin: 5px;
+    height: 35px;
+    float: left;
+}
+
+#signOut{
+    float: right;
+    margin-left: 50%;
+}

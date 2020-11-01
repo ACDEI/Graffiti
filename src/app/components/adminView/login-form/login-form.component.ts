@@ -42,6 +42,6 @@ export class LoginFormComponent implements OnInit {
   }
 
   async signIn(userForm : NgForm){
-    this.loginService.signIn(userForm.value.email, userForm.value.name);
+    this.loginService.signIn(userForm.value.email, userForm.value.password);
   }
 }

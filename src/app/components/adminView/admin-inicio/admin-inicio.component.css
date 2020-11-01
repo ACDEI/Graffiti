@@ -1,0 +1,9 @@
+.card:hover {
+    background-color: rgb(136, 167, 179);
+    width: 95%;
+}
+
+.row {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}

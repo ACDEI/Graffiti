@@ -34,11 +34,5 @@ export class ListaUsuariosComponent implements OnInit {
      this.listaUsuarios = users; 
    })
   
- 
-
-  
   }
-
- 
-
 }
