@@ -17,7 +17,7 @@ export class LoginService {
   
   constructor(private router: Router, public firestore: AngularFirestore) {
     
-    this.usuariosObservables = this.firestore.collection("usuarios").valueChanges();
+    this.usuariosObservables = this.firestore.collection("users").valueChanges();
 
    }
 
@@ -26,15 +26,18 @@ export class LoginService {
   }
 
   insertUser(user: User){ //Insertar un usuario en la BD
-     return this.firestore.collection("usuarios").doc(user.uid).set({
+     return this.firestore.collection("users").doc(user.uid).set({
       email: user.email,
-      name: user.fullName,
-      uid: user.uid
+      nombreCompleto: user.fullName,
+      nombreUsuario: user.nickName,
+      perfilFotoUrl: user.photoURL,
+      isAdmin:user.isAdmin
+
   })
   }
 
   getUser(uid: string){ //Devolver si esta o no en la BD 
-     return this.firestore.collection('usuarios').doc(uid).get().subscribe();
+     return this.firestore.collection('users').doc(uid).get().subscribe();
      //return  this.firestore.doc('usuarios/' + uid).get();
      
   }
@@ -45,13 +48,10 @@ export class LoginService {
     let self = this;
     firebase.auth().signInWithPopup(provider).then(function(result){
 
-      var yaRegistrado = self.getUser(result.user.uid);
-
-      console.log(yaRegistrado);
+    
 
       self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
-                            "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
-                            "likes": [], "followers": [], "followed": [], "visited": [] };
+                            "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false};
   
       self.insertUser(self.userSelected);
 
@@ -106,6 +106,35 @@ export class LoginService {
 
   //Google LogIn
 
+  loginGoogle(){
+    var provider = new firebase.auth.GoogleAuthProvider;
+    let self = this;
+    firebase.auth().signInWithPopup(provider).then(function(result){
+
+
+      self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
+                            "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false};
+  
+      self.insertUser(self.userSelected);
+
+      console.log(self.userSelected);
+     
+      window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
+
+      self.router.navigate(['home']);
+     
+
+    }).catch(function(error){
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      var email = error.email;  // The email of the user's account used.
+      var credential = error.credential;  // The firebase.auth.AuthCredential type that was used.
+      console.log(errorMessage);
+     
+    })
+  }
+
     //Admin (Email, Pass) 
     // Register  
     signUp(email: string, password: string){
@@ -116,8 +145,8 @@ export class LoginService {
           console.log(result.user);
   
           self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":"",
-                              "nickName": "", "photoURL": "", "isAdmin": false, 
-                              "likes": [], "followers": [], "followed": [], "visited": [] };
+                              "nickName": "", "photoURL": "", "isAdmin": false
+                               };
   
           this.insertUser(self.userSelected);
         }).catch((error) => {
@@ -141,12 +170,26 @@ export class LoginService {
  });
 }
 
+signOutAdmin(){
+
+  let self = this;
+  firebase.auth().signOut().then(function() {
+    // Sign-out successful.
+    self.userSelected = new User(); 
+    self.router.navigate(['admin']);
+  }).catch(function(error) {
+    // An error happened.
+  });
+  
+}
+
 signOut(){
 
   let self = this;
   firebase.auth().signOut().then(function() {
     // Sign-out successful.
-    self.router.navigate(['admin']);
+    self.userSelected = new User(); 
+    self.router.navigate(['']);
   }).catch(function(error) {
     // An error happened.
   });

@@ -25,11 +25,10 @@ export class HomeComponent implements OnInit {
 
     //this.uid = window.sessionStorage.getItem("idusuario");
 
-    var usuario = JSON.parse(window.sessionStorage.getItem("usuario"));
+    var usuario= JSON.parse(window.sessionStorage.getItem("usuario"));
 
     this.uid = usuario.uid; 
 
-    console.log(loginservice.userSelected.uid); 
 
   }
  
@@ -44,8 +43,8 @@ export class HomeComponent implements OnInit {
   }
 
    signOut(): void {
-    firebase.auth().signOut; 
-    this.uid = null; 
+     this.uid = null;
+     this.loginservice.signOut();
   }
 
 }

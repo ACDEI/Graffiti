@@ -24,4 +24,8 @@ export class ButtonLoginComponent implements OnInit {
   loginTwitter(){
     this.loginService.loginTwitter();
   }
+
+  loginGoogle(){
+    this.loginService.loginGoogle();
+  }
 }
