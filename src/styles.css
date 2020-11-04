@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+.marker {
+    /*background-image: url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png');*/
+    background-size: cover;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 3px;
+    border-color: aliceblue;
+    cursor: pointer;
+}

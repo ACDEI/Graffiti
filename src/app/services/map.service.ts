@@ -69,10 +69,14 @@ export class MapService {
       // create the popup
       var popup = new mapboxgl.Popup({ offset: 25 })
       .setHTML(
-        '<h1>Hola</h1>'
+        '<img src="' + photo.photoUrl + '" width=220 heigth=220></img>'
       );
 
-      new mapboxgl.Marker()
+      var el = document.createElement('div');
+      el.className = 'marker';
+      el.setAttribute('style', "background-image: url(" + photo.photoUrl + ")");
+
+      new mapboxgl.Marker(el)
         .setLngLat([photo.pos.h_, photo.pos.u_])
         .setPopup(popup)
         .addTo(this.map);
