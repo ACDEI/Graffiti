@@ -1,5 +1,5 @@
 import { Component, OnInit} from '@angular/core';
-import { LoginService } from '@core/services/login.service';
+import { AuthService } from '@core/services/auth.service';
 import {Router, NavigationExtras} from '@angular/router';
 import * as firebase from 'firebase';
 import { rejects } from 'assert';
@@ -12,16 +12,16 @@ import { User } from '@core/models/user.model';
 })
 export class ButtonLoginComponent implements OnInit {
 
-  constructor(private loginService: LoginService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
   loginFacebook(){
-    this.loginService.loginFacebook();
+    this.authService.loginFacebook();
   }
 
   loginTwitter(){
-    this.loginService.loginTwitter();
+    this.authService.loginTwitter();
   }
 }

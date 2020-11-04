@@ -1,18 +1,15 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { NgForm } from '@angular/forms';
 import {Router, NavigationExtras} from '@angular/router';
 import { User } from '@core/models/user.model';
+import { UserService } from '@core/services/classes_services/user.service';
 import { AuthService } from "../../../services/auth.service";
 
-import * as firebase from 'firebase';
-
 @Component({
-  selector: 'app-login-form',
-  templateUrl: 'login-form.component.html' ,
-  styleUrls: [ './login-form.component.css' ]
+  selector: 'app-register-form',
+  templateUrl: './register-form.component.html',
+  styleUrls: ['./register-form.component.css']
 })
-
-export class LoginFormComponent implements OnInit {
+export class RegisterFormComponent implements OnInit {
 
   email: string;
   password: string;
@@ -20,26 +17,20 @@ export class LoginFormComponent implements OnInit {
   errorMessage = ""; // Validation Error Handle
   error: {name: string, message: string} = {name: "", message: ""}; //Firebase Error Handle
 
-  constructor(public authService: AuthService, private router: Router) { }
-
   @Output() wantRegister: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  ngOnInit(): void {}
+  constructor(public authService: AuthService, private router: Router, private userService: UserService) { }
 
-  /*
-  onSubmit(loginForm: NgForm){
-    this.loginService.insertUser(loginForm.value);
-    this.resetForm(loginForm);
+  ngOnInit(): void {
   }
-  */
-  
+
   resetForm(){
     this.email = "";
     this.password = "";
   }
 
   goingBack(){
-    this.wantRegister.emit(true);
+    this.wantRegister.emit(false);
     //let self = this;
     //self.router.navigate(['']);
   }
@@ -49,11 +40,10 @@ export class LoginFormComponent implements OnInit {
     this.error = {name: "", message: ""};
   }
 
-  async signIn(){
-    
+  async signUp(){
     this.clearErrorMessage();
     if(this.validateForm(this.email, this.password)){
-      this.authService.signIn(this.email, this.password).then(() => {
+      this.authService.signUp(this.email, this.password).then(() => {
         this.router.navigate[('admin/home')];
       }).catch( _error => {
         this.error = _error;
@@ -76,5 +66,4 @@ export class LoginFormComponent implements OnInit {
     this.errorMessage='';
     return true;
   }
-
 }

@@ -1,0 +1,22 @@
+p{
+    background-color: rgba(0, 0, 0, 0.575);
+    color: white;
+    border-radius: 10px;
+    margin-left: 10px;
+    padding-left: 10px;
+    font-weight: bolder;
+}
+
+.col{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#delete{
+    margin-left: 2px;
+}
+
+#view{
+    padding-left: 10px;
+    padding-right: 10px;
+}

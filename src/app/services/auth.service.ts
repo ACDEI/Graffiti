@@ -1,43 +1,24 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
 import {Router, NavigationExtras} from '@angular/router';
-import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from "angularfire2/firestore";
+import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from "@angular/fire/firestore";
 import { Observable } from 'rxjs';
 
 import { User } from '../models/user.model';
+import { UserService } from './classes_services/user.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class LoginService {
+export class AuthService {
 
   coleccionUsuarios: AngularFirestoreCollection<User>;
   usuariosObservables: Observable<any[]>;
-  userSelected: User = new User(); 
-  
-  constructor(private router: Router, public firestore: AngularFirestore) {
-    
-    this.usuariosObservables = this.firestore.collection("usuarios").valueChanges();
+  userSelected: User = new User();
 
-   }
 
-  getUsers(){ //Obtener la lista de todos los Usuarios
-    return this.usuariosObservables;
-  }
-
-  insertUser(user: User){ //Insertar un usuario en la BD
-     return this.firestore.collection("usuarios").doc(user.uid).set({
-      email: user.email,
-      name: user.fullName,
-      uid: user.uid
-  })
-  }
-
-  getUser(uid: string){ //Devolver si esta o no en la BD 
-     return this.firestore.collection('usuarios').doc(uid).get().subscribe();
-     //return  this.firestore.doc('usuarios/' + uid).get();
-     
-  }
+  constructor(private router: Router, public firestore: AngularFirestore
+              , public userService: UserService) {}
 
   //Facebook LogIn
   loginFacebook(){
@@ -45,7 +26,7 @@ export class LoginService {
     let self = this;
     firebase.auth().signInWithPopup(provider).then(function(result){
 
-      var yaRegistrado = self.getUser(result.user.uid);
+      var yaRegistrado = self.userService.getUser(result.user.uid);
 
       console.log(yaRegistrado);
 
@@ -53,7 +34,7 @@ export class LoginService {
                             "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
                             "likes": [], "followers": [], "followed": [], "visited": [] };
   
-      self.insertUser(self.userSelected);
+      self.userService.createUser(self.userSelected);
 
       /*
 
@@ -106,49 +87,47 @@ export class LoginService {
 
   //Google LogIn
 
-    //Admin (Email, Pass) 
+  //Admin (Email, Pass) 
     // Register  
-    signUp(email: string, password: string){
-      let self = this;
-      firebase.auth().createUserWithEmailAndPassword(email, password)
-        .then((result) => {
-          window.alert("You have been successfully registered!");
-          console.log(result.user);
-  
-          self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":"",
-                              "nickName": "", "photoURL": "", "isAdmin": false, 
-                              "likes": [], "followers": [], "followed": [], "visited": [] };
-  
-          this.insertUser(self.userSelected);
-        }).catch((error) => {
-          window.alert(error.message)
-        })
-    }
-      // LogIn - LogOut
+  signUp(email: string, password: string){
+    let self = this;
+    return firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then((result) => {
+        //window.alert("You have been successfully registered!");
+        console.log(result.user);
+
+        self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":"",
+                            "nickName": "", "photoURL": "", "isAdmin": false, 
+                            "likes": [], "followers": [], "followed": [], "visited": [] };
+
+        self.userService.createUser(self.userSelected);
+      }).catch((error) => {
+        console.log(error);
+        throw error;
+      })
+  }
+    // LogIn - LogOut
   signIn(email: string, pass: string){
 
     let self = this;
-    firebase.auth().signInWithEmailAndPassword(email, pass)
-    .then(function(firebaseUser) {
-      // Success 
-      console.log(firebaseUser);
-      self.router.navigate(['admin/home']);
-    }).catch(function(error) {
-      // Error Handling
-      var error = error.code;
-      var errorMessage = error.message;
-      console.log(error.code);
- });
+    return firebase.auth().signInWithEmailAndPassword(email, pass)
+      .then(function(firebaseUser) {  // Success 
+        console.log(firebaseUser);
+        self.router.navigate(['admin/home']);
+      }).catch(function(error) { // Error Handling
+        var error = error.code;
+        var errorMessage = error.message;
+        console.log(error);
+  });
 }
 
 signOut(){
 
   let self = this;
-  firebase.auth().signOut().then(function() {
-    // Sign-out successful.
+  firebase.auth().signOut().then(function() { // Sign-out successful. 
     self.router.navigate(['admin']);
-  }).catch(function(error) {
-    // An error happened.
+  }).catch(function(error) { // An error happened.
+    
   });
   
 }

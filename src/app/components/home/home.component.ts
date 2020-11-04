@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import { LoginService } from '@core/services/login.service';
+import { AuthService } from '@core/services/auth.service';
 import {User} from '../../models/user.model';
 import * as firebase from 'firebase';
 
@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
 
   uid:string; 
 
-  constructor(private route: ActivatedRoute, private loginservice: LoginService, private _data: User ) {
+  constructor(private route: ActivatedRoute, private authService: AuthService, private _data: User ) {
   
     /*
     this.route.queryParams.subscribe(params => {
@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
 
     this.uid = usuario.uid; 
 
-    console.log(loginservice.userSelected.uid); 
+    //console.log(loginservice.userSelected.uid); 
 
   }
  

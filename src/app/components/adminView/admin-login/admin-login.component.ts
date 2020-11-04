@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {LoginFormComponent} from '../login-form/login-form.component'
 
 @Component({
   selector: 'app-admin-login',
@@ -10,7 +9,13 @@ export class AdminLoginComponent implements OnInit {
 
   constructor() { }
 
+  wantRegister: boolean = false;
+
   ngOnInit(): void {
+  }
+
+  viewRegister(show : boolean){
+    this.wantRegister = show;
   }
 
 }

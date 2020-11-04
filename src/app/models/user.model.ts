@@ -1,5 +1,9 @@
 import { Place } from './place.model';
 
+export class UserR{
+    uid: string;
+}
+
 export class User {
     
     uid: string;
@@ -13,9 +17,7 @@ export class User {
     followed: string[];
     visited: Place[];
 
-    constructor(){
-
-    }
+    constructor(){}
     /*
     //Getters - Setters
     public getUID(){ return this.uid; }

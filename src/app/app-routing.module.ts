@@ -6,16 +6,16 @@ import { ExploreComponent } from './components/explore/explore.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginFormComponent } from './components/adminView/login-form/login-form.component';
 import { InicioComponent } from './components/loginZone/inicio/inicio.component';
-import { ListaUsuariosComponent } from './components/lista-usuarios/lista-usuarios.component';
 import { AdminInicioComponent } from './components/adminView/admin-inicio/admin-inicio.component';
+import { UserGestionComponent } from './components/adminView/user-gestion/user-gestion.component';
 
 const routes: Routes = [
   {path:"" , component: InicioComponent},
-  {path:"listaUsuarios",component: ListaUsuariosComponent},
   {path: "explore", component: ExploreComponent},
   {path: "home", component: HomeComponent},
   {path: "admin", component: AdminLoginComponent},
-  {path: "admin/home", component: AdminInicioComponent}
+  {path: "admin/home", component: AdminInicioComponent},
+  {path: "admin/user_gest", component: UserGestionComponent}
 ];
 
 @NgModule({
