@@ -1,0 +1,12 @@
+img{
+	width: 100px;
+	height: 100px;
+	object-fit: fill;
+	background-color: rgb(255, 255, 255);
+	border: 3px solid #585858;
+}
+
+.card{
+	width: 18rem;
+	font-size: 1vw;
+}

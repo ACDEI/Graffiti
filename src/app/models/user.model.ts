@@ -8,7 +8,11 @@ export class User {
     nickName: string;
     photoURL: string;
     isAdmin: boolean;
-
+	likes: string[];
+    followers: string[];
+    followed: string[];
+    visited: Place[];
+	
     constructor(){
 
     }

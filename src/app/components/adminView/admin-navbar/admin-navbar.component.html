@@ -19,14 +19,16 @@
             <i class="fas fa-map-marked-alt"></i>Graffiti Map</a>
         </li>
         <li class="nav-item active mr-3 btn-group">
-            <a class="nav-link" routerLink="admin/home"><i class="fas fa-columns"></i> Main Panel</a>
-            <a class="nav-link dropdown-toggle dropdown-toggle-split" id="panelesAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent"><span class="sr-only">Toggle Dropdown</span></a>
+            <a class="nav-link" routerLink="../home"><i class="fas fa-columns"></i>Main Panel</a>
+            <button class="btn nav-link dropdown-toggle dropdown-toggle-split" id="panelesAdmin" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent"><span class="sr-only">Toggle Dropdown</span></button>
             <div class="dropdown-menu" aria-labelledby="panelesAdmin">
-                <a class="dropdown-item" routerLink="admin/home">Usuarios</a>
-                <a class="dropdown-item" routerLink="admin/home">Publicaciones</a>
+                <a class="dropdown-item" routerLink="../user_gest">Usuarios</a>
+                <a class="dropdown-item" routerLink="../publ_gest">Publicaciones</a>
             </div>
         </li>
       </ul>
-      <button class="btn btn-danger" id="signOut" (click)="signOut()">Cerrar Sesión</button>
+      <button class="btn btn-danger" id="signOut" (onClick)="signOut()">
+        <i class="fas fa-sign-out-alt"></i>
+        Salir</button>
     </div>
 </nav>
