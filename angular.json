@@ -124,6 +124,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "graffiti"
+    }
+  },
+  "defaultProject": "graffiti",
+  "cli": {
+    "analytics": "eb89c123-fb26-42ea-80bc-40a2fe9c36d8"
+  }
 }

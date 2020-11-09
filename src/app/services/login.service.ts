@@ -84,23 +84,35 @@ export class LoginService {
   //Twitter LogIn
   loginTwitter(){
     var provider = new firebase.auth.TwitterAuthProvider();
+    let self = this;
 
     firebase.auth().signInWithRedirect(provider);
     firebase.auth().getRedirectResult().then(function(result) {
       if (result.credential) {
         // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
         // You can use these server side with your app's credentials to access the Twitter API.
-        var token = result.credential;
+       
         // var secret = result.credential.secret;
         // ...
+
+        self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
+                            "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false};
+  
+      self.insertUser(self.userSelected);
+
+      window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
+
+      self.router.navigate(['home']);
+     
       }
-      var user = result.user; // The signed-in user info.
+      
     }).catch(function(error) {
       // Handle Errors here.
       var errorCode = error.code;
       var errorMessage = error.message;
       var email = error.email;  // The email of the user's account used.
       var credential = error.credential;  // The firebase.auth.AuthCredential type that was used.
+      console.log(errorMessage);
     })
   }
 
