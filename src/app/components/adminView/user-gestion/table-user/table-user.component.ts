@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { User } from '@core/models/user.model';
 import { UserService } from '@core/services/classes_services/user.service';
 import { map } from 'rxjs/operators';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-table-user',
@@ -18,25 +17,20 @@ export class TableUserComponent implements OnInit {
   fbNick : string = '';
   fbEmail : string = '';
 
-  constructor(private userService: UserService, private toastr : ToastrService) {
+  config: any;
+
+  constructor(private userService: UserService) {
+  }
+
+  ngOnInit(): void {
     this.obtenerUsuarios();
+    this.config = {
+      itemsPerPage: 2,
+      currentPage: 1,
+      totalItems: 0
+    }
   }
 
-  ngOnInit(): void {}
-
-  deleteUser(uid: string){
-    //this.userService.delete_User(uid);
-    this.toastr.success("Eliminado Correctamente", "", {timeOut: 1000});
-  }
-  /*
-  realizarBusqueda(search: string) {
-    this.listaFiltrada = this.userList.slice();
-    console.log(this.listaFiltrada);
-    this.listaFiltrada = this.listaFiltrada.filter((user) =>
-      user.uid.includes(search)
-    );
-  }
-  */
   obtenerUsuarios(): void {
     this.userService
       .get_AllUsers()
@@ -55,6 +49,21 @@ export class TableUserComponent implements OnInit {
         //console.log(this.userList);
       });
   }
+
+
+  pageChanged(event){
+    this.config.currentPage = event;
+  }
+
+  /*
+  realizarBusqueda(search: string) {
+    this.listaFiltrada = this.userList.slice();
+    console.log(this.listaFiltrada);
+    this.listaFiltrada = this.listaFiltrada.filter((user) =>
+      user.uid.includes(search)
+    );
+  }
+  */
 
   /*
     this.userService.get_AllUsers().subscribe(users => {

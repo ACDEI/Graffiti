@@ -6,17 +6,28 @@
           <input type="text" name="fbUID" [(ngModel)]="fbUID" class="form-control mr-2" placeholder="UID"/>
           <input type="text" name="fbName" [(ngModel)]="fbName" class="form-control mr-2" placeholder="Name"/>
       </form>
-  <div class="col"> 
+  <!-- <div class="col"> --> 
        <form id="filters" class="input-group mb-3 mt-2">     
           <input type="text" name="fbNick" [(ngModel)]="fbNick" class="form-control mr-2" placeholder="Nick"/>
           <input type="text" name="fbEmail" [(ngModel)]="fbEmail" class="form-control mr-2" placeholder="Email"/>
           <!-- <button class="btn btn-outline-primary" type="submit" >Search</button> -->
       </form>
-    </div>
+    <!-- </div> -->
   </div>
 </div>
 
-<!--Tabla de datos-->
+<!-- Cards-->
+<div class="row">
+  <div class="col-xl-3" *ngFor="let user of userList | filterUserAdmin: fbUID : fbName : fbNick : fbEmail : config.totalItems | paginate: config">
+    <app-card-user [userR]='user'></app-card-user>
+  </div>
+</div>
+<div class="row" id="pags" *ngIf="config.totalItems < config.itemsPerPage">
+  <pagination-controls class="pagination" (pageChange)="pageChanged($event)"></pagination-controls>
+</div>
+
+<!-- Tabla de Datos
+  
 <p style="width: 25%;">Users List</p>
 <table id="table" class="table table-hover table-striped mt-3">
     <thead class="thead-dark">
@@ -28,6 +39,7 @@
         <th scope="col"></th>
       </tr>
     </thead>
+
     <tbody *ngFor="let user of userList | filter: fbUID : fbName : fbNick : fbEmail">
       <tr>
         <td>{{user.fullName}}</td>
@@ -45,3 +57,5 @@
       </tr>
     </tbody>
   </table>
+
+-->

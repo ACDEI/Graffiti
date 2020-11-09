@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import {Router, NavigationExtras} from '@angular/router';
 import { User } from '@core/models/user.model';
-import { AuthService } from "../../../services/auth.service";
+import { AuthService } from "../../../../services/auth.service";
 
 import * as firebase from 'firebase';
 

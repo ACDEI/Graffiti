@@ -17,6 +17,7 @@ import {AuthService} from "./services/auth.service";
 import {UserService} from './services/classes_services/user.service';
 import { ToastrModule } from 'ngx-toastr'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 //Clases - Models
 import {User} from './models/user.model';
@@ -31,13 +32,16 @@ import { HomeComponent } from './components/home/home.component';
 import { AdminLoginComponent } from './components/adminView/admin-login/admin-login.component';
 import { AdminInicioComponent } from './components/adminView/admin-inicio/admin-inicio.component';
 import { AdminNavbarComponent } from './components/adminView/admin-navbar/admin-navbar.component';
-import { RegisterFormComponent } from './components/adminView/register-form/register-form.component';
 import { UserGestionComponent } from './components/adminView/user-gestion/user-gestion.component';
-import { TableUserComponent } from './components/adminView/table-user/table-user.component';
+import { PhotoGestionComponent } from './components/adminView/photo-gestion/photo-gestion.component';
+import { CardUserComponent } from './components/adminView/user-gestion/card-user/card-user.component';
+import { PhotoCardComponent } from './components/adminView/photo-gestion/photo-card/photo-card.component';
 
 //Pipes
-import { FilterPipe } from './pipes/filter.pipe'
+import { FilterUserAdminPipe } from './pipes/filterUserAdmin.pipe'
 import { Browser } from 'protractor';
+
+
 
 @NgModule({
   declarations: [
@@ -52,10 +56,11 @@ import { Browser } from 'protractor';
     AdminLoginComponent,
     AdminInicioComponent,
     AdminNavbarComponent,
-    RegisterFormComponent,
     UserGestionComponent,
-    TableUserComponent,
-    FilterPipe,
+    FilterUserAdminPipe,
+    PhotoGestionComponent,
+    CardUserComponent,
+    PhotoCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,7 +70,8 @@ import { Browser } from 'protractor';
     AngularFireDatabaseModule,
     FormsModule, 
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    NgxPaginationModule
   ],
   providers: [AuthService, 
               UserService, 

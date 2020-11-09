@@ -1,18 +1,20 @@
 import { Pipe, PipeTransform} from '@angular/core';
 
 @Pipe({
-    name: 'filter'
+    name: 'filterUserAdmin'
 })
 
-export class FilterPipe implements PipeTransform{
+export class FilterUserAdminPipe implements PipeTransform{
 
-    transform(value: any, arg: any, arg2: any, arg3: any, arg4): any {
+    transform(value: any, arg: any, arg2: any, arg3: any, arg4: any, totalItems : number): any {
         //console.log(arg + " -- " + arg2 + " -- " + arg3 + " -- " + arg4 + " -- ");
+        totalItems = 0;
         if(!this.validation(arg, arg2, arg3, arg4)) return value;
         const resultUser = [];
         for(const user of value){
             if(this.includesSearch(arg, arg2, arg3, arg4, user)){
                 resultUser.push(user);
+                totalItems++;
             }
         }
         return resultUser;

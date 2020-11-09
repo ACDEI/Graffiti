@@ -2,7 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import {Router, NavigationExtras} from '@angular/router';
 import { User } from '@core/models/user.model';
 import { UserService } from '@core/services/classes_services/user.service';
-import { AuthService } from "../../../services/auth.service";
+import { AuthService } from "../../../../services/auth.service";
 
 @Component({
   selector: 'app-register-form',
