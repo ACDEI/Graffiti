@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import { User } from '@core/models/user.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ export class UserService {
 
   userCollection: AngularFirestoreCollection<User>;
 
-  private path = '/users';
+  private path = 'users';
 
   constructor(private fs: AngularFirestore) { 
     this.userCollection = fs.collection(this.path);
@@ -108,9 +109,8 @@ export class UserService {
     }
     */
 
-  getUser(uid: string){
-    //this.userRef = this.fs.object('users/' + uid);
-    //return this.userRef;
+  getUser(uid: string): Observable<User>{
+    return this.fs.doc<User>(`users/${uid}`).valueChanges();
   }
 
   /*
