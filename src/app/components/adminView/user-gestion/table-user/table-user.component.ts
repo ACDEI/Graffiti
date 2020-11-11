@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
 export class TableUserComponent implements OnInit {
   
   userList: User[];
-  //listaFiltrada: User[];
+
   fbUID : string = '';
   fbName : string = '';
   fbNick : string = '';
@@ -45,7 +45,7 @@ export class TableUserComponent implements OnInit {
       )
       .subscribe((data) => {
         this.userList = data;
-        this.userList = this.userList.filter(user => !user.isAdmin);  //Delete the Admin Users. It has no sense to keep them
+        this.userList = this.userList.filter(user => !user.isAdmin);
         //console.log(this.userList);
       });
   }

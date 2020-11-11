@@ -1,0 +1,12 @@
+#v-pills-comments,
+#v-pills-likes,
+#v-pills-info{
+    height: 500px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+.row {
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}

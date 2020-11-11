@@ -1,44 +1,39 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
-import { Photo } from '@core/models/photo.model';
+import { Publication } from '@core/models/publication';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PublicationsService {
 
-  photoCollection: AngularFirestoreCollection<Photo>;
+  publicationCollection: AngularFirestoreCollection<Publication>;
+
   private path = 'publications';
 
   constructor(private fs: AngularFirestore) { 
-    this.photoCollection = this.fs.collection(this.path);
+    this.publicationCollection = fs.collection(this.path);
   }
 
-  // Insert Publication in DB
-  createPublication(publication : Photo) : any{
-    //return this.fs.collection(this.path).doc(photo.photo_id).set(photo); //Guarda el PID correcto
-    this.photoCollection.add({...publication});
+  getAllPublications() : AngularFirestoreCollection<Publication> {
+    return this.publicationCollection;
   }
 
-  // Return Photo's List DB
-  get_AllPublications() : AngularFirestoreCollection<Photo> {
-    return this.photoCollection;
+  getPublication(pid : string): Observable<Publication> {
+    return this.fs.doc<Publication>(`publications/${pid}`).valueChanges();
   }
 
-  //Return one publication from DB
-  getPhoto(photo_id : string) {
-
+  createPublication(publication : Publication) : any{
+    return this.fs.collection(this.path).doc(publication.pid).set(publication);
   }
 
-  //Update Publication From DB
-  updatePublication(publication: Photo) : Promise<void>{
-    return this.fs.doc(this.path + '/' + publication.photo_id)
-      .update(publication);
+  updatePublication(publication: Publication) : Promise<void>{
+    return this.fs.doc(this.path + '/' + publication.pid).update(publication);
   }
 
-  //Delete a Publication from DB
-  delete_Photo(pid: string) : Promise<void>{
-    return this.photoCollection.doc(pid).delete();
+  deletePublicacion(pid: string) : Promise<void>{
+    return this.publicationCollection.doc(pid).delete();
   }
 
 }

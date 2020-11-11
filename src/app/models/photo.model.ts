@@ -1,5 +1,5 @@
 import { firestore } from 'firebase';
-import { Thematic } from './thematic.model';
+import { Theme } from './theme.model';
 
 export class BPhoto {
     location: firestore.GeoPoint;
@@ -17,7 +17,7 @@ export class Photo extends BPhoto{
     date: Date;
     state: string;
     nLikes: Number;
-    themes: Thematic[];
+    themes: Theme[];
 
     //SubNiveles
         //Comments(?)

@@ -1,1 +1,122 @@
-<p>photo-card works!</p>
+<div class="card mr-3 mb-3">
+    <img loading="lazy" src="..." class="img-fluid rounded" alt="" width="100%">
+    <div class="card-body text-center">
+        <h5 class="card-title">{{pubR.title}}</h5>
+    </div>
+    <ul class="list-group list-group-flush text-center">
+        <li class="list-group-item">{{pubR.graffiter}}</li>
+        <li class="list-group-item">
+            <div *ngIf="pubR.state == 'Buen Estado'">
+               <span class="badge badge-success">Buen Estado</span> 
+            </div>
+            <div *ngIf="pubR.state == 'Legible'">
+                <span class="badge badge-warning">Legible</span> 
+            </div>
+            <div *ngIf="pubR.state == 'Deteriorado'">
+                <span class="badge badge-danger">Deteriorado</span> 
+            </div>
+            <div *ngIf="pubR.state == 'Ilegible'">
+                <span class="badge badge-dark">Ilegible</span> 
+            </div>      
+        </li>
+        <li class="list-group-item">
+        <span class="badge badge-pill badge-secondary mr-1 text-light">Tematica</span>
+        </li>
+    </ul>
+    <div class="card-body text-center">
+        <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+        <button type="button" class="btn btn-success ml-5" data-toggle="modal" data-target="#editPublication"><i class="fas fa-pen"></i></button>
+    </div>
+</div>
+
+<!--Modal Vista Extendida Publicacion-->
+<div class="modal fade" id="editPublication" tableindex="-1" aria-labelledby="editPublicationLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4>Gestión de Publicación</h4>
+            </div>
+            <div class="modal-body bg-light">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                            <a class="nav-link active" id="v-pills-info-tab" data-toggle="pill" href="#v-pills-info" role="tab" aria-controls="v-pills-info" aria-selected="true">Información</a>
+                            <a class="nav-link" id="v-pills-comments-tab" data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false">Comentarios</a>
+                            <a class="nav-link mb-2" id="v-pills-likes-tab" data-toggle="pill" href="#v-pills-likes" role="tab" aria-controls="v-pills-likes" aria-selected="false">Likes</a>
+                        </div>
+                    </div>
+                    <div class="col-lg-9">
+                        <div class="tab-content" id="v-pills-tabContent">
+
+                            <div class="tab-pane fade show active" id="v-pills-info" role="tabpanel" aria-labelledby="v-pills-info-tab">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="titulo">Titulo de la Publicación</label>
+                                        <input type="text" value="{{pubR.title}}" class="form-control" id="inputTitulo" placeholder="{{pubR.title}}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="grafitero">Grafitero</label>
+                                        <input type="text" class="form-control" id="inputGrafitero" placeholder="Grafitero">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="selectEstado">Estado de Conservación</label>
+                                        <select class="form-control" id="selectEstadoConservacion">
+                                            <option>Buen Estado</option>
+                                            <option>Legible</option>
+                                            <option>Deterioro Grave</option>
+                                            <option>Ilegible</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="selectTema">Temas</label>
+                                        <select multiple class="form-control" id="selectMultipleTemas">
+                                            <option>Urbano</option>
+                                            <option>Naturaleza</option>
+                                            <option>Estilish</option>
+                                            <option>Protesta</option>
+                                        </select>
+                                    </div>
+                                    <button type="submit" class="btn btn-success btn-block">
+                                        Guardar Cambios
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-comments-tab">
+
+                            </div>
+
+                            <div class="tab-pane fade" id="v-pills-likes" role="tabpanel" aria-labelledby="v-pills-likes-tab">
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-link" data-dismiss="modal" aria-label="Close">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmación de Eliminación -->
+<div class="modal fade" id="confirmationModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-light">
+                <h5 class="modal-title" id="exampleModalLabel">¡AVISO!</h5>
+            </div>
+            <div class="modal-body">
+                ¿Está seguro que quiere eliminar este comentario? Si continua los cambios no se podrán deshacer.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>

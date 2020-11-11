@@ -1,26 +1,26 @@
 import { firestore } from 'firebase';
 
 export class Publication {
-    private pid:string;
-    private uid:string;
-    private titulo:string;
-    private grafitero:string;
-    private fotoUrl:string;
-    private location: firestore.GeoPoint;
-    private fecha:Date;
-    private estado:string;
-    private tematicas: string[];
-    private nLikes:Number;
+    pid:string;
+    uid:string;
+    title:string;
+    graffiter:string;
+    photoURL:string;
+    coordinates: firestore.GeoPoint;
+    date:Date;
+    state:string;
+    themes: string[];
+    nLikes:Number;
 
-    constructor(pid:string,uid: string, titulo: string,grafitero: string,fotourl: string
-        ,location: firestore.GeoPoint,fecha:Date,estado:string,tematicas:string[],nLikes:Number){
+    constructor(pid:string,uid: string, title: string,graffiter: string,photoURL: string
+        ,coordinates: firestore.GeoPoint,date:Date,state:string,themes:string[],nLikes:Number){
         this.uid = uid;
-        this.estado =estado;
-        this.fecha = fecha;
-        this.fotoUrl = fotourl;
-        this.grafitero=grafitero;
-        this.location = location;
-        this.tematicas = tematicas;
+        this.state = state;
+        this.date = date;
+        this.photoURL = photoURL;
+        this.graffiter= graffiter;
+        this.coordinates = coordinates;
+        this.themes = themes;
         this.nLikes = nLikes;
     }
 }

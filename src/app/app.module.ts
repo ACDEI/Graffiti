@@ -22,6 +22,7 @@ import {User} from './models/user.model';
 
 //Pipes
 import { FilterUserAdminPipe } from './pipes/filterUserAdmin.pipe'
+import { FilterPublicationAdminPipe } from './pipes/filterPublicationAdmin.pipe'
 import { Browser } from 'protractor';
 
 //Services
@@ -58,6 +59,7 @@ import { PhotoCardComponent } from './components/adminView/photo-gestion/photo-c
     AdminNavbarComponent,
     UserGestionComponent,
     FilterUserAdminPipe,
+    FilterPublicationAdminPipe,
     PhotoGestionComponent,
     CardUserComponent,
     PhotoCardComponent,
