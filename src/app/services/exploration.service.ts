@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
 import { LocationService } from './location.service';
-import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from "angularfire2/firestore";
+//import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from "angularfire2/firestore";
 import { MapService } from './map.service';
 import * as firebase from 'firebase/app';
 import * as geofirestore from 'geofirestore';
 import { LngLat } from 'mapbox-gl';
+import { getJSON } from 'jquery';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +15,10 @@ import { LngLat } from 'mapbox-gl';
 export class ExplorationService {
 
   position: {lng: number, lat: number};
-  colleccionFotos: AngularFirestoreCollection<any>;
+  colleccionFotos: any[] = [];
 
   constructor(private map: MapService, private location: LocationService, private firestore: AngularFirestore) { 
-    this.colleccionFotos = firestore.collection("fotos");
+    //this.colleccionFotos = firestore.collection("fotos");
 
     this.location.getPosition().then(pos => {
       this.position = pos;
@@ -36,6 +39,18 @@ export class ExplorationService {
         }
       });
   
+      getJSON("https://us-central1-graffiti-9b570.cloudfunctions.net/APIRest/near/" + this.position.lat + "&" + this.position.lng + "&" + 10).then( data => {
+
+      data.forEach( pc => {
+        this.firestore.doc("publications/"+pc.id).get().toPromise().then( p => {
+          console.log(p.data())
+          map.showPoint(p.data());
+        })
+      })
+
+    });
+
+      /*
       this.getNearPoints().subscribe({
         next(photo) {
           console.log('Photo: ', photo);
@@ -44,17 +59,9 @@ export class ExplorationService {
           });
         }
       });
+      */
     })
 
-  }
-
-  getNearPoints() {
-    //const center = geo.point(this.position.lng, this.position.lat);
-    //const radius = 100;
-    //const field = 'position';
-
-    return this.colleccionFotos.valueChanges();
-    //return geo.query(this.colleccionFotos).within(center, radius, field);
   }
 
 }

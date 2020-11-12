@@ -64,20 +64,20 @@ export class MapService {
 
   showPoint(photo) {
       // make a marker for each feature and add to the map
-      console.log("Probando show: ", photo.pos);
+      console.log("Probando show: ", photo);
 
       // create the popup
       var popup = new mapboxgl.Popup({ offset: 25 })
       .setHTML(
-        '<img src="' + photo.photoUrl + '" width=220 heigth=220></img>'
+        '<h1>' + photo.title + '</h1><img src="' + photo.photoURL + '" width=220 heigth=220></img>'
       );
 
       var el = document.createElement('div');
       el.className = 'marker';
-      el.setAttribute('style', "background-image: url(" + photo.photoUrl + ")");
+      el.setAttribute('style', "background-image: url(" + photo.photoURL + ")");
 
       new mapboxgl.Marker(el)
-        .setLngLat([photo.pos.h_, photo.pos.u_])
+        .setLngLat([photo.g.geopoint.h_, photo.g.geopoint.u_])
         .setPopup(popup)
         .addTo(this.map);
   }
