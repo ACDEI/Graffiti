@@ -12,6 +12,7 @@ import { TableUserComponent } from './components/adminView/user-gestion/table-us
 import { UserGestionComponent } from './components/adminView/user-gestion/user-gestion.component';
 import { PhotoTableComponent } from './components/adminView/photo-gestion/photo-table/photo-table.component';
 import { PhotoGestionComponent } from './components/adminView/photo-gestion/photo-gestion.component';
+import { ThemeGestionComponent } from './components/adminView/theme-gestion/theme-gestion.component';
 
 const routes: Routes = [
   {path:"" , component: InicioComponent},
@@ -20,7 +21,8 @@ const routes: Routes = [
   {path: "admin", component: AdminLoginComponent},
   {path: "admin/home", component: AdminInicioComponent},
   {path: "admin/user_gest", component: UserGestionComponent},
-  {path: "admin/publ_gest", component: PhotoGestionComponent}
+  {path: "admin/publ_gest", component: PhotoGestionComponent},
+  {path: "admin/theme_gest", component: ThemeGestionComponent}
 ];
 
 @NgModule({

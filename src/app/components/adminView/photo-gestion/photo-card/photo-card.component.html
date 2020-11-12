@@ -1,5 +1,5 @@
 <div class="card mr-3 mb-3">
-    <img loading="lazy" src="..." class="img-fluid rounded" alt="" width="100%">
+    <img loading="lazy" src="{{pubR.photoURL}}" class="img-fluid rounded" alt="" width="100%">
     <div class="card-body text-center">
         <h5 class="card-title">{{pubR.title}}</h5>
     </div>
@@ -51,13 +51,20 @@
                             <div class="tab-pane fade show active" id="v-pills-info" role="tabpanel" aria-labelledby="v-pills-info-tab">
                                 <form>
                                     <div class="form-group">
-                                        <label for="titulo">Titulo de la Publicación</label>
+                                        <label for="titulo">Título</label>
                                         <input type="text" value="{{pubR.title}}" class="form-control" id="inputTitulo" placeholder="{{pubR.title}}">
                                     </div>
-                                    <div class="form-group">
-                                        <label for="grafitero">Grafitero</label>
-                                        <input type="text" class="form-control" id="inputGrafitero" placeholder="Grafitero">
+                                    <div class="row">
+                                        <div class="form-group" style="margin-right: 10%;">
+                                            <label for="grafitero">Graffitero / Autor</label>
+                                            <input type="text" style="padding-right: 100px;" class="form-control" id="inputGrafitero" value="{{pubR.graffiter}}" placeholder="Grafitero">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="uploader">Subida Por (Nick):</label>
+                                            <input type="text" style="float: right;" class="form-control" id="inputGrafitero" disabled value="{{pubR.uid}}">
+                                        </div>
                                     </div>
+                                    
                                     <div class="form-group">
                                         <label for="selectEstado">Estado de Conservación</label>
                                         <select class="form-control" id="selectEstadoConservacion">
@@ -70,10 +77,7 @@
                                     <div class="form-group">
                                         <label for="selectTema">Temas</label>
                                         <select multiple class="form-control" id="selectMultipleTemas">
-                                            <option>Urbano</option>
-                                            <option>Naturaleza</option>
-                                            <option>Estilish</option>
-                                            <option>Protesta</option>
+                                            <option *ngFor="let t of themesList">{{t.themeName}}</option>
                                         </select>
                                     </div>
                                     <button type="submit" class="btn btn-success btn-block">
@@ -87,9 +91,7 @@
                             </div>
 
                             <div class="tab-pane fade" id="v-pills-likes" role="tabpanel" aria-labelledby="v-pills-likes-tab">
-
                             </div>
-
                         </div>
                     </div>
                 </div>

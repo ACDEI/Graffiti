@@ -23,11 +23,14 @@ import {User} from './models/user.model';
 //Pipes
 import { FilterUserAdminPipe } from './pipes/filterUserAdmin.pipe'
 import { FilterPublicationAdminPipe } from './pipes/filterPublicationAdmin.pipe'
+import { FilterThemeAdminPipe } from './pipes/filterThemeAdmin.pipe'
 import { Browser } from 'protractor';
 
 //Services
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/classes_services/user.service';
+import { PublicationsService } from './services/classes_services/publications.service';
+import { ThemeService } from './services/classes_services/theme.service';
 
 //Componentes
 import { InicioComponent } from './components/loginZone/inicio/inicio.component';
@@ -43,6 +46,8 @@ import { UserGestionComponent } from './components/adminView/user-gestion/user-g
 import { PhotoGestionComponent } from './components/adminView/photo-gestion/photo-gestion.component';
 import { CardUserComponent } from './components/adminView/user-gestion/card-user/card-user.component';
 import { PhotoCardComponent } from './components/adminView/photo-gestion/photo-card/photo-card.component';
+import { ThemeGestionComponent } from './components/adminView/theme-gestion/theme-gestion.component';
+import { TableThemeComponent } from './components/adminView/theme-gestion/table-theme/table-theme.component';
 
 @NgModule({
   declarations: [
@@ -60,9 +65,12 @@ import { PhotoCardComponent } from './components/adminView/photo-gestion/photo-c
     UserGestionComponent,
     FilterUserAdminPipe,
     FilterPublicationAdminPipe,
+    FilterThemeAdminPipe,
     PhotoGestionComponent,
     CardUserComponent,
     PhotoCardComponent,
+    ThemeGestionComponent,
+    TableThemeComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,7 +85,9 @@ import { PhotoCardComponent } from './components/adminView/photo-gestion/photo-c
   ],
   providers: [AuthService, 
               UserService, 
-              AngularFirestore],
+              AngularFirestore, 
+              PublicationsService,
+              ThemeService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

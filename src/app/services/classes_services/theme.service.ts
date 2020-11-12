@@ -26,26 +26,27 @@ export class ThemeService {
   }
 
   createTheme(theme: Theme): any{
-    return this.fs.collection(this.path).doc(theme.themeName.toLowerCase()).set(theme);
+    return this.fs.collection(this.path).doc(theme.tid).set(theme);
   }
 
-  updatePublication(theme: Theme) : Promise<void>{
+  updateTheme(theme: Theme) : Promise<void>{
     return this.fs.doc(this.path + '/' + theme.tid)
       .update(theme);
   }
 
-  deletePublicacion(tid: string) : Promise<void>{
+  deleteTheme(tid: string) : Promise<void>{
     return this.themeCollection.doc(tid).delete();
   }
 
+  /*
   getPublicationsFromTheme(theme: Theme): Publication[] {
     var arrayPID = theme.publications;
     var arrayPublications$: Observable<Publication[]>;
     for(let pid of arrayPID){
       const pub = this.publicationService.getPublication(pid);
-      arrayPublications$.
+      arrayPublications$
     }
 
     return arrayPublications$;
-  }
+  }*/
 }
