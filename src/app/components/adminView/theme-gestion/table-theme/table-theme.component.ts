@@ -52,7 +52,7 @@ export class TableThemeComponent implements OnInit {
 
   deleteTheme(tid: string){
     this.themeService.deleteTheme(tid);
-    this.toastr.success("Eliminada Correctamente", "", {timeOut: 1000});
+    this.toastr.success("Temática Eliminada Correctamente", "", {timeOut: 1000});
   }
 
   addTheme(){

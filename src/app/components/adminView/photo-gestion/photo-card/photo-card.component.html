@@ -24,7 +24,7 @@
         </li>
     </ul>
     <div class="card-body text-center">
-        <button class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+        <button type="button" (click)="deletePublication(pubR.pid)" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
         <button type="button" class="btn btn-success ml-5 opM" data-toggle="modal"><i class="fas fa-pen"></i></button>
     </div>
     <app-photo-modal [pubR]='pubR'></app-photo-modal>

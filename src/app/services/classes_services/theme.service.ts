@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Theme } from '../../models/theme.model';
 import { Observable } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
-import { Publication } from '@core/models/publication';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 
 @Injectable({

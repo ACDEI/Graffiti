@@ -8,6 +8,7 @@ import { ThemeService } from '@core/services/classes_services/theme.service';
 import { UserService } from '@core/services/classes_services/user.service';
 import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-photo-card',
@@ -23,7 +24,7 @@ export class PhotoCardComponent implements OnInit {
   user$ : Observable<User>;  //User Uploader
 
   constructor(private publicationService: PublicationsService, private userService: UserService,
-    private themeService: ThemeService) { }
+    private themeService: ThemeService, private toastr : ToastrService) { }
 
   ngOnInit(): void {
     this.user$ = this.userService.getUser(this.pubR.uid);   //No Funciona
@@ -47,9 +48,9 @@ export class PhotoCardComponent implements OnInit {
     //console.log(this.pubR);
   }
 
-  //antes de eliminar la publicacion de la collecion publications, hay que eliminar el pid de en el array publications de la collecion themes. (Para cada theme)
   deletePublication(pid: string){
-    console.log(this.pubR);
+    this.publicationService.deletePublicacion(pid);
+    this.toastr.success("Publicación Eliminada Correctamente", "", {timeOut: 1000});
   }
 
   cambiarModal(){
