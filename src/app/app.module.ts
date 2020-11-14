@@ -48,6 +48,7 @@ import { CardUserComponent } from './components/adminView/user-gestion/card-user
 import { PhotoCardComponent } from './components/adminView/photo-gestion/photo-card/photo-card.component';
 import { ThemeGestionComponent } from './components/adminView/theme-gestion/theme-gestion.component';
 import { TableThemeComponent } from './components/adminView/theme-gestion/table-theme/table-theme.component';
+import { PhotoModalComponent } from './components/adminView/photo-gestion/photo-card/photo-modal/photo-modal.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { TableThemeComponent } from './components/adminView/theme-gestion/table-
     PhotoCardComponent,
     ThemeGestionComponent,
     TableThemeComponent,
+    PhotoModalComponent,
   ],
   imports: [
     BrowserModule,
@@ -81,7 +83,7 @@ import { TableThemeComponent } from './components/adminView/theme-gestion/table-
     FormsModule, 
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
-    NgxPaginationModule
+    NgxPaginationModule,
   ],
   providers: [AuthService, 
               UserService, 

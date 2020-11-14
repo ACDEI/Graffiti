@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LocationService } from './location.service';
-import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from "angularfire2/firestore";
+import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from "@angular/fire/firestore";
 import { MapService } from './map.service';
 import * as firebase from 'firebase/app';
 import * as geofirestore from 'geofirestore';
@@ -15,7 +15,7 @@ export class ExplorationService {
   colleccionFotos: AngularFirestoreCollection<any>;
 
   constructor(private map: MapService, private location: LocationService, private firestore: AngularFirestore) { 
-    this.colleccionFotos = firestore.collection("fotos");
+    this.colleccionFotos = firestore.collection("publications");
 
     this.location.getPosition().then(pos => {
       this.position = pos;

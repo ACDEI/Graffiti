@@ -41,11 +41,38 @@ export class PhotoCardComponent implements OnInit {
       this.themesList = data;
       //console.log(this.themesList);
     });
+
+
+    this.cambiarModal();
+    //console.log(this.pubR);
   }
 
   //antes de eliminar la publicacion de la collecion publications, hay que eliminar el pid de en el array publications de la collecion themes. (Para cada theme)
   deletePublication(pid: string){
-    
+    console.log(this.pubR);
+  }
+
+  cambiarModal(){
+
+    //console.log("---------------- START ---------------------");
+    var opModalButton = document.getElementsByClassName("btn btn-success ml-5 opM");
+    var modalView = document.getElementsByClassName("modal fade opM");
+    var c : any = 0;
+    //console.log("OneB:" + opModalButton.length);
+    //console.log("MV:" + modalView.length);
+
+    let isUnd : boolean = true;
+
+    while(isUnd && c < opModalButton.length){
+      if(opModalButton[c].getAttribute('data-target') === null){
+        opModalButton[c].setAttribute('data-target', "#a"+c);
+        modalView[c].setAttribute("id", 'a'+c);
+        console.log(c + ": " + this.pubR.pid);
+        isUnd = false;
+      }
+      c++;
+    }
+
   }
 
 }
