@@ -49,6 +49,8 @@ import { PhotoCardComponent } from './components/adminView/photo-gestion/photo-c
 import { ThemeGestionComponent } from './components/adminView/theme-gestion/theme-gestion.component';
 import { TableThemeComponent } from './components/adminView/theme-gestion/table-theme/table-theme.component';
 import { PhotoModalComponent } from './components/adminView/photo-gestion/photo-card/photo-modal/photo-modal.component';
+import { UserModalComponent } from './components/adminView/user-gestion/card-user/user-modal/user-modal.component';
+
 
 @NgModule({
   declarations: [
@@ -73,6 +75,7 @@ import { PhotoModalComponent } from './components/adminView/photo-gestion/photo-
     ThemeGestionComponent,
     TableThemeComponent,
     PhotoModalComponent,
+    UserModalComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Publication } from '@core/models/publication';
 import { Theme } from '@core/models/theme.model';
 import { User } from '@core/models/user.model';
@@ -27,7 +26,7 @@ export class PhotoCardComponent implements OnInit {
     private themeService: ThemeService, private toastr : ToastrService) { }
 
   ngOnInit(): void {
-    this.user$ = this.userService.getUser(this.pubR.uid);   //No Funciona
+    this.user$ = this.userService.getUser(this.pubR.uid);
     this.themeService.getAllThemes()
     .snapshotChanges()
     .pipe(

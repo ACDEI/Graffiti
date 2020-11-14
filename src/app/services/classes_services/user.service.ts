@@ -32,7 +32,7 @@ export class UserService {
     return this.fs.doc('users/' + user.uid).update(user);
   }
 
-  delete_User(uid: string) : Promise<void>{
+  deleteUser(uid: string) : Promise<void>{
     return this.userCollection.doc(uid).delete();
   }
   

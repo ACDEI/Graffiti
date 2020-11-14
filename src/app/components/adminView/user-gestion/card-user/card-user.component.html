@@ -7,15 +7,13 @@
       <li class="list-group-item">{{userR.email}}</li>
       <li class="list-group-item">{{userR.nickName}}</li>
     </ul>
-    <div class="card-body text-center" (click)="deleteUser(userR.uid)">
-        <button class="btn btn-danger">
+    <div class="card-body text-center">
+        <button type="button" class="btn btn-danger" (click)="deleteUser(userR.uid)">
           <i class="fas fa-trash-alt"></i>
         </button>
-        <button class="btn btn-success mr-3 ml-3">
+        <button type="button" class="btn btn-success ml-5 opM" data-toggle="modal">
           <i class="fas fa-user-edit"></i>
         </button>
-        <button class="btn btn-primary">
-          <i class="fas fa-camera"></i>
-        </button>
+        <app-user-modal [userR]='userR'></app-user-modal>
     </div>
 </div>

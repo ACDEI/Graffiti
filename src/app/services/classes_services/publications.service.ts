@@ -36,4 +36,8 @@ export class PublicationsService {
     return this.publicationCollection.doc(pid).delete();
   }
 
+  getUserPublications(uid: string) {
+    return this.fs.collection('publications', ref => ref.where('uid', '==', uid)).valueChanges();
+  }
+
 }
