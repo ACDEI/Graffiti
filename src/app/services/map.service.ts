@@ -62,9 +62,8 @@ export class MapService {
       });
   }
 
+  // make a marker for each feature and add to the map
   showPoint(photo) {
-      // make a marker for each feature and add to the map
-      console.log("Probando show: ", photo);
 
       // create the popup
       var popup = new mapboxgl.Popup({ offset: 25 })
