@@ -10,3 +10,11 @@
     margin-right: 0px !important;
     margin-left: 0px !important;
 }
+
+img{
+	width: 25em;
+	height: 12em;
+	object-fit: fill;
+	background-color: rgb(255, 255, 255);
+	border: 3px solid #585858;
+}
