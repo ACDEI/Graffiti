@@ -28,9 +28,9 @@
                                             <label for="grafitero">Graffitero / Autor</label>
                                             <input type="text" style="padding-right: 100px;" class="form-control" id="inputGrafitero" value="{{pubR.graffiter}}" placeholder="Grafitero">
                                         </div>
-                                        <div class="form-group">
+                                        <div *ngIf="user$ | async as user" class="form-group">
                                             <label for="uploader">Subida Por (Nick):</label>
-                                            <input type="text" style="float: right;" class="form-control" id="inputGrafitero" disabled value="{{pubR.uid}}">
+                                            <input type="text" style="float: right;" class="form-control" id="inputGrafitero" disabled value="{{user.nickName}}">
                                         </div>
                                     </div>
                                     
