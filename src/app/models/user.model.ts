@@ -38,10 +38,10 @@ export class User {
 
     public getIsAdmin(){ return this.isAdmin; }
 
-    /*
+    
     public setIsAdmin(isAdmin: boolean){ this.isAdmin = isAdmin; }
-    */
-/*
+    
+
     public addLikes(pid: string){ this.likes.push(pid); }
 
     public removeLikes(pid: string) { this.likes = this.likes.filter( item => item != pid); }
@@ -54,8 +54,8 @@ export class User {
 
     public removeFollowed(uid: string) { this.followed = this.followed.filter( item => item != uid); }
 
-    public addVisited(pmid: string, isMonument: boolean){ this.visited.push(new Place(pmid, isMonument); }
+    //public addVisited(pmid: string, isMonument: boolean){ this.visited.push(new Place(pmid, isMonument); }
 
-    public removeVisited(pmid) { this.visited = this.visited.filter( item => item.pmid != pmid); }
+    //public removeVisited(pmid) { this.visited = this.visited.filter( item => item.pmid != pmid); }
 */
 }

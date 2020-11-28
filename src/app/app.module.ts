@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
 
 //firebase
 import { AngularFireModule } from "@angular/fire";
-import { AngularFirestore, AngularFirestoreModule } from "@angular/fire/firestore";
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireDatabaseModule } from "@angular/fire/database";
 import { environment } from '../environments/environment';
 
@@ -92,6 +92,7 @@ import { UserModalComponent } from './components/adminView/user-gestion/card-use
               UserService, 
               AngularFirestore, 
               PublicationsService,
+              User,
               ThemeService],
   bootstrap: [AppComponent]
 })

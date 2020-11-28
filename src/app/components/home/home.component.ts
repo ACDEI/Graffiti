@@ -15,14 +15,6 @@ export class HomeComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private authService: AuthService, private _data: User ) {
   
-    /*
-    this.route.queryParams.subscribe(params => {
-      console.log(params);
-      this.uid = params.uid; 
-    })
-    */
-
-    //this.uid = window.sessionStorage.getItem("idusuario");
 
     var usuario= JSON.parse(window.sessionStorage.getItem("usuario"));
 
@@ -43,6 +35,7 @@ export class HomeComponent implements OnInit {
 
    signOut(): void {
      this.uid = null;
+     this.authService.userSelected = null; 
      this.authService.signOut();
   }
 

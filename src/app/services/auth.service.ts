@@ -23,31 +23,24 @@ export class AuthService {
   //Facebook LogIn
   loginFacebook(){
     var provider = new firebase.auth.FacebookAuthProvider();
-    let self = this;
+    let self = this; 
     firebase.auth().signInWithPopup(provider).then(function(result){
-
       var yaRegistrado = self.userService.getUser(result.user.uid);
 
       console.log(yaRegistrado);
 
+      var likes = [];
+      var followers = [];
+      var followed = [];
+      var visited  = [];
+
       self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
                             "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
-                            "likes": [], "followers": [], "followed": [], "visited": [] };
+                            "likes":likes, "followers": followers, "followed":followed, "visited":visited };
   
       self.userService.createUser(self.userSelected);
-
-      /*
-
-      let navigationExtras: NavigationExtras = {
-        queryParams: self.loginService.userSelected
-      }
-      self.router.navigate(['home'], navigationExtras);
-
-      */
      
-     //window.sessionStorage.setItem("idusuario", self.loginService.userSelected.uid);
-     
-     window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
+      window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
 
       self.router.navigate(['home']);
      
