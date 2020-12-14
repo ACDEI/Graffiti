@@ -33,10 +33,14 @@ export class HomeComponent implements OnInit {
  */
   }
 
+  checkToken(){
+    this.authService.checkTokenFacebook();
+  }
+
    signOut(): void {
      this.uid = null;
      this.authService.userSelected = null; 
-     this.authService.signOut();
+     this.authService.signOutFacebook();
   }
 
 }

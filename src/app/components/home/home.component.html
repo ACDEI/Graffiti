@@ -3,9 +3,15 @@
 <p>Identificado único de usuario (UID)</p>
 <p>{{ uid }}</p>
 
-<p>
+   <div>
+   <p>
     <button class="login btn btn-danger" (click)="signOut()">
         <i class="fas fa-home"></i>
         Log out</button></p>
+    </div>
+    <div>
+        <p>
+            <button class="login btn btn-danger" (click)="checkToken()">
+                Check Token</button></p>
 
-
+    </div>

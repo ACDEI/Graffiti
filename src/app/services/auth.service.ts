@@ -24,36 +24,48 @@ export class AuthService {
   loginFacebook(){
     var provider = new firebase.auth.FacebookAuthProvider();
     let self = this; 
-    firebase.auth().signInWithPopup(provider).then(function(result){
-      var yaRegistrado = self.userService.getUser(result.user.uid);
 
-      console.log(yaRegistrado);
+    var usuario = firebase.auth().currentUser;
+    console.log(usuario);
+    if(usuario == null){
 
-      var likes = [];
-      var followers = [];
-      var followed = [];
-      var visited  = [];
-
-      self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
-                            "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
-                            "likes":likes, "followers": followers, "followed":followed, "visited":visited };
+        firebase.auth().signInWithPopup(provider).then(function(result){
+          var yaRegistrado = self.userService.getUser(result.user.uid);
   
-      self.userService.createUser(self.userSelected);
-     
-      window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
+          console.log(yaRegistrado);
+
+          var likes = [];
+          var followers = [];
+          var followed = [];
+          var visited  = [];
+
+          self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
+                                "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
+                                "likes":likes, "followers": followers, "followed":followed, "visited":visited };
+      
+          self.userService.createUser(self.userSelected);
+        
+          window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
+
+          self.router.navigate(['home']);
+      
+        
+
+        }).catch(function(error){
+          // Handle Errors here.
+          var errorCode = error.code;
+          var errorMessage = error.message;
+          var email = error.email;  // The email of the user's account used.
+          var credential = error.credential;  // The firebase.auth.AuthCredential type that was used.
+          console.log(errorMessage);
+        
+        })
+
+    }else{
 
       self.router.navigate(['home']);
-     
 
-    }).catch(function(error){
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      var email = error.email;  // The email of the user's account used.
-      var credential = error.credential;  // The firebase.auth.AuthCredential type that was used.
-      console.log(errorMessage);
-     
-    })
+    }
   }
   //Twitter LogIn
 loginTwitter(){
@@ -167,5 +179,40 @@ signOut(){
   
 }
 
+checkTokenFacebook(){
+
+  var usuario = firebase.auth().currentUser;
+  
+  var refresh = usuario.refreshToken; 
+
+  console.log(refresh);
+
+  console.log("---------");
+
+  console.log(usuario.getIdToken(true));
+
+  console.log("---------");
+
+  var token = usuario.getIdTokenResult(true);
+  token.then(el => {
+    console.log(el.expirationTime);
+    console.log(el.token);
+    console.log(el.signInProvider);
+  })
+
+  
+
+}
+
+signOutFacebook(){
+
+  let self = this;
+  firebase.auth().signOut().then(function() { // Sign-out successful. 
+    self.router.navigate(['']);
+  }).catch(function(error) { // An error happened.
+    
+  });
+  
+}
 
 }
