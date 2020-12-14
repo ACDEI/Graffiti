@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 
 import { User } from '../models/user.model';
 import { UserService } from './classes_services/user.service';
+import { AdminInicioComponent } from '@core/components/adminView/admin-inicio/admin-inicio.component';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +31,7 @@ export class AuthService {
     if(usuario == null){
 
         firebase.auth().signInWithPopup(provider).then(function(result){
+     
           var yaRegistrado = self.userService.getUser(result.user.uid);
   
           console.log(yaRegistrado);
@@ -62,6 +64,14 @@ export class AuthService {
         })
 
     }else{
+
+      self.userSelected = {"uid": usuario.uid, "email":usuario.email, "fullName": usuario.displayName,
+                                "nickName": "", "photoURL": usuario.photoURL, "isAdmin": false, 
+                                "likes":[], "followers": [], "followed":[], "visited":[] };
+      
+      self.userService.createUser(self.userSelected);
+        
+      window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
 
       self.router.navigate(['home']);
 
@@ -204,6 +214,47 @@ checkTokenFacebook(){
 
 }
 
+
+/*
+verifyIdToken(){
+  let checkRevoked = true;
+  let usuario = firebase.auth().currentUser;
+  let result = usuario.getIdToken(true); 
+  var tokenId ; 
+  result.then( element => {
+    tokenId = element.toString();
+  }
+  );
+
+
+  admin.auth().verifyIdToken(tokenId,checkRevoked).then(
+    payload =>{
+
+      console.log("token id Válido no es necesario volver a autenticar");
+
+    }).catch(error => {
+      if (error.code == 'auth/id-token-revoked') {
+        // Token has been revoked. Inform the user to reauthenticate or signOut() the user.
+        console.log("Es necesario reautenticar");
+        var socialProvider = firebase.auth().currentUser.providerId;
+        console.log(socialProvider);
+
+        if(socialProvider == "facebook.com"){
+          this.signOutFacebook();
+        }
+      } else {
+        // Token is invalid.
+        console.log("Token invalido");
+        var socialProvider = firebase.auth().currentUser.providerId;
+        console.log(socialProvider);
+        
+        if(socialProvider == "facebook.com"){
+          this.signOutFacebook();
+        }
+      }
+    })
+}
+*/
 signOutFacebook(){
 
   let self = this;
