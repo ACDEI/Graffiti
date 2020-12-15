@@ -205,7 +205,7 @@ checkTokenFacebook(){
 
   var token = usuario.getIdTokenResult(true);
   token.then(el => {
-    console.log(el.expirationTime);
+    console.log("cuando caduca el token" + el.expirationTime);
     console.log(el.token);
     console.log(el.signInProvider);
   })
@@ -258,7 +258,7 @@ verifyIdToken(){
 signOutFacebook(){
 
   let self = this;
-  firebase.auth().signOut().then(function() { // Sign-out successful. 
+  firebase.auth().signOut().then(function() { // Sign-out successful.
     self.router.navigate(['']);
   }).catch(function(error) { // An error happened.
     

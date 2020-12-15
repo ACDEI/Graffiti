@@ -24,8 +24,6 @@ export class HomeComponent implements OnInit {
   }
  
   ngOnInit(): void {
-
-    
    /*
     this.route.params.subscribe(params => {
       this.uid = params.uid;
