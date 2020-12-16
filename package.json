@@ -21,7 +21,7 @@
     "@angular/platform-browser": "^11.0.4",
     "@angular/platform-browser-dynamic": "^11.0.4",
     "@angular/router": "^11.0.4",
-    "@popperjs/core": "^2.5.4",
+    "@popperjs/core": "^2.6.0",
     "@types/jquery": "^3.5.5",
     "angularfire2": "^5.4.2",
     "angularx-social-login": "^3.5.4",

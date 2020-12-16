@@ -13,11 +13,15 @@ import { UserGestionComponent } from './components/adminView/user-gestion/user-g
 import { PhotoTableComponent } from './components/adminView/photo-gestion/photo-table/photo-table.component';
 import { PhotoGestionComponent } from './components/adminView/photo-gestion/photo-gestion.component';
 import { ThemeGestionComponent } from './components/adminView/theme-gestion/theme-gestion.component';
+import {AngularFireAuthGuard, hasCustomClaim, redirectUnauthorizedTo} from '@angular/fire/auth-guard';
+
+const adminOnly = () => hasCustomClaim('admin');
+const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo([""]);
 
 const routes: Routes = [
   {path:"" , component: InicioComponent},
   {path: "explore", component: ExploreComponent},
-  {path: "home", component: HomeComponent},
+  {path: "home", component: HomeComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }},
   {path: "admin", component: AdminLoginComponent},
   {path: "admin/home", component: AdminInicioComponent},
   {path: "admin/user_gest", component: UserGestionComponent},

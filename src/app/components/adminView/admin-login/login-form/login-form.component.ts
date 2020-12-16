@@ -3,8 +3,10 @@ import { NgForm } from '@angular/forms';
 import {Router, NavigationExtras} from '@angular/router';
 import { User } from '@core/models/user.model';
 import { AuthService } from "../../../../services/auth.service";
-
+import * as admin from 'firebase-admin';
 import * as firebase from 'firebase';
+import { customClaims } from '@angular/fire/auth-guard';
+import { AdminInicioComponent } from '../../admin-inicio/admin-inicio.component';
 
 @Component({
   selector: 'app-login-form',
@@ -40,6 +42,7 @@ export class LoginFormComponent implements OnInit {
 
   goingBack(){
     this.wantRegister.emit(true);
+ 
     //let self = this;
     //self.router.navigate(['']);
   }

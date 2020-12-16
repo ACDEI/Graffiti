@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
 
     var usuario= JSON.parse(window.sessionStorage.getItem("usuario"));
 
-    this.uid = usuario.uid; 
+   this.uid = usuario.uid; 
 
 
   }
@@ -41,7 +41,7 @@ export class HomeComponent implements OnInit {
   }
 */
    signOut(): void {
-     this.uid = null;
+     this.uid = "";
      this.authService.userSelected = null; 
      this.authService.signOutFacebook();
   }

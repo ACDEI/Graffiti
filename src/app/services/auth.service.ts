@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import * as firebase from 'firebase';
-import {Router, NavigationExtras} from '@angular/router';
+import {Router, NavigationExtras, ActivatedRoute} from '@angular/router';
 import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from "@angular/fire/firestore";
 import { Observable } from 'rxjs';
 
 import { User } from '../models/user.model';
 import { UserService } from './classes_services/user.service';
 import { AdminInicioComponent } from '@core/components/adminView/admin-inicio/admin-inicio.component';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 @Injectable({
   providedIn: 'root',
@@ -47,9 +48,10 @@ export class AuthService {
       
           self.userService.createUser(self.userSelected);
         
-          window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
+         window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
 
-          self.router.navigate(['home']);
+         self.router.navigateByUrl('/home');
+    
       
         
 
@@ -170,7 +172,10 @@ loginTwitter(){
     return firebase.auth().signInWithEmailAndPassword(email, pass)
       .then(function(firebaseUser) {  // Success 
         console.log(firebaseUser);
-        self.router.navigate(['admin/home']);
+        self.userSelected = {"uid":firebaseUser.user.uid, "email":firebaseUser.user.email, "fullName":firebaseUser.user.displayName,
+        "nickName": "", "photoURL": "", "isAdmin": true, 
+        "likes": [], "followers": [], "followed": [], "visited": [] };
+         
       }).catch(function(error) { // Error Handling
         var error = error.code;
         var errorMessage = error.message;
