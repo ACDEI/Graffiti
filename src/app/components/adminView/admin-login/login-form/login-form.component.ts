@@ -56,9 +56,7 @@ export class LoginFormComponent implements OnInit {
     
     this.clearErrorMessage();
     if(this.validateForm(this.email, this.password)){
-      this.authService.signIn(this.email, this.password).then(() => {
-        this.router.navigate[('admin/home')];
-      }).catch( _error => {
+      this.authService.signIn(this.email, this.password).then().catch( _error => {
         this.error = _error;
         this.resetForm();
       })

@@ -18,18 +18,15 @@ export class AuthService {
   usuariosObservables: Observable<any[]>;
   userSelected: User = new User();
 
-
   constructor(private router: Router, public firestore: AngularFirestore
-              , public userService: UserService) {}
+              , public userService: UserService) {
+}
 
   //Facebook LogIn
   loginFacebook(){
     var provider = new firebase.auth.FacebookAuthProvider();
     let self = this; 
 
-    var usuario = firebase.auth().currentUser;
-    console.log(usuario);
-    if(usuario == null){
 
         firebase.auth().signInWithPopup(provider).then(function(result){
      
@@ -65,19 +62,6 @@ export class AuthService {
         
         })
 
-    }else{
-
-      self.userSelected = {"uid": usuario.uid, "email":usuario.email, "fullName": usuario.displayName,
-                                "nickName": "", "photoURL": usuario.photoURL, "isAdmin": false, 
-                                "likes":[], "followers": [], "followed":[], "visited":[] };
-      
-      self.userService.createUser(self.userSelected);
-        
-      window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
-
-      self.router.navigate(['home']);
-
-    }
   }
   //Twitter LogIn
 loginTwitter(){
@@ -171,11 +155,12 @@ loginTwitter(){
     let self = this;
     return firebase.auth().signInWithEmailAndPassword(email, pass)
       .then(function(firebaseUser) {  // Success 
-        console.log(firebaseUser);
+        
         self.userSelected = {"uid":firebaseUser.user.uid, "email":firebaseUser.user.email, "fullName":firebaseUser.user.displayName,
         "nickName": "", "photoURL": "", "isAdmin": true, 
         "likes": [], "followers": [], "followed": [], "visited": [] };
-         
+         console.log(self.userSelected);
+         self.router.navigate(["admin/home"]);
       }).catch(function(error) { // Error Handling
         var error = error.code;
         var errorMessage = error.message;

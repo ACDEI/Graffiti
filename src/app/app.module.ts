@@ -50,6 +50,8 @@ import { ThemeGestionComponent } from './components/adminView/theme-gestion/them
 import { TableThemeComponent } from './components/adminView/theme-gestion/table-theme/table-theme.component';
 import { PhotoModalComponent } from './components/adminView/photo-gestion/photo-card/photo-modal/photo-modal.component';
 import { UserModalComponent } from './components/adminView/user-gestion/card-user/user-modal/user-modal.component';
+import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
+import { AdminGuard } from './guard/admin.guard';
 
 
 @NgModule({
@@ -93,7 +95,9 @@ import { UserModalComponent } from './components/adminView/user-gestion/card-use
               AngularFirestore, 
               PublicationsService,
               User,
-              ThemeService],
+              ThemeService,
+              AngularFireAuthGuard, 
+              AdminGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
