@@ -8,6 +8,7 @@ import { User } from '../models/user.model';
 import { UserService } from './classes_services/user.service';
 import { AdminInicioComponent } from '@core/components/adminView/admin-inicio/admin-inicio.component';
 import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -17,6 +18,7 @@ export class AuthService {
   coleccionUsuarios: AngularFirestoreCollection<User>;
   usuariosObservables: Observable<any[]>;
   userSelected: User = new User();
+  
 
   constructor(private router: Router, public firestore: AngularFirestore
               , public userService: UserService) {
@@ -67,9 +69,9 @@ export class AuthService {
 loginTwitter(){
     var provider = new firebase.auth.TwitterAuthProvider();
     let self = this;
-
-    firebase.auth().signInWithRedirect(provider);
-    firebase.auth().getRedirectResult().then(function(result) {
+    
+    return new Promise((resolve, reject) => {
+    firebase.auth().signInWithPopup(provider).then(function(result){
       if (result.credential) {
         // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
         // You can use these server side with your app's credentials to access the Twitter API.
@@ -82,6 +84,8 @@ loginTwitter(){
                             "likes": [], "followers": [], "followed": [], "visited": [] };
   
       self.userService.createUser(self.userSelected);
+      
+      console.log(self.userSelected);
 
       window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
 
@@ -96,6 +100,10 @@ loginTwitter(){
       var email = error.email;  // The email of the user's account used.
       var credential = error.credential;  // The firebase.auth.AuthCredential type that was used.
       console.log(errorMessage);
+    })
+
+    .then( userData =>  resolve(userData),
+      err => reject (err));
     })
   }
 
@@ -113,6 +121,8 @@ loginTwitter(){
       self.userService.createUser(self.userSelected);
 
       console.log(self.userSelected);
+
+      
      
       window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
 
