@@ -16,18 +16,17 @@ export class CardUserComponent implements OnInit {
   constructor(private toastr : ToastrService, private userService: UserService, private publicationService: PublicationsService) { }
 
   ngOnInit(): void {
-
     this.cambiarModal();
   }
 
   deleteUser(uid: string){
-    this.userService.deleteUser(uid);
+    //this.userService.deleteUser(uid);
     this.toastr.success("Usuario Eliminado Correctamente", "", {timeOut: 1000});
   }
 
   cambiarModal(){
-    var opModalButton = document.getElementsByClassName("btn btn-succes ,l-5 opM");
-    var modalView = document.getElementsByClassName("moda fade opM");
+    var opModalButton = document.getElementsByClassName("btn btn-success ml-5 opM");
+    var modalView = document.getElementsByClassName("modal fade opM");
     var c: any = 0;
     let isUnd: boolean = true;
 

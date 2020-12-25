@@ -13,7 +13,7 @@ import { AppComponent } from './app.component';
 
 //firebase
 import { AngularFireModule } from "@angular/fire";
-import { AngularFirestore, AngularFirestoreModule } from "@angular/fire/firestore";
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreModule } from "@angular/fire/firestore";
 import { AngularFireDatabaseModule } from "@angular/fire/database";
 import { environment } from '../environments/environment';
 
@@ -51,6 +51,8 @@ import { TableThemeComponent } from './components/adminView/theme-gestion/table-
 import { PhotoModalComponent } from './components/adminView/photo-gestion/photo-card/photo-modal/photo-modal.component';
 import { UserModalComponent } from './components/adminView/user-gestion/card-user/user-modal/user-modal.component';
 import { ExplModalComponent } from './components/explore/expl-modal/expl-modal.component';
+import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
+import { AdminGuard } from './guard/admin.guard';
 
 
 @NgModule({
@@ -94,7 +96,10 @@ import { ExplModalComponent } from './components/explore/expl-modal/expl-modal.c
               UserService, 
               AngularFirestore, 
               PublicationsService,
-              ThemeService],
+              User,
+              ThemeService,
+              AngularFireAuthGuard, 
+              AdminGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

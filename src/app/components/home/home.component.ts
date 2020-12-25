@@ -15,25 +15,15 @@ export class HomeComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private authService: AuthService, private _data: User ) {
   
-    /*
-    this.route.queryParams.subscribe(params => {
-      console.log(params);
-      this.uid = params.uid; 
-    })
-    */
-
-    //this.uid = window.sessionStorage.getItem("idusuario");
 
     var usuario= JSON.parse(window.sessionStorage.getItem("usuario"));
 
-    this.uid = usuario.uid; 
+   this.uid = usuario.uid; 
 
 
   }
  
   ngOnInit(): void {
-
-    
    /*
     this.route.params.subscribe(params => {
       this.uid = params.uid;
@@ -41,9 +31,19 @@ export class HomeComponent implements OnInit {
  */
   }
 
+  checkToken(){
+    this.authService.checkTokenFacebook();
+  }
+
+/*
+  verifyIdToken(){
+    this.authService.verifyIdToken();
+  }
+*/
    signOut(): void {
-     this.uid = null;
-     this.authService.signOut();
+     this.uid = "";
+     this.authService.userSelected = null; 
+     this.authService.signOutFacebook();
   }
 
 }
