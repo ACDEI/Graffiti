@@ -10,6 +10,7 @@ import { AdminInicioComponent } from '@core/components/adminView/admin-inicio/ad
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 
+
 @Injectable({
   providedIn: 'root',
 })
@@ -66,12 +67,12 @@ export class AuthService {
 
   }
   //Twitter LogIn
-loginTwitter(){
-    var provider = new firebase.auth.TwitterAuthProvider();
+  async loginTwitter(){
+    var provider = await new firebase.auth.TwitterAuthProvider();
     let self = this;
     
     
-    firebase.auth().signInWithPopup(provider).then(function(result){
+    await firebase.auth().signInWithPopup(provider).then(async function(result){
       if (result.credential) {
         // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
         // You can use these server side with your app's credentials to access the Twitter API.
@@ -79,17 +80,17 @@ loginTwitter(){
         // var secret = result.credential.secret;
         // ...
 
-        self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
+      self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
                             "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
                             "likes": [], "followers": [], "followed": [], "visited": [] };
   
-      self.userService.createUser(self.userSelected);
+      await self.userService.createUser(self.userSelected);
       
       console.log(self.userSelected);
 
-      window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
+      await window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
 
-      self.router.navigate(['home']);
+      await self.router.navigate(['home']);
      
       }
       
