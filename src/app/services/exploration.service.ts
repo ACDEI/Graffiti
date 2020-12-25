@@ -2,7 +2,7 @@ import { ComponentFactoryResolver, ComponentRef, Injectable, ReflectiveInjector,
 import { LocationService } from './location.service';
 //import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from "angularfire2/firestore";
 import { MapService } from './map.service';
-import * as firebase from 'firebase/app';
+import { firestore } from 'firebase';
 import * as geofirestore from 'geofirestore';
 import { GeolocateControl, LngLat } from 'mapbox-gl';
 import { getJSON } from 'jquery';
@@ -15,6 +15,35 @@ import mapboxgl from 'mapbox-gl';
 export interface SelectedPub {
   pub: Publication;
   near: boolean;
+}
+
+export interface PublicationJSON {
+  themes: string[]
+  title: string
+  nLikes: number
+  coordinates: Coordinates
+  state: string
+  g: G
+  date: string
+  uid: string
+  pid: string
+  graffiter: string
+  photoURL: string
+}
+
+export interface Coordinates {
+  u_: number
+  h_: number
+}
+
+export interface G {
+  geopoint: Geopoint
+  geohash: string
+}
+
+export interface Geopoint {
+  u_: number
+  h_: number
 }
 
 @Injectable({
@@ -30,7 +59,7 @@ export class ExplorationService {
   private dataSource:BehaviorSubject<SelectedPub> = new BehaviorSubject(undefined);
   data:Observable<SelectedPub> = this.dataSource.asObservable();
 
-  constructor(private map: MapService, private location: LocationService, private firestore: AngularFirestore, private componentFactoryResolver: ComponentFactoryResolver) { 
+  constructor(private map: MapService, private location: LocationService, private firestoreDB: AngularFirestore, private componentFactoryResolver: ComponentFactoryResolver) { 
     //this.colleccionFotos = firestore.collection("fotos");
 
     this.location.getPosition().then(pos => {
@@ -56,10 +85,9 @@ export class ExplorationService {
       getJSON("https://us-central1-graffiti-9b570.cloudfunctions.net/APIRest/near/" + this.position.lat + "&" + this.position.lng + "&" + 10).then( data => {
 
         data.forEach( pc => {
-          this.firestore.doc("publications/"+pc.id).get().toPromise().then( p => {
-            //console.log(p.data())
-            var pub = new Publication(p.data().pid,p.data().uid,p.data().title,p.data().graffiter,p.data().photoURL,p.data().g.geopoint,new Date(),p.data().state, p.data().themes, p.data().nLikes);
-            //var near = pc.distance <= 0.04;
+          this.firestoreDB.doc("publications/"+pc.id).get().toPromise().then( p => {
+            var json:PublicationJSON = <PublicationJSON>p.data();
+            var pub = new Publication(json.pid,json.uid,json.title,json.graffiter,json.photoURL,new firestore.GeoPoint(json.g.geopoint.u_,json.g.geopoint.h_),new Date(),json.state, json.themes, json.nLikes);
             console.log(pc.distance);
             var near = pc.distance <= 0.15;
             //map.showPoint(p.data());
@@ -69,19 +97,6 @@ export class ExplorationService {
 
       });
 
-      this.selPub
-      
-
-      /*
-      this.getNearPoints().subscribe({
-        next(photo) {
-          console.log('Photo: ', photo);
-          photo.forEach(function(p) {
-            map.showPoint(p);
-          });
-        }
-      });
-      */
     })
 
   }

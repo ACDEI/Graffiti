@@ -1,0 +1,76 @@
+p {
+  margin: 0;
+}
+
+@font-face {
+  font-family: exo21;
+  src: url(/assets/fonts/maldini.otf) format("opentype");
+}
+
+@font-face {
+  font-family: exo2;
+  src: url(/assets/fonts/exo2.ttf) format("opentype");
+}
+
+.frame {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: fixed;
+  bottom: 0;
+  padding: 45px 15px;
+  pointer-events: none;
+}
+
+.user-profile {
+  display: flex;
+  align-items: flex-end;
+}
+
+.user-profile img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  border-width: 5px;
+  border-style: solid;
+  border-color: aliceblue;
+}
+
+.name-container {
+  background-color: aliceblue;
+  border-radius: 10px;
+  padding: 10px 10px 10px 50px;
+  position: absolute;
+  left: 50px;
+  z-index: -1;
+  max-width: 50%;
+  max-height: 3.5em;
+  overflow: hidden;
+}
+
+.name-container p {
+  font-family: exo2;
+  color: "#drdrdr";
+  font-size: 1.6em;
+}
+
+.user-stats {
+  background-color: aliceblue;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.user-stats #level {
+  font-family: exo2;
+  color: "#drdrdr";
+  font-size: 1.6em;
+}
+
+.user-stats #progress {
+  font-family: exo2;
+  color: "#drdrdr";
+  font-size: 1em;
+}

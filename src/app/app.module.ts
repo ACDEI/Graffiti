@@ -53,6 +53,7 @@ import { UserModalComponent } from './components/adminView/user-gestion/card-use
 import { ExplModalComponent } from './components/explore/expl-modal/expl-modal.component';
 import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
 import { AdminGuard } from './guard/admin.guard';
+import { StatsComponent } from './components/explore/stats/stats.component';
 
 
 @NgModule({
@@ -80,6 +81,7 @@ import { AdminGuard } from './guard/admin.guard';
     PhotoModalComponent,
     UserModalComponent,
     ExplModalComponent,
+    StatsComponent,
   ],
   imports: [
     BrowserModule,

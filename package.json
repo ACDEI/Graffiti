@@ -33,7 +33,7 @@
     "geofirestore": "^4.4.1",
     "git": "^0.1.5",
     "jquery": "^3.5.1",
-    "mapbox-gl": "^1.12.0",
+    "mapbox-gl": "^1.13.0",
     "ngx-pagination": "^5.0.0",
     "ngx-toastr": "^13.2.0",
     "popper.js": "^1.16.1",

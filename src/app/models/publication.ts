@@ -26,3 +26,4 @@ export class Publication {
         this.nLikes = nLikes;
     }
 }
+
