@@ -70,7 +70,7 @@ loginTwitter(){
     var provider = new firebase.auth.TwitterAuthProvider();
     let self = this;
     
-    return new Promise((resolve, reject) => {
+    
     firebase.auth().signInWithPopup(provider).then(function(result){
       if (result.credential) {
         // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
@@ -102,10 +102,8 @@ loginTwitter(){
       console.log(errorMessage);
     })
 
-    .then( userData =>  resolve(userData),
-      err => reject (err));
-    })
   }
+  
 
   //Google LogIn
   loginGoogle(){
