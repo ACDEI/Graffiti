@@ -50,6 +50,7 @@ import { ThemeGestionComponent } from './components/adminView/theme-gestion/them
 import { TableThemeComponent } from './components/adminView/theme-gestion/table-theme/table-theme.component';
 import { PhotoModalComponent } from './components/adminView/photo-gestion/photo-card/photo-modal/photo-modal.component';
 import { UserModalComponent } from './components/adminView/user-gestion/card-user/user-modal/user-modal.component';
+import { ExplModalComponent } from './components/explore/expl-modal/expl-modal.component';
 
 
 @NgModule({
@@ -76,6 +77,7 @@ import { UserModalComponent } from './components/adminView/user-gestion/card-use
     TableThemeComponent,
     PhotoModalComponent,
     UserModalComponent,
+    ExplModalComponent,
   ],
   imports: [
     BrowserModule,

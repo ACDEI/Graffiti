@@ -4,6 +4,7 @@ import * as mapboxgl from 'mapbox-gl';
 import { LocationService } from '@core/services/location.service';
 import { switchMap } from 'rxjs/operators';
 import { type } from 'os';
+import { Publication } from '@core/models/publication';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,8 @@ export class MapService {
 
   // Coordenadas de la localización donde queremos centrar el mapa
   position: {lng: number, lat:number};
-  pitch = 60;
-  zoom = 16;
+  pitch = 90;
+  zoom = 18;
 
   isOpened = false;
 
@@ -25,7 +26,7 @@ export class MapService {
     this.mapbox.accessToken = environment.mapBoxToken;
   }
 
-  buildMap(lng: number, lat: number) {
+  buildMap(lng: number, lat: number, interact: boolean) {
     //Comprobamos si tenemos datos en la longitud y latitud, sino se pone por defecto las coordenadas del centro de Málaga
     if(lng == undefined && lat == undefined) {
       lng = -4.425750;
@@ -38,7 +39,10 @@ export class MapService {
       style: this.style,
       zoom: this.zoom,
       center: [lng,lat],
-      antialias: true
+      antialias: true,
+      maxZoom: 19,
+      minZoom: 18,
+      dragPan: false
     });
 
   }
@@ -65,20 +69,23 @@ export class MapService {
   // make a marker for each feature and add to the map
   showPoint(photo) {
 
+    var p = new Publication(photo.pid,photo.uid,photo.title,photo.graffiter,photo.photoURL,photo.g.geopoint,new Date(),photo.state, photo.themes, photo.nLikes);
+
       // create the popup
       var popup = new mapboxgl.Popup({ offset: 25 })
       .setHTML(
-        '<h1>' + photo.title + '</h1><img src="' + photo.photoURL + '" width=220 heigth=220></img>'
+        '<app-expl-modal></app-expl-modal>'
       );
 
       var el = document.createElement('div');
       el.className = 'marker';
-      el.setAttribute('style', "background-image: url(" + photo.photoURL + ")");
+      el.addEventListener("click", (event) => {
+        document.createElement("<app-expl-modal></app-expl-modal>")
+      })
 
       new mapboxgl.Marker(el)
         .setLngLat([photo.g.geopoint.h_, photo.g.geopoint.u_])
-        .setPopup(popup)
-        .addTo(this.map);
+        .addTo(this.map)
   }
 
 }

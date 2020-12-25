@@ -14,7 +14,9 @@ export class Publication {
 
     constructor(pid:string,uid: string, title: string,graffiter: string,photoURL: string
         ,coordinates: firestore.GeoPoint,date:Date,state:string,themes:string[],nLikes:Number){
+        this.pid = pid;
         this.uid = uid;
+        this.title = title;
         this.state = state;
         this.date = date;
         this.photoURL = photoURL;
