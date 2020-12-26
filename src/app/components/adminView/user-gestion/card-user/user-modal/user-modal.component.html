@@ -9,16 +9,16 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                            <a class="nav-link active" id="v-pills-info-tab" data-toggle="pill" href="#v-pills-info" role="tab" aria-controls="v-pills-info" aria-selected="true">Información</a>
-                            <a class="nav-link" id="v-pills-publications-tab" data-toggle="pill" href="#v-pills-publications" role="tab" aria-controls="v-pills-publications" aria-selected="false">Publicaciones</a>
-                            <a class="nav-link mb-2" id="v-pills-followers-tab" data-toggle="pill" href="#v-pills-followers" role="tab" aria-controls="v-pills-followers" aria-selected="false">Seguidores</a>
-                            <a class="nav-link mb-2" id="v-pills-followed-tab" data-toggle="pill" href="#v-pills-followed" role="tab" aria-controls="v-pills-followed" aria-selected="false">Seguidos</a>
+                            <a class="pil0 nav-link active" id="v-pills-info-tab" data-toggle="pill" href="#v-pills-info" role="tab" aria-controls="v-pills-info" aria-selected="true">Información</a>
+                            <a class="pil1 nav-link" id="v-pills-publications-tab" data-toggle="pill" href="#v-pills-publications" role="tab" aria-controls="v-pills-publications" aria-selected="false">Publicaciones</a>
+                            <a class="pil2 nav-link mb-2" id="v-pills-followers-tab" data-toggle="pill" href="#v-pills-followers" role="tab" aria-controls="v-pills-followers" aria-selected="false">Seguidores</a>
+                            <a class="pil3 nav-link mb-2" id="v-pills-followed-tab" data-toggle="pill" href="#v-pills-followed" role="tab" aria-controls="v-pills-followed" aria-selected="false">Seguidos</a>
                         </div>
                     </div>
                     <div class="col-lg-9">
                         <div class="tab-content" id="v-pills-tabContent">
 
-                            <div class="tab-pane fade show active" id="v-pills-info" role="tabpanel" aria-labelledby="v-pills-info-tab">
+                            <div class="tab-pane fadeM0 show active" id="v-pills-info" role="tabpanel" aria-labelledby="v-pills-info-tab">
                                 <form>
                                     <div class="form-group">
                                         <label for="inputNombre">Nombre Completo</label>
@@ -41,7 +41,7 @@
                                 </form>
                             </div>
 
-                            <div class="tab-pane fade" id="v-pills-publications" role="tabpanel" aria-labelledby="v-pills-publications-tab">
+                            <div class="tab-pane fadeM1" id="v-pills-publications" role="tabpanel" aria-labelledby="v-pills-publications-tab">
                                 <div *ngFor="let pub of userPublications$" class="media border p-3 gb-white rounder mb-1">
                                     <img src="{{pub.photoURL}}" alt="Publicacion" class="mr-3 mt-3 rounded" width="150px">
                                     <div class="media-body">
@@ -63,7 +63,7 @@
                                 </div>
                             </div>
 
-                            <div class="tab-pane fade" id="v-pills-followers" role="tabpanel" aria-labelledby="v-pills-followers-tab">
+                            <div class="tab-pane fadeM2" id="v-pills-followers" role="tabpanel" aria-labelledby="v-pills-followers-tab">
                                 <div class="media border p-3 bg-white rounded mb-1">
                                     <img src="..." alt="Seguidor" class="mr-3 mt-3 rounded-circle" width="80px">
                                     <div class="media-body">
@@ -73,7 +73,7 @@
                                 </div>
                             </div>
 
-                            <div class="tab-pane fade" id="v-pills-followed" role="tabpanel" aria-labelledby="v-pills-followed-tab">
+                            <div class="tab-pane fadeM3" id="v-pills-followed" role="tabpanel" aria-labelledby="v-pills-followed-tab">
                                 <div class="media border p-3 bg-white rounded mb-1">
                                     <img src="..." alt="Seguido" class="mr-3 mt-3 rounded-circle" width="80px">
                                     <div class="media-body">
