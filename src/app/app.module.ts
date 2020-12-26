@@ -57,6 +57,8 @@ import { AdminGuard } from './guard/admin.guard';
 import { StatsComponent } from './components/explore/stats/stats.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { CardPublicationComponent } from './components/cards/card-publication/card-publication.component';
+import { PublicationViewComponent } from './components/publication-view/publication-view.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 
 @NgModule({
@@ -87,6 +89,8 @@ import { CardPublicationComponent } from './components/cards/card-publication/ca
     StatsComponent,
     NavbarComponent,
     CardPublicationComponent,
+    PublicationViewComponent,
+    UserProfileComponent,
   ],
   imports: [
     BrowserModule,

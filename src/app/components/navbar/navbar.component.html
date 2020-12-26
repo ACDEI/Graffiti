@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" routerLink="../home">
+    <a class="navbar-brand" routerLink="../../home">
         <img src="https://i.imgur.com/MwuTo4e.png" width="130" height="50" alt="" loading="lazy">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-label="Toggle navigation">
@@ -8,11 +8,11 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav ml-3 mr-5">
         <li class="nav-item mr-3">
-          <a class="nav-link" routerLink="../home"><i class="fas fa-images"></i> Galería</a>
+          <a class="nav-link" routerLink="../../home"><i class="fas fa-images"></i> Galería</a>
           
         </li>
         <li class="nav-item mr-3">
-          <a class="nav-link" routerLink="../explore"><i class="fas fa-map-marked-alt"></i> Explorar</a>
+          <a class="nav-link" routerLink="../../explore"><i class="fas fa-map-marked-alt"></i> Explorar</a>
         </li>
       </ul>
         <ul class="navbar-nav ml-md-auto">
@@ -24,7 +24,7 @@
                   Perfil
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                  <a class="dropdown-item" href="#">Ver Perfil</a>
+                  <a class="dropdown-item" [routerLink]="['../user-profile', uid]">Ver Perfil</a>
                   <span class="dropdown-item" (click)="cerrarSesion()">Cerrar Sesión</span>
                 </div>
               </li>

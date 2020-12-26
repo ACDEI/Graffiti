@@ -1,0 +1,78 @@
+<app-navbar></app-navbar>
+<div class="row">
+    <div class="col-lg-8">
+      <div class="mt-5">
+        <img src={{pub.photoURL}} alt="Graffiti Foto" class="img-fluid rounded" width="100%">
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <div class="card-footer mt-5 mx-4 rounded">
+        <div class="card-title">
+          <h3>{{pub.title}}</h3>
+          <p>Publicado por: <strong>{{user.nickName}}</strong></p>
+          <p>Graffitero: <strong>{{pub.graffiter}}</strong></p>
+          <div *ngIf="pub.state == 'Perfect'">
+            <p><span class="badge badge-success">{{pub.state}}</span></p>
+          </div>
+          <div *ngIf="pub.state == 'Legible'">
+            <p><span class="badge badge-warning">{{pub.state}}</span></p>
+          </div>
+          <div *ngIf="pub.state == 'Deteriorated'">
+            <p><span class="badge badge-danger">{{pub.state}}</span></p>
+          </div>
+          <div *ngIf="pub.state == 'Illegible'">
+            <p><span class="badge badge-dark">{{pub.state}}</span></p>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer mt-2 mx-4 rounded">
+        <span *ngFor="let theme of pubThemes" class="badge badge-pill badge-secondary mr-1">{{theme}}</span>
+      </div>
+      <div class="card-footer mt-2 mx-4 rounded">
+        <button class="btn-social"><i class="fas fa-heart"></i></button>
+        <button class="btn-social"><i class="fas fa-share-alt"></i></button>
+        <button class="btn-social"><i class="fas fa-map-marker-alt"></i></button>
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="mt-5 mx-3">
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#makeComment">Comentar</button>
+  </div>
+  <ul class="list-unstyled mt-5 mx-3">
+    <li class="media mb-3 bg-light p-4 rounded">
+      <img src="..." class="mr-3 img-fluid rounded" alt="..." width="6%">
+      <div class="media-body">
+        <h5 class="mt-0 mb-1"><a href="/">Usuario1</a><small class="ml-4 text-muted">dd/mm/yyyy</small></h5>
+        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+      </div>
+    </li>
+  </ul>
+
+  
+  <!--Make Comment-->
+  <div class="modal fade" id="makeComment" tabindex="-1" aria-labelledby="makeCommentLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="makeCommentLabel">Escribir Comentario</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <label for="commentArea">Comentario</label>
+              <textarea class="form-control" id="commentArea" rows="3"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-link" data-dismiss="modal">Cancelar</button>
+          <button class="btn btn-primary">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
