@@ -25,7 +25,17 @@ export class UserService {
   }
 
   createUser(user: User) : any{
-    return this.fs.collection('users').doc(user.uid).set(user);
+
+    return this.fs.collection('users').doc(user.uid).set({
+      email:user.email,
+      fullName:user.fullName,
+      nickName:user.nickName,
+      photoURL:user.photoURL,
+      isAdmin:user.isAdmin,
+      likes:user.likes,
+      followers:user.followers,
+      followed:user.followed
+  });
   }
 
   updateUser(user: User) : Promise<void>{

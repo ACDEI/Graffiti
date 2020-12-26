@@ -113,7 +113,7 @@ export class AuthService {
         console.log(result)
         this.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
                             "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
-                            "likes": [], "followers": [], "followed": [], "visited": [] };
+                            "likes": [], "followers": [], "followed": [], "visited": []};
         this.userService.createUser(this.userSelected);
 
         console.log(this.userSelected);

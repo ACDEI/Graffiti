@@ -16,6 +16,7 @@ export class User {
     constructor(){
 
     }
+
     /*
     //Getters - Setters
     public getUID(){ return this.uid; }
