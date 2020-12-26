@@ -8,6 +8,7 @@ import { User } from '../models/user.model';
 import { UserService } from './classes_services/user.service';
 import { AdminInicioComponent } from '@core/components/adminView/admin-inicio/admin-inicio.component';
 import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,7 @@ export class AuthService {
   userSelected: User = new User();
 
   constructor(private router: Router, public firestore: AngularFirestore
-              , public userService: UserService) {
+              , public userService: UserService, private afAuth: AngularFireAuth) {
 }
 
   //Facebook LogIn
@@ -101,33 +102,29 @@ loginTwitter(){
 
   //Google LogIn
   loginGoogle(){
-    var provider = new firebase.auth.GoogleAuthProvider;
-    let self = this;
-    firebase.auth().signInWithPopup(provider).then(function(result){
-
-
-      self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
+    
+    try{
+      return this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then( result => {
+        console.log(result)
+        this.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
                             "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
                             "likes": [], "followers": [], "followed": [], "visited": [] };
+        this.userService.createUser(this.userSelected);
+
+        console.log(this.userSelected);
+      
+        window.sessionStorage.setItem("usuario",JSON.stringify(this.userSelected));
   
-      self.userService.createUser(self.userSelected);
-
-      console.log(self.userSelected);
-     
-      window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
-
-      self.router.navigate(['home']);
-     
-
-    }).catch(function(error){
-      // Handle Errors here.
+        this.router.navigate(['explore']);
+      });
+    }catch(error){
       var errorCode = error.code;
       var errorMessage = error.message;
       var email = error.email;  // The email of the user's account used.
       var credential = error.credential;  // The firebase.auth.AuthCredential type that was used.
-      console.log(errorMessage);
-     
-    })
+      console.log("Service " + errorMessage);
+    }
+    
   }
   
   //Admin (Email, Pass) 

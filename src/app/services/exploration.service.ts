@@ -81,7 +81,7 @@ export class ExplorationService {
           });
         }
       });
-  
+
       getJSON("https://us-central1-graffiti-9b570.cloudfunctions.net/APIRest/near/" + this.position.lat + "&" + this.position.lng + "&" + 10).then( data => {
 
         data.forEach( pc => {

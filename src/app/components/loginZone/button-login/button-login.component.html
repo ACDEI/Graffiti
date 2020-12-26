@@ -1,12 +1,12 @@
 <ul>
     <li><p style="text-align: center;"><b>¿Quieres entrar? Hazlo con:</b></p></li>
-    <li><button id="facebook" class="btn" (click)="loginFacebook()">
-        <i class="fab fa-facebook-square"></i>
-        Facebook</button></li>
-    <li><a href="" id="twitter" class="btn" (click)="loginTwitter()">
-        <i class="fab fa-twitter-square"></i>
-        Twitter</a></li>
-    <li><a href="" id="google" class="btn" (click)="loginGoogle()">
-        <i class="fab fa-google"></i>
-        Google</a></li>
+    <li>
+        <button id="facebook" (click)="loginFacebook()" class="btn btn-lg btn-facebook"><i class="fab fa-facebook-square"></i> Facebook</button>
+    </li>
+    <li>
+        <button id="twitter" (click)="loginTwitter()" class="btn btn-lg btn-twitter"><i class="fab fa-twitter-square"></i> Twitter</button>
+    </li>
+    <li>
+        <button id="google" (click)="loginGoogle()" class="btn btn-lg btn-google"><i class="fab fa-google"></i> Google</button>
+    </li>
 </ul>
