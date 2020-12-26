@@ -42,7 +42,7 @@ export class TableThemeComponent implements OnInit {
     )
     .subscribe((data) => {
       this.themesList = data;
-      //console.log(this.themesList);
+      console.log(this.themesList);
     });
   }
 

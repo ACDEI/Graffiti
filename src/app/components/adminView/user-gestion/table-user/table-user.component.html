@@ -18,7 +18,7 @@
 
 <!-- Cards-->
 <div class="row">
-  <div class="col-lg-3" *ngFor="let user of userList | filterUserAdmin: fbUID : fbName : fbNick : fbEmail : config.totalItems | paginate: config">
+  <div class="col-lg-3 col-md-3 col-sm-3" *ngFor="let user of userList | filterUserAdmin: fbUID : fbName : fbNick : fbEmail : config.totalItems | paginate: config">
     <app-card-user [userR]='user'></app-card-user>
   </div>
 </div>

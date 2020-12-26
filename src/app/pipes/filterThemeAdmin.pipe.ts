@@ -29,7 +29,7 @@ export class FilterThemeAdminPipe implements PipeTransform{
     includesSearch(arg: any, theme: any) : boolean{
 
         //PID //Title //Grafiter //State
-        if(theme.themeName.toLowerCase().indexOf(arg.toLowerCase()) < 0) {
+        if(theme.name.toLowerCase().indexOf(arg.toLowerCase()) < 0) {
             return false;
         }
 
