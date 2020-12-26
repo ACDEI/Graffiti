@@ -18,6 +18,7 @@ export class AuthService {
   coleccionUsuarios: AngularFirestoreCollection<User>;
   usuariosObservables: Observable<any[]>;
   userSelected: User = new User();
+  
 
   constructor(private router: Router, public firestore: AngularFirestore
               , public userService: UserService, private afAuth: AngularFireAuth) {
@@ -65,12 +66,12 @@ export class AuthService {
 
   }
   //Twitter LogIn
-loginTwitter(){
-    var provider = new firebase.auth.TwitterAuthProvider();
+  async loginTwitter(){
+    var provider = await new firebase.auth.TwitterAuthProvider();
     let self = this;
-
-    firebase.auth().signInWithRedirect(provider);
-    firebase.auth().getRedirectResult().then(function(result) {
+    
+    
+    await firebase.auth().signInWithPopup(provider).then(async function(result){
       if (result.credential) {
         // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
         // You can use these server side with your app's credentials to access the Twitter API.
@@ -78,15 +79,17 @@ loginTwitter(){
         // var secret = result.credential.secret;
         // ...
 
-        self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
+      self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
                             "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
                             "likes": [], "followers": [], "followed": [], "visited": [] };
   
-      self.userService.createUser(self.userSelected);
+      await self.userService.createUser(self.userSelected);
+      
+      console.log(self.userSelected);
 
-      window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
+      await window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
 
-      self.router.navigate(['home']);
+      await self.router.navigate(['home']);
      
       }
       
@@ -98,7 +101,9 @@ loginTwitter(){
       var credential = error.credential;  // The firebase.auth.AuthCredential type that was used.
       console.log(errorMessage);
     })
+
   }
+  
 
   //Google LogIn
   loginGoogle(){
