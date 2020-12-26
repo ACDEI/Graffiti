@@ -41,6 +41,17 @@ export class PhotoModalComponent implements OnInit {
       this.themesList = data;
       //console.log(this.themesList);
     });
-    
+  }
+  //Método del Padre
+  selectThemes(){
+    //Initialize Selected
+    var sel = document.getElementById("sT_"+this.pubR.pid);
+    var options = sel.getElementsByTagName('option');
+
+    for(var i = 0; i < options.length; i++){
+      if(this.pubR.themes.includes(options[i].getAttribute('value'))) {
+        options[i].setAttribute("selected", 'true');
+      }
+    }
   }
 }
