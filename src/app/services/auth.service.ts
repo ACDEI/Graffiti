@@ -120,7 +120,7 @@ export class AuthService {
       
         window.sessionStorage.setItem("usuario",JSON.stringify(this.userSelected));
   
-        this.router.navigate(['explore']);
+        this.router.navigate(['./home']);
       });
     }catch(error){
       var errorCode = error.code;
@@ -174,7 +174,7 @@ signOut(){
 
   let self = this;
   firebase.auth().signOut().then(function() { // Sign-out successful. 
-    self.router.navigate(['admin']);
+    self.router.navigate(['']);
   }).catch(function(error) { // An error happened.
     
   });

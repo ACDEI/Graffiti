@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import { AuthService } from '@core/services/auth.service';
-import {User} from '../../models/user.model';
-import * as firebase from 'firebase';
+import { PublicationsService } from '@core/services/classes_services/publications.service';
+import { ThemeService } from '@core/services/classes_services/theme.service';
+import { AngularFirestoreCollection } from '@angular/fire/firestore';
+import { Publication } from '@core/models/publication';
+import { Theme } from '../../models/theme.model';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-home',
@@ -11,39 +13,74 @@ import * as firebase from 'firebase';
 })
 export class HomeComponent implements OnInit {
 
-  uid:string; 
+  publicationsList: any[];
+  themesList: any[];
 
-  constructor(private route: ActivatedRoute, private authService: AuthService, private _data: User ) {
-  
+  //Form
+  graffiter: string;
+  theme: string;
+  status: string;
 
-    var usuario= JSON.parse(window.sessionStorage.getItem("usuario"));
+  uid:string;
+  isFilter: boolean; 
 
-   this.uid = usuario.uid; 
-
-
-  }
+  constructor(private pubService: PublicationsService, private themeService: ThemeService) { }
  
   ngOnInit(): void {
-   /*
-    this.route.params.subscribe(params => {
-      this.uid = params.uid;
-    })
- */
+    this.isFilter = false;
+    this.resetear();
+
+    this.themeService.getAllThemes()
+    .snapshotChanges()
+    .pipe(
+      map((changes) =>
+        changes.map((c) => ({
+          id: c.payload.doc.id,
+          ...c.payload.doc.data(),
+        }))
+      )
+    )
+    .subscribe((data) => {
+      this.themesList = data;
+      console.log(this.themesList);
+    });
   }
 
-  checkToken(){
-    this.authService.checkTokenFacebook();
+  getByStatus(){
+    
   }
 
-/*
-  verifyIdToken(){
-    this.authService.verifyIdToken();
+  getByTheme(){
+    this.pubService.getPublicationsByTheme(this.theme).subscribe(value => {
+      this.publicationsList = value;
+      this.isFilter = true;
+    });
   }
-*/
-   signOut(): void {
-     this.uid = "";
-     this.authService.userSelected = null; 
-     this.authService.signOutFacebook();
+
+  getByGraffiter(){
+    this.pubService.getPublicationsByGraffiterName(this.graffiter).subscribe(value => {
+      this.publicationsList = value;
+      this.isFilter = true;
+    });
+  }
+
+  resetear(){
+    this.pubService.getAllPublications()
+    .snapshotChanges()
+    .pipe(
+      map((changes) =>
+        changes.map((c) => ({
+          id: c.payload.doc.id,
+          ...c.payload.doc.data(),
+        }))
+      )
+    )
+    .subscribe((data) => {
+      this.publicationsList = data;
+      this.isFilter = false
+      this.graffiter = "";
+      console.log(this.publicationsList);
+    });
   }
 
 }
