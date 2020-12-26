@@ -31,6 +31,7 @@ import { AuthService } from './services/auth.service';
 import { UserService } from './services/classes_services/user.service';
 import { PublicationsService } from './services/classes_services/publications.service';
 import { ThemeService } from './services/classes_services/theme.service';
+import { HttpClientModule } from '@angular/common/http';
 
 //Componentes
 import { InicioComponent } from './components/loginZone/inicio/inicio.component';
@@ -54,6 +55,8 @@ import { ExplModalComponent } from './components/explore/expl-modal/expl-modal.c
 import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
 import { AdminGuard } from './guard/admin.guard';
 import { StatsComponent } from './components/explore/stats/stats.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { CardPublicationComponent } from './components/cards/card-publication/card-publication.component';
 
 
 @NgModule({
@@ -82,6 +85,8 @@ import { StatsComponent } from './components/explore/stats/stats.component';
     UserModalComponent,
     ExplModalComponent,
     StatsComponent,
+    NavbarComponent,
+    CardPublicationComponent,
   ],
   imports: [
     BrowserModule,
@@ -93,6 +98,7 @@ import { StatsComponent } from './components/explore/stats/stats.component';
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     NgxPaginationModule,
+    HttpClientModule,
   ],
   providers: [AuthService, 
               UserService, 

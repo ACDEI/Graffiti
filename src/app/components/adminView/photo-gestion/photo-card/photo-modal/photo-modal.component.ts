@@ -26,7 +26,7 @@ export class PhotoModalComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.user$ = this.userService.getUser(this.pubR.uid);   //No Funciona
+    this.user$ = this.userService.getUser(this.pubR.uid);
     this.themeService.getAllThemes()
     .snapshotChanges()
     .pipe(
