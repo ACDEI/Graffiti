@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from '@angular/fire/firestore';
 import { Publication } from '@core/models/publication';
 import { Observable } from 'rxjs';
 
@@ -36,8 +36,8 @@ export class PublicationsService {
     return this.publicationCollection.doc(pid).delete();
   }
 
-  getUserPublications(uid: string) {
-    return this.fs.collection('publications', ref => ref.where('uid', '==', uid)).valueChanges();
+  getUserPublications(uid: string): Observable<AngularFirestoreDocument<Publication>[]> {
+    return this.fs.collection<AngularFirestoreDocument<Publication>>('publications', ref => ref.where('uid', '==', uid)).valueChanges();
   }
 
 }

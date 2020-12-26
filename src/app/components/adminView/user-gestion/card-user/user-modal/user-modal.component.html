@@ -19,26 +19,35 @@
                         <div class="tab-content" id="v-pills-tabContent">
 
                             <div class="tab-pane fadeM0 show active" id="v-pills-info" role="tabpanel" aria-labelledby="v-pills-info-tab">
-                                <form>
-                                    <div class="form-group">
-                                        <label for="inputNombre">Nombre Completo</label>
-                                        <input type="text" value="{{userR.fullName}}" class="form-control" id="inputNombre" placeholder="{{userR.fullName}}">
-                                    </div>
-                                    <div class="row">
-                                        <div class="form-group" style="margin-right: 10%;">
-                                            <label for="inputEmail">Email</label>
-                                            <input type="text" style="padding-right: 100px;" class="form-control" id="inputEmail" value="{{userR.email}}" placeholder="Email">
-                                        </div>
+                                <div class="row">
+                        
+                                    <div class="col-lg-6">
                                         <div class="form-group">
-                                            <label for="inputNickName">NickName</label>
-                                            <input type="text" style="float: right;" class="form-control" id="inputNickName" value="{{userR.nickName}}">
+                                            <h5>ID Usuario</h5>
+                                            <span class="form-control">{{userR.uid}}</span>
                                         </div>
                                     </div>
-                                
-                                    <button type="submit" class="btn btn-success btn-block">
-                                        Guardar Cambios
-                                    </button>
-                                </form>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h5>Nombre Completo</h5>
+                                            <span class="form-control">{{userR.fullName}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">  
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h5>Email</h5>
+                                            <span class="form-control">{{userR.email}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="form-group">
+                                            <h5>Nickname</h5>
+                                            <span class="form-control">{{userR.nickName}}</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="tab-pane fadeM1" id="v-pills-publications" role="tabpanel" aria-labelledby="v-pills-publications-tab">
