@@ -9,57 +9,81 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                            <a class="nav-link active" id="v-pills-info-tab" data-toggle="pill" href="#v-pills-info" role="tab" aria-controls="v-pills-info" aria-selected="true">Información</a>
-                            <a class="nav-link" id="v-pills-comments-tab" data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false">Comentarios</a>
-                            <a class="nav-link mb-2" id="v-pills-likes-tab" data-toggle="pill" href="#v-pills-likes" role="tab" aria-controls="v-pills-likes" aria-selected="false">Likes</a>
+                            <a class="pil0 nav-link active" id="v-pills-info-tab" data-toggle="pill" href="#v-pills-info" role="tab" aria-controls="v-pills-info" aria-selected="true">Información</a>
+                            <a class="pil1 nav-link" id="v-pills-comments-tab" data-toggle="pill" href="#v-pills-comments" role="tab" aria-controls="v-pills-comments" aria-selected="false">Comentarios</a>
+                            <a class="pil2 nav-link mb-2" id="v-pills-likes-tab" data-toggle="pill" href="#v-pills-likes" role="tab" aria-controls="v-pills-likes" aria-selected="false">Likes</a>
                         </div>
                     </div>
                     <div class="col-lg-9">
                         <div class="tab-content" id="v-pills-tabContent">
 
-                            <div class="tab-pane fade show active" id="v-pills-info" role="tabpanel" aria-labelledby="v-pills-info-tab">
+                            <div class="tab-pane fadeM0 show active" id="v-pills-info" role="tabpanel" aria-labelledby="v-pills-info-tab">
+                                
                                 <form>
+                                    
                                     <div class="form-group">
-                                        <label for="titulo">Título</label>
-                                        <input type="text" value="{{pubR.title}}" class="form-control" id="inputTitulo" placeholder="{{pubR.title}}">
+                                        <label for="inputTitulo">Título</label>
+                                        <input type="text" [(ngModel)]="title" name="title" value="{{pubR.title}}" class="form-control" id="inputTitulo" placeholder="{{pubR.title}}">
                                     </div>
+
                                     <div class="row">
                                         <div class="form-group" style="margin-right: 10%;">
                                             <label for="grafitero">Graffitero / Autor</label>
-                                            <input type="text" style="padding-right: 100px;" class="form-control" id="inputGrafitero" value="{{pubR.graffiter}}" placeholder="Grafitero">
+                                            <input type="text" disabled style="padding-right: 100px;" class="form-control" id="inputGrafitero" value="{{pubR.graffiter}}" placeholder="Grafitero">
                                         </div>
                                         <div *ngIf="user$ | async as user" class="form-group">
                                             <label for="uploader">Subida Por (Nick):</label>
                                             <input type="text" style="float: right;" class="form-control" id="inputGrafitero" disabled value="{{user.nickName}}">
                                         </div>
                                     </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-6" style="padding: 0;">
+                                            <div class="form-group">
+                                                <label for="selectEstado">Estado de Conservación</label>
+                                                <select (change)="onChange($event.target.value)" class="form-control" id="selectEstado" value="{{pubR.state}}">
+                                                    <option value="Perfect">Perfect</option>
+                                                    <option value="Legible">Legible</option>
+                                                    <option value="Deteriorated">Deteriorated</option>
+                                                    <option value="Illegible">Illegible</option>
+                                                </select>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-lg" style="padding: 0 !important;">
+                                                    <div class="form-group">
+                                                        <label for="inputLatitude">Latitud</label>
+                                                        <input disabled class="form-control mr-1" id="inputLatitude" value="{{(pubR.coordinates.latitude).toFixed(9)}}">
+                                                    </div>
+                                                </div>
+                                                <div class="col-lg" style="padding: 0 !important;">
+                                                    <div class="form-group">
+                                                        <label for="inputLongitude">Longitud</label>
+                                                        <input disabled class="form-control ml-1" id="inputLongitude" value="{{(pubR.coordinates.longitude).toFixed(9)}}">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="form-group">
+                                                <label for="selectTema">Temas</label>
+                                                <select (change)="onChangeTheme($event.target.value)" multiple class="form-control" id="sT_{{pubR.pid}}">
+                                                    <option value="{{t.name}}" *ngFor="let t of themesList">{{t.name}}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                     
-                                    <div class="form-group">
-                                        <label for="selectEstado">Estado de Conservación</label>
-                                        <select class="form-control" id="selectEstadoConservacion">
-                                            <option>Buen Estado</option>
-                                            <option>Legible</option>
-                                            <option>Deterioro Grave</option>
-                                            <option>Ilegible</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="selectTema">Temas</label>
-                                        <select multiple class="form-control" id="selectMultipleTemas">
-                                            <option *ngFor="let t of themesList">{{t.themeName}}</option>
-                                        </select>
-                                    </div>
-                                    <button type="submit" class="btn btn-success btn-block">
+                                    <button class="btn btn-success btn-block" data-dismiss='modal' (click)="updatePublication()">
                                         Guardar Cambios
                                     </button>
                                 </form>
                             </div>
 
-                            <div class="tab-pane fade" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-comments-tab">
+                            <div class="tab-pane fadeM1" id="v-pills-comments" role="tabpanel" aria-labelledby="v-pills-comments-tab">
 
                             </div>
 
-                            <div class="tab-pane fade" id="v-pills-likes" role="tabpanel" aria-labelledby="v-pills-likes-tab">
+                            <div class="tab-pane fadeM2" id="v-pills-likes" role="tabpanel" aria-labelledby="v-pills-likes-tab">
                             </div>
                         </div>
                     </div>
@@ -75,7 +99,7 @@
 </div>
 
 <!-- Modal de Confirmación de Eliminación -->
-<div class="modal fade" id="confirmationModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+<div class="modal fade confM" id="confirmationModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-danger text-light">

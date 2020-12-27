@@ -15,6 +15,8 @@ import { PhotoGestionComponent } from './components/adminView/photo-gestion/phot
 import { ThemeGestionComponent } from './components/adminView/theme-gestion/theme-gestion.component';
 import {AngularFireAuthGuard, hasCustomClaim, redirectUnauthorizedTo, redirectLoggedInTo} from '@angular/fire/auth-guard';
 import {AdminGuard} from './guard/admin.guard';
+import { PublicationViewComponent } from './components/publication-view/publication-view.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
 
 const adminOnly = () => hasCustomClaim('admin');
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo([""]);
@@ -24,6 +26,8 @@ const routes: Routes = [
   {path:"" , component: InicioComponent},
   {path: "explore", component: ExploreComponent},
   {path: "home", component: HomeComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }},
+  {path: "publication-view/:pid", component: PublicationViewComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }},
+  {path: "user-profile/:uid", component: UserProfileComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }},
   {path: "admin", component: AdminLoginComponent},
   {path: "admin/home", component: AdminInicioComponent, canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }},
   {path: "admin/user_gest", component: UserGestionComponent, canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }},

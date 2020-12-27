@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Theme } from '../../models/theme.model';
 import { Observable } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
@@ -8,11 +9,13 @@ import { PublicationsService } from '@core/services/classes_services/publication
   providedIn: 'root'
 })
 export class ThemeService {
+  
   themeCollection: AngularFirestoreCollection<Theme>;
 
+  private themesUrl = 'https://us-central1-graffiti-9b570.cloudfunctions.net/APIRest/themes';  // URL to web api
   private path="themes";
 
-  constructor(private fs: AngularFirestore, private publicationService: PublicationsService) { 
+  constructor(private http: HttpClient, private fs: AngularFirestore, private publicationService: PublicationsService) { 
     this.themeCollection = fs.collection(this.path);
   }
 
@@ -48,4 +51,10 @@ export class ThemeService {
 
     return arrayPublications$;
   }*/
+
+  //CLOUD FUNCTIONS
+  getThemes(): Observable<any[]>{
+    return this.http.get<any[]>(this.themesUrl);
+  }
+
 }

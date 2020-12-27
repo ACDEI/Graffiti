@@ -20,7 +20,7 @@ export class UserModalComponent implements OnInit {
   constructor(private publicationService: PublicationsService, private userService: UserService) { }
 
   ngOnInit(): void {
-    this.userPublications$ = this.publicationService.getUserPublications(this.userR.uid);
+    //this.userPublications$ = this.publicationService.getUserPublications(this.userR.uid);
   }
 
 }

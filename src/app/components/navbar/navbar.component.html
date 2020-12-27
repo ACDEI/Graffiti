@@ -1,0 +1,90 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" routerLink="../../home">
+        <img src="https://i.imgur.com/MwuTo4e.png" width="130" height="50" alt="" loading="lazy">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav ml-3 mr-5">
+        <li class="nav-item mr-3">
+          <a class="nav-link" routerLink="../../home"><i class="fas fa-images"></i> Galería</a>
+          
+        </li>
+        <li class="nav-item mr-3">
+          <a class="nav-link" routerLink="../../explore"><i class="fas fa-map-marked-alt"></i> Explorar</a>
+        </li>
+      </ul>
+        <ul class="navbar-nav ml-md-auto">
+            <li class="nav-item mr-5">
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-arrow-circle-up"></i> Subir Graffiti</a>
+            </li>
+            <li class="nav-item dropdown mr-5">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Perfil
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" [routerLink]="['../user-profile', uid]">Ver Perfil</a>
+                  <span class="dropdown-item" (click)="cerrarSesion()">Cerrar Sesión</span>
+                </div>
+              </li>
+        </ul>
+    </div>
+</nav>
+
+<!--Upload Modal-->
+<div class="modal fade" id="uploadModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="uploadModalLabel">Subir Graffiti</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          
+          <form>
+
+            <div class="form-group">
+              <label for="graffitiTitle"><strong>Título</strong></label>
+              <input type="text" class="form-control" id="inputGraffiterTitle">
+            </div>
+            <div class="form-group">
+              <label for="graffiterName"><strong>Graffitero</strong></label>
+              <input type="text" class="form-control" id="inputGraffiterName">
+            </div>
+            <div class="form-group">
+              <label for="themeSelector"><strong>Tema</strong></label>
+              <select multiple class="form-control" id="selectTheme">
+                <option>Urban</option>
+                <option>Nature</option>
+                <option>Stylish</option>
+                <option>People</option>
+                <option>Protest</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="statusSelector"><strong>Estado</strong></label>
+              <select class="form-control" id="selectStatus">
+                <option>Perfect</option>
+                <option>Legible</option>
+                <option>Deteriorated</option>
+                <option>Illegible</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="selectPhoto"><strong>Seleccionar Foto</strong></label>
+              <input type="file" class="form-control-file" id="selectFile">
+            </div>
+
+          </form>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary">Subir</button>
+        </div>
+      </div>
+    </div>
+  </div>

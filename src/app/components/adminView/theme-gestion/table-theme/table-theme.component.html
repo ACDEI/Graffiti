@@ -1,38 +1,58 @@
 <!-- Tabla de Datos -->
   
 <p style="width: 25%;">Theme Lists</p>
-<div class="row">
-    <p id="title">Filter By Name: </p>
-    <form id="filters" style="width: 25%;" class="input-group mb-3 mt-2">
-        <input type="text" name="fbName" [(ngModel)]="fbName" class="form-control mr-2" placeholder="Name"/>
-    </form>
-    <p id="title">Introduce New Theme: </p>
-    <form id="filters" style="width: 25%;" class="input-group mb-3 mt-2">
-        <input type="text" name="fbNew" [(ngModel)]="fbNew" class="form-control mr-2" placeholder="New Category"/>
-    </form>
-    <button id="bAdd" class="btn btn-info" (click)="addTheme()"><i class="fas fa-plus-circle"></i></button>
-</div>
-<table id="table" class="table table-hover table-striped mt-3">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">Theme's Name</th>
-        <!--<th scope="col">Publications Number</th>-->
-        <th scope="col"></th>
-      </tr>
-    </thead>
 
-    <tbody *ngFor="let theme of themesList | filterThemeAdmin: fbName | paginate: config">
-      <tr>
-        <td>{{theme.name}}</td>
-        <!--<td>{{theme.publications.length}}</td>-->
-        <td>
-          <button id="delete" class="btn btn-danger" (click)="deleteTheme(theme.tid)">
-            <i class="fas fa-trash-alt"></i>
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="row" id="pags">
-    <pagination-controls class="pagination" (pageChange)="pageChanged($event)"></pagination-controls>
+
+<div class="row">
+  <div class="col">
+    <table id="table" class="table table-hover table-striped mt-3">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Theme's Name</th>
+          <!--<th scope="col">Publications Number</th>-->
+          <th scope="col"></th>
+        </tr>
+      </thead>
+  
+      <tbody *ngFor="let theme of themesList | filterThemeAdmin: fbName | paginate: config">
+        <tr>
+          <td>{{theme.name}}</td>
+          <!--<td>{{theme.publications.length}}</td>-->
+          <td>
+            <button id="delete" class="btn btn-danger" (click)="deleteTheme(theme.tid)">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="row" id="pags">
+      <pagination-controls class="pagination" (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
   </div>
+
+  <div class="col">
+      
+    <div class="row">
+      <p style="width: 25%;" id="title">Filter By Name: </p>
+    </div>
+    <div class="row justify-content-center">
+      <form id="filters" style="width: 75%;" class="input-group mb-3 mt-2">
+          <input type="text" name="fbName" [(ngModel)]="fbName" class="form-control mr-2" placeholder="Name"/>
+      </form>
+    </div>
+    <div class="row">
+      <p style="width: 35%;" id="title">Introduce New Theme: </p>
+    </div>
+    <div class="row center">
+      <div class="col">
+        <form id="filters" class="input-group mb-3" style="margin-left: 23%;">
+          <input type="text" name="fbNew" [(ngModel)]="fbNew" class="form-control mr-2" placeholder="New Category"/>
+        </form>
+      </div>
+      <div class="col">
+        <button id="bAdd" style="margin-left: 15%;" class="btn btn-info" (click)="addTheme()"><i class="fas fa-plus-circle"></i></button>
+      </div>
+    </div>
+  </div>
+</div>

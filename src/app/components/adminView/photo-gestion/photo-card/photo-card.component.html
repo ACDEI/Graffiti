@@ -6,26 +6,26 @@
     <ul class="list-group list-group-flush text-center">
         <li class="list-group-item">{{pubR.graffiter}}</li>
         <li class="list-group-item">
-            <div *ngIf="pubR.state == 'Buen Estado'">
-               <span class="badge badge-success">Buen Estado</span> 
+            <div *ngIf="pubR.state == 'Perfect'">
+               <span class="badge badge-success">Perfect</span> 
             </div>
             <div *ngIf="pubR.state == 'Legible'">
                 <span class="badge badge-warning">Legible</span> 
             </div>
-            <div *ngIf="pubR.state == 'Deteriorado'">
-                <span class="badge badge-danger">Deteriorado</span> 
+            <div *ngIf="pubR.state == 'Deteriorated'">
+                <span class="badge badge-danger">Deteriorated</span> 
             </div>
-            <div *ngIf="pubR.state == 'Ilegible'">
-                <span class="badge badge-dark">Ilegible</span> 
+            <div *ngIf="pubR.state == 'Illegible'">
+                <span class="badge badge-dark">Illegible</span> 
             </div>      
         </li>
         <li class="list-group-item">
-        <span class="badge badge-pill badge-secondary mr-1 text-light">Tematica</span>
+            <span *ngFor="let st of selectedThemes" class="badge badge-pill badge-secondary mr-1 text-light">{{st}}</span>
         </li>
     </ul>
     <div class="card-body text-center">
         <button type="button" (click)="deletePublication(pubR.pid)" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
-        <button type="button" class="btn btn-success ml-5 opM" data-toggle="modal"><i class="fas fa-pen"></i></button>
+        <button type="button" (click)="openModal()" class="btn btn-success ml-5 opM" data-toggle="modal"><i class="fas fa-pen"></i></button>
     </div>
     <app-photo-modal [pubR]='pubR'></app-photo-modal>
 </div>
