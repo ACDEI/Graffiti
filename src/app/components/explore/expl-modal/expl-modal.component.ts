@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/firestore';
+import * as firebase from 'firebase';
 import { Publication } from '@core/models/publication';
+import { UserI } from '@core/models/user.model';
 import { ExplorationService, SelectedPub } from '@core/services/exploration.service';
 import { Observable } from 'rxjs';
+import { GameService } from '@core/services/game.service';
 
 @Component({
   selector: 'app-expl-modal',
@@ -15,7 +19,7 @@ export class ExplModalComponent implements OnInit {
   selected: boolean;
   near: boolean;
 
-  constructor(private service: ExplorationService) { 
+  constructor(private service: ExplorationService, private gameService: GameService, private firestore: AngularFirestore) { 
     this.publication = undefined;
     this.selected = false;
     this.near = false;
@@ -25,6 +29,8 @@ export class ExplModalComponent implements OnInit {
   addVisitadas() {
     if(this.near) {
       this.selected = false;
+
+      this.gameService.addVisitados(this.publication);
     }
   }
 

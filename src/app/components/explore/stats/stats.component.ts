@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '@core/services/auth.service';
+import { GameService } from '@core/services/game.service';
 import { auth } from 'firebase';
 
 @Component({
@@ -13,25 +14,18 @@ export class StatsComponent implements OnInit {
   level: number;
   progress: number[];
 
-  constructor(private auth: AuthService) {
-
-
-
-    console.log(auth.userSelected.fullName)
-    this.name = auth.userSelected.fullName
-    this.photo = auth.userSelected.photoURL
-    this.level = 30
-    this.progress = [15,1000]
-  }
+  constructor(private gameService: GameService) { }
 
   ngOnInit(): void {
     var usuario= JSON.parse(window.sessionStorage.getItem("usuario"));
 
-    console.log(usuario.fullName)
-    this.name = usuario.fullName
-    this.photo = usuario.photoURL
-    this.level = 30
-    this.progress = [15,1000]
+    this.name = usuario.fullName;
+    this.photo = usuario.photoURL;
+
+    this.gameService.level.subscribe( a => {
+      this.level = a[0];
+      this.progress = [a[1],a[2]];
+    })
   }
 
 }

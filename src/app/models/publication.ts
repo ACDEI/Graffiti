@@ -1,5 +1,18 @@
 import { firestore } from 'firebase';
 
+export interface PublicationI {
+    pid:string;
+    uid:string;
+    title:string;
+    graffiter:string;
+    photoURL:string;
+    coordinates: firestore.GeoPoint;
+    date:Date;
+    state:string;
+    themes: string[];
+    nLikes:Number;
+}
+
 export class Publication {
     pid:string;
     uid:string;

@@ -9,8 +9,9 @@ import { getJSON } from 'jquery';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { deflate } from 'zlib';
-import { Publication } from '@core/models/publication';
+import { Publication, PublicationI } from '@core/models/publication';
 import mapboxgl from 'mapbox-gl';
+import { GameService } from './game.service';
 
 export interface SelectedPub {
   pub: Publication;
@@ -56,10 +57,12 @@ export class ExplorationService {
 
   selPub: SelectedPub = undefined;
 
+  markerDictionary:Map<string, mapboxgl.Marker> = new Map<string, mapboxgl.Marker>();
+
   private dataSource:BehaviorSubject<SelectedPub> = new BehaviorSubject(undefined);
   data:Observable<SelectedPub> = this.dataSource.asObservable();
 
-  constructor(private map: MapService, private location: LocationService, private firestoreDB: AngularFirestore, private componentFactoryResolver: ComponentFactoryResolver) { 
+  constructor(private map: MapService, private location: LocationService, private gameService: GameService, private firestoreDB: AngularFirestore, private componentFactoryResolver: ComponentFactoryResolver) { 
     //this.colleccionFotos = firestore.collection("fotos");
 
     this.location.getPosition().then(pos => {
@@ -99,6 +102,13 @@ export class ExplorationService {
 
     })
 
+    gameService.data.subscribe( publication => {
+      if(publication != undefined){
+        this.visitMarker(publication);
+      }
+      
+    })
+
   }
 
   near(pos: {lng: number, lat: number}, lng: number, lat: number):boolean {
@@ -108,18 +118,29 @@ export class ExplorationService {
   }
 
   showMarker(m: mapboxgl.Map, pub: Publication, near: boolean) {
-
     var el = document.createElement('div');
-    el.className = 'marker';
-    el.style.backgroundImage = "url(" + pub.photoURL + ")";
+    var img = document.createElement('img');
+    el.appendChild(img);
+
+    el.className = 'markerNoVisited';
+    img.src = pub.photoURL;
     el.addEventListener("click", (event) => {
       this.showModal(pub, near);
     })
 
-    new mapboxgl.Marker(el)
+    this.markerDictionary.set(pub.pid, new mapboxgl.Marker(el)
       .setLngLat([pub.coordinates.longitude, pub.coordinates.latitude])
-      .addTo(m)
+      .addTo(m));
+  }
 
+  visitMarker(pub: PublicationI){
+    var el = this.markerDictionary.get(pub.pid).getElement();
+
+    if(el.classList.contains('markerNoVisited')){
+      el.classList.remove('markerNoVisited')
+      el.classList.add('markerVisited');
+    }
+    
   }
 
   showModal(pub: Publication, near: boolean) {
@@ -140,7 +161,5 @@ export class ExplorationService {
       .setLngLat([this.position.lng, this.position.lat])
       .addTo(m);
   }
-
-
 
 }

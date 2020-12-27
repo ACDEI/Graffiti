@@ -4,7 +4,7 @@ import {Router, NavigationExtras, ActivatedRoute} from '@angular/router';
 import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from "@angular/fire/firestore";
 import { Observable } from 'rxjs';
 
-import { User } from '../models/user.model';
+import { User, UserI } from '../models/user.model';
 import { UserService } from './classes_services/user.service';
 import { AdminInicioComponent } from '@core/components/adminView/admin-inicio/admin-inicio.component';
 import { AngularFireDatabase } from '@angular/fire/database';
@@ -114,13 +114,17 @@ export class AuthService {
         this.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
                             "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
                             "likes": [], "followers": [], "followed": [], "visited": []};
-        this.userService.createUser(this.userSelected);
 
-        console.log(this.userSelected);
-      
-        window.sessionStorage.setItem("usuario",JSON.stringify(this.userSelected));
-  
-        this.router.navigate(['explore']);
+        
+
+        this.userService.loginUser(result.user).then( user => {
+          console.log("LOGIN_USER:", user)
+
+          window.sessionStorage.setItem("usuario",JSON.stringify(user));
+
+          this.router.navigate(['explore']);
+        })
+
       });
     }catch(error){
       var errorCode = error.code;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
-import { User } from '@core/models/user.model';
+import { User, UserI } from '@core/models/user.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -22,6 +22,45 @@ export class UserService {
 
   getUser(uid: string): Observable<User>{
     return this.fs.doc<User>(`users/${uid}`).valueChanges();
+  }
+
+  async loginUser(user: firebase.User): Promise<UserI> {
+    var res: UserI;
+
+    await this.fs.doc('users/' + user.uid).get().toPromise().then( u => {
+      if(u.exists){
+        res = {
+          uid: u.get("uid"),
+          email: u.get("email"),
+          fullName: u.get("fullName"),
+          nickName: u.get("nickName"),
+          photoURL: u.get("photoURL"),
+          isAdmin: u.get("isAdmin"),
+          likes: u.get("likes"),
+          followers: u.get("followers"),
+          followed: u.get("followed"),
+          nVisitados: u.get("nVisitados")
+        }
+      }else{
+        res = {
+          uid: user.uid,
+          email: user.email,
+          fullName: "",
+          nickName: user.displayName,
+          photoURL: user.photoURL,
+          isAdmin: false,
+          likes: [],
+          followers: [],
+          followed: [],
+          nVisitados: 0
+        }
+        this.fs.doc('users/' + user.uid).set(res)
+      }
+    })
+
+    return new Promise<UserI>( (resolve,reject) => {
+      resolve(res);
+    })
   }
 
   createUser(user: User) : any{

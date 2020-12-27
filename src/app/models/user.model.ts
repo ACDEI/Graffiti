@@ -1,5 +1,18 @@
 import { Place } from './place.model';
 
+export interface UserI {
+    uid: string;
+    email: string;
+    fullName: string;
+    nickName: string;
+    photoURL: string;
+    isAdmin: boolean;
+	likes: string[];
+    followers: string[];
+    followed: string[];
+    nVisitados: number;
+}
+
 export class User {
     
     uid: string;
