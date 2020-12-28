@@ -34,7 +34,11 @@ export class PhotoModalComponent implements OnInit {
     this.title = this.pubR.title;
     this.state = this.pubR.state;
     
-    this.user$ = this.userService.getUser(this.pubR.uid);   //No Funciona
+    this.user$ = this.userService.getUser(this.pubR.uid);
+    this.obtenerTematicas();
+  }
+
+  obtenerTematicas(){
     this.themeService.getAllThemes()
     .snapshotChanges()
     .pipe(
@@ -51,7 +55,7 @@ export class PhotoModalComponent implements OnInit {
     });
   }
 
-  //Método del Padre
+  //Actualizar Modal
   selectThemes(){
     //Initialize Selected
     var sel = document.getElementById("sT_"+this.pubR.pid);
