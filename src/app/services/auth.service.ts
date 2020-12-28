@@ -118,11 +118,9 @@ export class AuthService {
         
 
         this.userService.loginUser(result.user).then( user => {
-          console.log("LOGIN_USER:", user)
-
           window.sessionStorage.setItem("usuario",JSON.stringify(user));
 
-          this.router.navigate(['home']);
+          this.router.navigate(['explore']);
         })
 
       });

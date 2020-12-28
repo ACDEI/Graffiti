@@ -19,7 +19,7 @@ export class StatsComponent implements OnInit {
   ngOnInit(): void {
     var usuario= JSON.parse(window.sessionStorage.getItem("usuario"));
 
-    this.name = usuario.fullName;
+    this.name = usuario.nickName;
     this.photo = usuario.photoURL;
 
     this.gameService.level.subscribe( a => {
