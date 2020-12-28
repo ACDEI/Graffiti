@@ -26,9 +26,9 @@ export class UserService {
 
   async loginUser(user: firebase.User): Promise<UserI> {
     var res: UserI;
-
     await this.fs.doc('users/' + user.uid).get().toPromise().then( u => {
       if(u.exists){
+        console.log("ENTRO EN IF");
         res = {
           uid: u.get("uid"),
           email: u.get("email"),
@@ -42,11 +42,12 @@ export class UserService {
           nVisitados: u.get("nVisitados")
         }
       }else{
+        console.log("USUARIO NO EXISTE");
         res = {
           uid: user.uid,
           email: user.email,
-          fullName: "",
-          nickName: user.displayName,
+          fullName: user.displayName,
+          nickName: "",
           photoURL: user.photoURL,
           isAdmin: false,
           likes: [],
@@ -60,7 +61,7 @@ export class UserService {
 
     return new Promise<UserI>( (resolve,reject) => {
       resolve(res);
-    })
+    });
   }
 
   createUser(user: User) : any{
