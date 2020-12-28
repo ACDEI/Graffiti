@@ -42,7 +42,6 @@ export class HomeComponent implements OnInit {
     )
     .subscribe((data) => {
       this.themesList = data;
-      console.log(this.themesList);
     });
   }
 
@@ -79,7 +78,6 @@ export class HomeComponent implements OnInit {
       this.publicationsList = data;
       this.isFilter = false
       this.graffiter = "";
-      console.log(this.publicationsList);
     });
   }
 

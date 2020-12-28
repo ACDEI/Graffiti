@@ -11,7 +11,7 @@
           <img loading="lazy" src="{{publication.photoURL}}" class="img-fluid rounded">
           <p>Grafitero: {{publication.graffiter}}</p>
         </div>
-        <div class="modal-footer">
+        <div *ngIf="near" class="modal-footer">
           <button type="button" class="btn btn-primary" (click)="addVisitadas()">Añadir a visitadas</button>
         </div>
       </div>

@@ -10,12 +10,11 @@ export class NavbarComponent implements OnInit {
 
   uid:string; 
 
-  constructor(private auth: AuthService) { 
-    var usuario= JSON.parse(window.sessionStorage.getItem("usuario"));
-    this.uid = usuario.uid;
-  }
+  constructor(private auth: AuthService) { }
 
   ngOnInit(): void {
+    var usuario= JSON.parse(window.sessionStorage.getItem("usuario"));
+    this.uid = usuario.uid;
   }
 
   cerrarSesion(){

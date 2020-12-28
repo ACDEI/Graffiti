@@ -14,7 +14,7 @@ import mapboxgl from 'mapbox-gl';
 import { GameService } from './game.service';
 
 export interface SelectedPub {
-  pub: Publication;
+  pub: PublicationI;
   near: boolean;
 }
 
@@ -88,14 +88,35 @@ export class ExplorationService {
       getJSON("https://us-central1-graffiti-9b570.cloudfunctions.net/APIRest/near/" + this.position.lat + "&" + this.position.lng + "&" + 10).then( data => {
 
         data.forEach( pc => {
+          let e:boolean = gameService.visitadosDictionary.get(pc.id) != undefined;
+
           this.firestoreDB.doc("publications/"+pc.id).get().toPromise().then( p => {
             var json:PublicationJSON = <PublicationJSON>p.data();
-            var pub = new Publication(json.pid,json.uid,json.title,json.graffiter,json.photoURL,new firestore.GeoPoint(json.g.geopoint.u_,json.g.geopoint.h_),new Date(),json.state, json.themes, json.nLikes);
-            console.log(pc.distance);
-            var near = pc.distance <= 0.15;
-            //map.showPoint(p.data());
-            this.showMarker(map.map, pub, near);
-          })
+
+            let v = {
+              pid:json.pid,
+              uid:json.uid,
+              title:json.title,
+              graffiter:json.graffiter,
+              photoURL:json.photoURL,
+              coordinates:new firestore.GeoPoint(json.g.geopoint.u_,json.g.geopoint.h_),
+              date:new Date(),
+              state:json.state,
+              themes:json.themes,
+              nLikes:json.nLikes
+            };
+
+            console.log("PUBLICACION CERCANA:",v)
+
+            if(e){
+              this.showVisitedMarker(v, false);
+            }else{
+              var near = pc.distance <= 0.15;
+              this.showMarker(v, near);
+            }
+
+          });
+
         })
 
       });
@@ -111,13 +132,7 @@ export class ExplorationService {
 
   }
 
-  near(pos: {lng: number, lat: number}, lng: number, lat: number):boolean {
-    let alpha:number = 0.00016;
-
-    return Math.abs(pos.lng - lng) + Math.abs(pos.lat - lat) <= alpha;
-  }
-
-  showMarker(m: mapboxgl.Map, pub: Publication, near: boolean) {
+  showMarker(pub: PublicationI, near: boolean) {
     var el = document.createElement('div');
     var img = document.createElement('img');
     el.appendChild(img);
@@ -130,7 +145,23 @@ export class ExplorationService {
 
     this.markerDictionary.set(pub.pid, new mapboxgl.Marker(el)
       .setLngLat([pub.coordinates.longitude, pub.coordinates.latitude])
-      .addTo(m));
+      .addTo(this.map.map));
+  }
+
+  showVisitedMarker(pub: PublicationI, near: boolean) {
+    var el = document.createElement('div');
+    var img = document.createElement('img');
+    el.appendChild(img);
+
+    el.className = 'markerVisited';
+    img.src = pub.photoURL;
+    el.addEventListener("click", (event) => {
+      this.showModal(pub, near);
+    })
+
+    new mapboxgl.Marker(el)
+      .setLngLat([pub.coordinates.longitude, pub.coordinates.latitude])
+      .addTo(this.map.map);
   }
 
   visitMarker(pub: PublicationI){
@@ -140,12 +171,19 @@ export class ExplorationService {
       el.classList.remove('markerNoVisited')
       el.classList.add('markerVisited');
     }
+
+    el.removeEventListener("click", (event) => {
+      this.showModal(pub, false);
+    });
+
+    el.addEventListener("click", (event) => {
+      this.showModal(pub, false);
+    })
     
   }
 
   showModal(pub: Publication, near: boolean) {
     var selpub: SelectedPub = {pub: pub, near: near};
-    console.log("Lado servicio: " + selpub);
     this.dataSource.next(selpub);
   }
 

@@ -7,6 +7,12 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 const thresholds = [0,1,3,5,10,20,30,40,50,70,100,150,200,250,300,400,500,650,800,1000];
 
+interface VisitadoI {
+  pid: string,
+  title: string,
+  urlPhoto: string
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -27,7 +33,26 @@ export class GameService {
     this.usuario = JSON.parse(window.sessionStorage.getItem("usuario"));
     this.visitadosDictionary = new Map<string, PublicationI>();
 
-    firestore.collection("users/" + this.usuario.uid + "/vistados").get().toPromise().then()
+    console.log("Visitados");
+
+    firestore.collection("users/" + this.usuario.uid + "/visitados").valueChanges().subscribe( (value:VisitadoI[]) => {
+      value.forEach( x => {
+        let res:PublicationI = {
+          pid:x.pid,
+          uid:"",
+          title:x.title,
+          graffiter:"",
+          photoURL:x.urlPhoto,
+          coordinates:undefined,
+          date:undefined,
+          state:undefined,
+          themes: undefined,
+          nLikes:undefined
+        };
+
+        this.visitadosDictionary.set(res.pid,res);
+      })
+    })  
 
     this.updateLevel(this.usuario.nVisitados);
   }

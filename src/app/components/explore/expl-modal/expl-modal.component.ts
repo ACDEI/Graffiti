@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import * as firebase from 'firebase';
-import { Publication } from '@core/models/publication';
+import { Publication, PublicationI } from '@core/models/publication';
 import { UserI } from '@core/models/user.model';
 import { ExplorationService, SelectedPub } from '@core/services/exploration.service';
 import { Observable } from 'rxjs';
@@ -15,7 +15,7 @@ import { GameService } from '@core/services/game.service';
 export class ExplModalComponent implements OnInit {
 
   dataSubsc$: Observable<SelectedPub>;
-  publication: Publication;
+  publication: PublicationI;
   selected: boolean;
   near: boolean;
 
@@ -37,9 +37,8 @@ export class ExplModalComponent implements OnInit {
   ngOnInit(): void {
     this.dataSubsc$.subscribe( data => {
       if(data != undefined){
-        console.log("Lado componente: " + data.pub.title);
-        this.publication = data.pub;
         this.near = data.near;
+        this.publication = data.pub;
         this.selected = true;
       }
     });

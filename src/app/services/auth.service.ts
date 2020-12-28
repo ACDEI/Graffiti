@@ -116,14 +116,11 @@ export class AuthService {
                             "likes": [], "followers": [], "followed": [], "visited": []};
 
         
-
         this.userService.loginUser(result.user).then( user => {
-          console.log("LOGIN_USER:", user)
-
           window.sessionStorage.setItem("usuario",JSON.stringify(user));
 
           this.router.navigate(['home']);
-        })
+        });
 
       });
     }catch(error){
