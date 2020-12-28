@@ -23,16 +23,8 @@ export class UserProfileComponent implements OnInit {
     this.route.params.subscribe(params =>{
       this.userService.getUser(params['uid']).subscribe(value => {
         this.user = value;
-        this.pubService.getPublicationsByUserEmail(this.user.email).subscribe(pubs => {
-          this.pubList = pubs;
-        });
       });
     });
 
   }
-
-  cerrarSesion(){
-    this.auth.signOut();
-  }
-
 }
