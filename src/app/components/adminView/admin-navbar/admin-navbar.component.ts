@@ -19,7 +19,7 @@ export class AdminNavbarComponent implements OnInit {
 
   signOut(){
     this.authService.signOut();
-    this.router.navigate(['admin']);
+    //this.router.navigate(['admin']);
   }
 
 }

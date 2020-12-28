@@ -55,8 +55,9 @@ export class PublicationsService {
   }
 
   //CLOUD FUNCTIONS
-  private pubsUrl = 'https://us-central1-graffiti-9b570.cloudfunctions.net/APIRest/publications';  // URL to web api
+  //private pubsUrl = 'https://us-central1-graffiti-9b570.cloudfunctions.net/APIRest/publications/';  // URL to web api
 
+  /*
   getPublications(): Observable<any[]>{
     return this.http.get<any[]>(this.pubsUrl);
   }
@@ -91,5 +92,114 @@ export class PublicationsService {
 
   postPublication(pub : any){
     return this.http.post<any>(this.pubsUrl, pub);
+  }
+  */
+  //////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////////////////////////////////////////////////////////
+
+  //CLOUD FUNCTIONS PUBLICATIONS
+  private pubsUrl = 'https://us-central1-graffiti-9b570.cloudfunctions.net/APIRest/publications/';  // URL to web api
+
+  //GET
+  getAllPublicationsCF() : Observable<any[]>{
+    return this.http.get<any[]>(this.pubsUrl);
+  }
+
+  getPublicationByPidCF(pid : any) : Observable<any[]> {
+    return this.http.get<any[]>(this.pubsUrl + pid);
+  }
+
+  getPublicationsByTitleCF(title: any) : Observable<any[]> {
+    return this.http.get<any[]>(this.pubsUrl + "title/" + title);
+  }
+
+  getPublicationsByRangeCF(from: any, to: any) : Observable<any[]> {
+    return this.http.get<any[]>(this.pubsUrl + "range/" + from + '/' + to);
+  }
+
+  getPublicationsCountCF() : Observable<Number> {
+    return this.http.get<Number>(this.pubsUrl + "count");
+  }
+
+  getPublicationsByUserUidCF(uid : any) : Observable<any[]> {
+    return this.http.get<any[]>(this.pubsUrl + "user/" + uid);
+  }
+
+  getPublicationsByGraffiterCF(graffiter : any) : Observable<any[]> {
+    return this.http.get<any[]>(this.pubsUrl + "graffiter/" + graffiter);
+  }
+
+  getPublicationsByThemeCF(theme : any) : Observable<any[]> {
+    return this.http.get<any[]>(this.pubsUrl + "themes/" + theme);
+  }
+
+  //PUT
+  /*
+    Update a Publication:
+      * pid : Publication PID
+      * pub : Publication Data
+  */
+  putPublicationCF(pid : any, pub : any) {
+    return this.http.put(this.pubsUrl + pid, pub);
+  }
+
+  //POST
+  /*
+    Post a Publication
+      * pub : Publication Data
+  */
+  postPublicationCF(pub : any) {
+    return this.http.post(this.pubsUrl, pub);
+  }
+
+  //DELETE
+  /*
+    Delete a Publication
+      * pid : Publication PID
+  */
+  deletePublicationCF(pid : any) {
+    return this.http.delete(this.pubsUrl + pid);
+  }
+
+  //SUBCOLECCION LIKES
+  //GET
+  getPublicationLikesCF(pid : any): Observable<any[]> {
+    return this.http.get<any[]>(this.pubsUrl + "likes/" + pid);
+  }
+
+  getPublicationLikesCountCF(pid : any): Observable<Number> {
+    return this.http.get<Number>(this.pubsUrl + "likescount/" + pid);
+  }
+
+  //PUT
+  /*
+    Update a Like To a Publication
+      * uid : User UID
+      * pid : Publication PID
+      * pub : Publication Data
+  */
+  putPublicationLikeFromUserCF(uid : any, pid : any, pub : any) {
+    return this.http.put(this.pubsUrl + "likes/" + uid + "&" + pid, pub);
+  }
+
+  //POST
+  /*
+    Post a Like To a Publciation
+      * pid : Publication PID
+      * user : User Data
+  */
+  postPublicationLikeCF(pid : any, user: any) {
+    return this.http.post(this.pubsUrl + "likes/" + pid, user);
+  }
+
+  //DELETE
+  /*
+    Delete a Like From a Publication
+      * uid : User UID
+      * pid : Publication PID
+  */
+  deletePublicationLikeCF(uid : any, pid : any){
+    return this.http.delete(this.pubsUrl + "likes/" + uid + "&" + pid);
   }
 }

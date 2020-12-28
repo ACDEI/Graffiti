@@ -50,14 +50,14 @@ export class HomeComponent implements OnInit {
   }
 
   getByTheme(){
-    this.pubService.getPublicationsByTheme(this.theme).subscribe(value => {
+    this.pubService.getPublicationsByThemeCF(this.theme).subscribe(value => {
       this.publicationsList = value;
       this.isFilter = true;
     });
   }
 
   getByGraffiter(){
-    this.pubService.getPublicationsByGraffiterName(this.graffiter).subscribe(value => {
+    this.pubService.getPublicationsByGraffiterCF(this.graffiter).subscribe(value => {
       this.publicationsList = value;
       this.isFilter = true;
     });

@@ -106,7 +106,7 @@ export class PhotoModalComponent implements OnInit {
       "state": this.state,
       "themes": this.themes
     };
-    this.ps.updateById(this.pubR.pid, pub).subscribe();
+    this.ps.putPublicationCF(this.pubR.pid, pub).subscribe();
   }
 
   //Cambiar el Estado

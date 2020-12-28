@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import { User, UserI } from '@core/models/user.model';
@@ -13,7 +14,7 @@ export class UserService {
 
   private path = 'users';
 
-  constructor(private fs: AngularFirestore) { 
+  constructor(private fs: AngularFirestore, private http : HttpClient) { 
     this.userCollection = fs.collection(this.path);
   }
 
@@ -113,4 +114,179 @@ export class UserService {
     .valueChanges()
     .pipe( map(c => c) );
   }
+
+  //CLOUD FUNCTIONS USER
+  //GETS
+  private api = 'url/users/';
+
+  getAllUsersCF() : Observable<any[]> { //Get All Users
+    return this.http.get<any[]>(this.api);
+  }
+
+  getUserByUidCF(uid : any) : Observable<any[]> { //Get USer By UID
+    return this.http.get<any[]>(this.api + uid);
+  }
+
+  getUserByEmailCF(email : any) : Observable<any[]> { //Get User By Email
+    return this.http.get<any[]>(this.api + 'email/' + email);
+  }
+
+  getUserByAdminCF(admin : Number) : Observable<any[]> { //Get List of (no) Admin : 1 (isAdmin), 0 (!isAdmin)
+    return this.http.get<any[]>(this.api + 'admin/' + admin);
+  }
+
+  getUsersByRangeCF(from : Number, to : Number) : Observable<any[]> { //Get Users By Range : From-To
+    return this.http.get<any>(this.api + 'range/' + from + '/' + to);
+  }
+
+  getUsersCountCF() : Observable<Number> { //Get Quantity of Users
+    return this.http.get<Number>(this.api + 'count');
+  }
+
+  getUsersByNameCF(name : any) : Observable<any[]> { //Get Users By Name (fragment)
+    return this.http.get<any[]>(this.api + 'name/' + name);
+  }
+
+  //Mirar la innecesaria
+
+  //PUT
+  putUsersCF(uid : any, usr : any) { //Update a User
+    return this.http.put(this.api + uid, usr);
+  }
+
+  //POST
+  postUsersCF(usr : any) { //Post a User
+    return this.http.post(this.api, usr);
+  }
+
+  //DELETE
+  deleteUsersCF(uid : any) { //Delete a User
+    return this.http.delete(this.api + uid);
+  }
+
+  //FOLLOWERS
+  //GET
+  private apiFollowers = 'api/followers/';
+  getFollowersPerUserCF(uid : any) : Observable<any[]> {  //Followers by User UID 
+    return this.http.get<any[]>(this.apiFollowers + uid);
+  }
+
+  getFollowersCountPerUserCF(uid : any) : Observable<Number> {  //Quantity of Followers By UID
+    return this.http.get<Number>(this.apiFollowers + 'count/' + uid);
+  }
+
+  //PUT
+  /*
+    Update a Follower From a User
+      * uid : Main User UID
+      * uidF : Follower UID
+      * usr : Follower Data
+  */
+  putFollowerPerUser(uid : any, uidF : any, usr : any) {  
+    return this.http.put(this.apiFollowers + uid + '&' + uidF, usr);
+  }
+
+  //POST
+  /*
+    Post a Follower To a User
+      * uid : Main User UID
+      * uidF : Follower Data
+  */
+  postFollowerPerUser(uid : any, usrF : any) { //
+    return this.http.post(this.apiFollowers + uid, usrF);
+  }
+
+  //DELETE
+  /*
+    Delete a Follower To a User
+      * uid : Main User UID   
+      * uidF : Follower UID
+  */
+  deleteFollowerPerUser(uid : any, uidF : any) {
+    return this.http.delete(this.apiFollowers + uid + '&' + uidF);
+  }
+
+  //FOLLOWED
+  //GET
+  private apiFollowed = 'api/followed/';
+  getFollowedPerUserCF(uid : any) : Observable<any[]> {
+    return this.http.get<any[]>(this.apiFollowed + uid);
+  }
+
+  getFollowedCountPerUserCF(uid : any) : Observable<Number> {
+    return this.http.get<Number>(this.apiFollowed + 'count/' + uid);
+  }
+
+  //PUT
+  /*
+    Put a Follower To a User
+      * uid : Main User UID
+      * uidF : Followed UID
+      * usr : Followed
+  */
+  putFollowedPerUser(uid : any, uidF : any, usr : any) {
+    return this.http.put(this.apiFollowed + uid + '&' + uidF, usr);
+  }
+
+  //POST
+  /*
+    Post a Followed To a User
+      * uid : Main User UID
+      * uidF : Followed Data
+  */
+  postFollowedPerUser(uid : any, usrF : any) {
+    return this.http.post(this.apiFollowed + uid, usrF);
+  }
+
+  //DELETE
+  /*
+    Delete a Followed To a User
+      * uid : Main User UID
+      * uidF : Followed UID
+  */
+  deleteFollowedPerUser(uid : any, uidF : any) {
+    return this.http.delete(this.apiFollowed + uid + '&' + uidF);
+  }
+
+  //LIKES
+  private apilikes = 'likes';
+  getLikesPerUserCF(uid : any) : Observable<any[]> {
+    return this.http.get<any[]>(this.api + this.apilikes + '/' + uid);
+  }
+
+  getLikesCountPerUserCF(uid : any) : Observable<Number> {
+    return this.http.get<Number>(this.api + this.likes + 'count/' + uid);
+  }
+
+  //PUT
+  /*
+    Put a Like To a User
+      * uid : Main User UID
+      * pid : Publication PID
+      * pub : Publication Data
+  */
+  putLikeToUser(uid : any, pid : any, pub : any) {
+    return this.http.put(this.api + this.apilikes + '/' + uid + '&' + pid, pub);
+  }
+
+  //POST
+  /*
+    Post a Like To a User
+      * uid : Main User UID
+      * pub : Publication Data
+  */
+  postLikeToUser(uid : any, pub : any) {
+    return this.http.post(this.api + this.apilikes + '/' + uid, pub);
+  }
+
+  //DELETE
+  /*
+    Delete a Like From a User
+      * uid : Main User UID
+      * pid : Publication PID
+  */
+  deleteLikeFromUser(uid : any, pid : any) {
+    return this.http.delete(this.api + this.apilikes + '/' + uid + '&' + pid);
+  }
+
 }

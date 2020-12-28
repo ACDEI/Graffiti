@@ -40,21 +40,42 @@ export class ThemeService {
     return this.themeCollection.doc(tid).delete();
   }
 
-  /*
-  getPublicationsFromTheme(theme: Theme): Publication[] {
-    var arrayPID = theme.publications;
-    var arrayPublications$: Observable<Publication[]>;
-    for(let pid of arrayPID){
-      const pub = this.publicationService.getPublication(pid);
-      arrayPublications$
-    }
-
-    return arrayPublications$;
-  }*/
-
-  //CLOUD FUNCTIONS
-  getThemes(): Observable<any[]>{
+  //CLOUD FUNCTIONS THEMES
+  //GET
+  getAllThemesCF() : Observable<any[]>{
     return this.http.get<any[]>(this.themesUrl);
+  }
+
+  getThemeByTidCF(tid : any): Observable<any[]> {
+    return this.http.get<any[]>(this.themesUrl + tid);
+  }
+
+  //PUT
+  /*
+    Update a Theme:
+      * tid : Theme TID
+      * theme : Theme Data
+  */
+  updateThemeByTidCF(tid : any, theme : any){
+    return this.http.put(this.themesUrl + tid, theme);
+  }
+
+  //POST
+  /*
+    Post a Theme:
+      * theme : Theme Data
+  */
+  postThemeCF(theme : any){
+    return this.http.post(this.themesUrl, theme);
+  }
+
+  //DELETE
+  /*
+    Delete a Theme:
+      * tid : Theme TID
+  */
+  deleteThemeByTidFC(tid : any){
+    return this.http.delete(this.themesUrl + tid);
   }
 
 }
