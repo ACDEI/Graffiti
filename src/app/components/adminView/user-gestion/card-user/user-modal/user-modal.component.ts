@@ -13,14 +13,40 @@ export class UserModalComponent implements OnInit {
 
   @Input() userR: User;
 
-  userPublications$: Observable<any[]>
-  userFollowers$: Observable<User[]>
-  userFollowed$: Observable<User[]>
+  publicationsList: any[];
+  followersList: any[];
+  followedList: any[];
 
-  constructor(private publicationService: PublicationsService, private userService: UserService) { }
+  constructor(private ps: PublicationsService, private us: UserService) { }
 
   ngOnInit(): void {
-    //this.userPublications$ = this.publicationService.getUserPublications(this.userR.uid);
+    //this.userPublications$ = this.ps.getUserPublications(this.userR.uid);
+    this.obtenerFollowers();
+    this.obtenerFollowed();
+    this.obtenerPublicaciones();
   }
 
+  //Followers
+  obtenerFollowers(){ //USUARIO DE GOOGLE NO TIENE UID
+    this.us.getFollowersPerUser(this.userR.uid).subscribe(data => {
+      this.followersList = data;
+      //console.log(this.followersList);
+    });
+  }
+
+  //Followed
+  obtenerFollowed(){
+    this.us.getFollowedPerUser(this.userR.uid).subscribe(data => {
+      this.followedList = data;
+      //console.log(this.followedList);
+    });
+  }
+
+  //Publications
+  obtenerPublicaciones(){
+    this.ps.getUserPublications(this.userR.uid).subscribe(data => {
+      this.publicationsList = data;
+      //console.log(this.publicationsList);
+    });
+  }
 }

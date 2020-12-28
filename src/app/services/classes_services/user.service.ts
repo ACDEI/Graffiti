@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import { User, UserI } from '@core/models/user.model';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -84,5 +85,31 @@ export class UserService {
   deleteUser(uid: string) : Promise<void>{
     return this.userCollection.doc(uid).delete();
   }
-  
+
+  //FOLLOWERS
+  private followers = 'followers';
+  getFollowersPerUser(uid : any) : Observable<any> {
+    //console.log(uid);
+    return this.fs.collection(this.path).doc(uid).collection(this.followers)
+    .valueChanges()
+    .pipe( map(c => c) );
+  }
+
+  //FOLLOWED
+  private followed = 'followed';
+  getFollowedPerUser(uid : any) : Observable<any> {
+    //console.log(uid);
+    return this.fs.collection(this.path).doc(uid).collection(this.followed)
+    .valueChanges()
+    .pipe( map(c => c) );
+  }
+
+  //LIKES
+  private likes = 'likes';
+  getLikesPerUser(uid : any) : Observable<any> {
+    //console.log(uid);
+    return this.fs.collection(this.path).doc(uid).collection(this.likes)
+    .valueChanges()
+    .pipe( map(c => c) );
+  }
 }

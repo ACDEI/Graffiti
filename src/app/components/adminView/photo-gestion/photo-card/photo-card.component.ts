@@ -26,7 +26,7 @@ export class PhotoCardComponent implements OnInit {
   user$ : Observable<User>;  //User Uploader
 
   constructor(private publicationService: PublicationsService, private userService: UserService,
-    private themeService: ThemeService, private toastr : ToastrService) { }
+    private ts: ThemeService, private toastr : ToastrService) { }
 
   ngOnInit(): void {
     this.user$ = this.userService.getUser(this.pubR.uid);
@@ -37,7 +37,7 @@ export class PhotoCardComponent implements OnInit {
   }
 
   deletePublication(pid: string){
-    //this.publicationService.deletePublicacion(pid);
+    this.publicationService.deletePublicacion(pid);
     this.toastr.success("Publicación Eliminada Correctamente", "", {timeOut: 1000});
   }
 
@@ -52,7 +52,7 @@ export class PhotoCardComponent implements OnInit {
     var mvPillowsM0 = document.getElementsByClassName("tab-pane fadeM0");
     var mvPillowsM1 = document.getElementsByClassName("tab-pane fadeM1");
     var mvPillowsM2 = document.getElementsByClassName("tab-pane fadeM2");
-    var mvConfM = document.getElementsByClassName("confM");
+    //var mvConfM = document.getElementsByClassName("confM");
     var c : any = 0;
     //console.log("OneB:" + opModalButton.length);
     //console.log("MV:" + modalView.length);
@@ -69,8 +69,8 @@ export class PhotoCardComponent implements OnInit {
         mvPillowsM0[c].setAttribute("id", mvPillowsM0[c].getAttribute('id') + c);
         mvPillowsM1[c].setAttribute("id", mvPillowsM1[c].getAttribute('id') + c);
         mvPillowsM2[c].setAttribute("id", mvPillowsM2[c].getAttribute('id') + c);
-        mvConfM[c].setAttribute("id", mvConfM[c].getAttribute('id') + c);
-        console.log(c + ": " + this.pubR.pid);
+        //mvConfM[c].setAttribute("id", mvConfM[c].getAttribute('id') + c);
+        //console.log(c + ": " + this.pubR.pid);
         isUnd = false;
       }
       c++;

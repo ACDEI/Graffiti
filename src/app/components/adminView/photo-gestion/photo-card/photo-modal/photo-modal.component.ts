@@ -5,6 +5,7 @@ import { User } from '@core/models/user.model';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { ThemeService } from '@core/services/classes_services/theme.service';
 import { UserService } from '@core/services/classes_services/user.service';
+import { CommentsService } from '@core/services/comments.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -18,6 +19,8 @@ export class PhotoModalComponent implements OnInit {
   @Input() pubR: Publication;
 
   themesList : Theme[];
+  commentsList : any[];
+  likesList : any[];
 
   //Forms
   title : string;
@@ -27,7 +30,7 @@ export class PhotoModalComponent implements OnInit {
   user$ : Observable<User>;  //User Uploader
 
   constructor(private ps: PublicationsService, private userService: UserService,
-    private themeService: ThemeService) { }
+    private themeService: ThemeService, private cs : CommentsService) { }
 
   ngOnInit(): void {
     this.themes = this.pubR.themes;
@@ -35,9 +38,13 @@ export class PhotoModalComponent implements OnInit {
     this.state = this.pubR.state;
     
     this.user$ = this.userService.getUser(this.pubR.uid);
+
     this.obtenerTematicas();
+    this.obtenerComments();
+    this.obtenerLikes();
   }
 
+  //TEMATICAS
   obtenerTematicas(){
     this.themeService.getAllThemes()
     .snapshotChanges()
@@ -54,6 +61,31 @@ export class PhotoModalComponent implements OnInit {
       //console.log(this.themesList);
     });
   }
+
+  //COMENTARIOS
+  obtenerComments(){
+    this.cs.getCommentsByPublication(this.pubR.pid).subscribe(data => {
+      this.commentsList = data;
+      //console.log(this.commentsList);
+    });
+  }
+
+  deleteComment(cid : any){
+    this.cs.deleteComment(cid);
+  }
+
+  //LIKES
+  obtenerLikes(){
+    this.ps.getLikesByPublication(this.pubR.pid).subscribe(data => {
+      this.likesList = data;
+      //console.log(this.commentsList);
+    });
+  }
+
+  deleteLikes(lid : any){
+    //this.ps.deleteLikesCF(lid);
+  }
+
 
   //Actualizar Modal
   selectThemes(){

@@ -1,8 +1,7 @@
-#v-pills-comments,
-#v-pills-likes,
-#v-pills-info{
-    height: 500px;
+.conf {
+    height: 350px;
     overflow-y: auto;
+    overflow-x: hidden;
     width: 100%;
 }
 

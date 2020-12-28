@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument}
 import { Publication } from '@core/models/publication';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -37,8 +38,20 @@ export class PublicationsService {
     return this.publicationCollection.doc(pid).delete();
   }
 
-  getUserPublications(uid: string): Observable<AngularFirestoreDocument<Publication>[]> {
-    return this.fs.collection<AngularFirestoreDocument<Publication>>('publications', ref => ref.where('uid', '==', uid)).valueChanges();
+  getUserPublications(uid: string): Observable<any> {
+    return this.fs.collection(this.path, ref => ref.where('uid', '==', uid.toString()))
+    .valueChanges()
+    .pipe( map(c => c) );
+  }
+
+  /*
+    SUB COLECCION: LIKES
+  */
+
+  getLikesByPublication(pid : any) : Observable<any> {
+      return this.fs.collection('publications').doc(pid).collection('likes')
+      .valueChanges()
+      .pipe( map(c => c) );
   }
 
   //CLOUD FUNCTIONS
