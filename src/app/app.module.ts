@@ -59,6 +59,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { CardPublicationComponent } from './components/cards/card-publication/card-publication.component';
 import { PublicationViewComponent } from './components/publication-view/publication-view.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { LazyForDirective } from './directives/lazy-for.directive';
 
 
 @NgModule({
@@ -91,6 +92,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
     CardPublicationComponent,
     PublicationViewComponent,
     UserProfileComponent,
+    LazyForDirective,
   ],
   imports: [
     BrowserModule,
