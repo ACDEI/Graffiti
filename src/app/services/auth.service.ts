@@ -78,7 +78,7 @@ export class AuthService {
        
         // var secret = result.credential.secret;
         // ...
-
+      console.log(result);
       self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
                             "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
                             "likes": [], "followers": [], "followed": [], "visited": [] };
