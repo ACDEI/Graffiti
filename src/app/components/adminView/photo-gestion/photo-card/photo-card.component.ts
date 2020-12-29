@@ -25,11 +25,11 @@ export class PhotoCardComponent implements OnInit {
 
   user$ : Observable<User>;  //User Uploader
 
-  constructor(private publicationService: PublicationsService, private userService: UserService,
+  constructor(private publicationService: PublicationsService, private us: UserService,
     private ts: ThemeService, private toastr : ToastrService) { }
 
   ngOnInit(): void {
-    this.user$ = this.userService.getUser(this.pubR.uid);
+    this.us.getUser(this.pubR.uid).then(user => { this.user$ = user });
     this.selectedThemes = this.pubR.themes;
 
     this.cambiarModal();

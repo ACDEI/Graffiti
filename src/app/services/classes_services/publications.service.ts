@@ -22,8 +22,25 @@ export class PublicationsService {
     return this.publicationCollection;
   }
 
-  getPublication(pid : string): Observable<Publication> {
-    return this.fs.doc<Publication>(`publications/${pid}`).valueChanges();
+  async getPublication(pid : string): Promise<any> {
+    var res : any;
+    await this.fs.doc(`publications/${pid}`).get().toPromise().then( p => {
+      res = {
+        pid : p.get('pid'),
+        uid : p.get('uid'),
+        photoURL : p.get('photoURL'),
+        title : p.get('title'),
+        graffiter : p.get('graffiter'),
+        coordinates: p.get('coordinates'),
+        date : p.get('date'),
+        state : p.get('state'),
+        themes: p.get('themes')
+      }
+    });
+
+    return new Promise<any>( (resolve,reject) => {
+      resolve(res);
+    });
   }
 
   createPublication(publication : Publication) : any{

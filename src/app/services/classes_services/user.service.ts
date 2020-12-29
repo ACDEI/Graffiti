@@ -22,8 +22,24 @@ export class UserService {
     return this.userCollection;
   }
 
-  getUser(uid: string): Observable<User>{
-    return this.fs.doc<User>(`users/${uid}`).valueChanges();
+  async getUser(uid: string): Promise<any>{
+    var res : any;
+    await this.fs.doc(`users/${uid}`).get().toPromise().then( c => {
+      res = {
+        uid : c.get('uid'),
+        nickName : c.get('nickName'),
+        photoURL : c.get('photoURL'),
+        email: c.get("email"),
+        fullName: c.get("fullName"),
+        isAdmin: c.get("isAdmin"),
+        nVisitados: c.get("nVisitados")
+      }
+
+    });
+    
+    return new Promise<any>( (resolve,reject) => {
+      resolve(res);
+    });
   }
 
   async loginUser(user: firebase.User): Promise<UserI> {

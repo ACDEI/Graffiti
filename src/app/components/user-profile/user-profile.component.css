@@ -3,12 +3,24 @@
     margin-right: 0px !important;
 }
 
-#v-pills-myGraffitis,
-#v-pills-favourites,
-#v-pills-followers,
-#v-pills-followed {
+.conf {
     height: 520px;
     overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
+}
+
+.col-lg-4 {
+    max-width: 100%;
+} 
+.col-md-4 {
+    max-width: 30%;
+} 
+
+.col-sm-4 {
+    max-width: 60%;
+}
+
+.card-img-top{
+    object-fit: contain;
 }

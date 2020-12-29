@@ -29,7 +29,7 @@ export class PhotoModalComponent implements OnInit {
 
   user$ : Observable<User>;  //User Uploader
 
-  constructor(private ps: PublicationsService, private userService: UserService,
+  constructor(private ps: PublicationsService, private us: UserService,
     private themeService: ThemeService, private cs : CommentsService) { }
 
   ngOnInit(): void {
@@ -37,7 +37,7 @@ export class PhotoModalComponent implements OnInit {
     this.title = this.pubR.title;
     this.state = this.pubR.state;
     
-    this.user$ = this.userService.getUser(this.pubR.uid);
+    this.us.getUser(this.pubR.uid).then(user => { this.user$ = user });
 
     this.obtenerTematicas();
     this.obtenerComments();

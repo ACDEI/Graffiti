@@ -1,12 +1,11 @@
-import { templateJitUrl } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Publication } from '@core/models/publication';
-import { Theme } from '@core/models/theme.model';
 import { User } from '@core/models/user.model';
+import { AuthService } from '@core/services/auth.service';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { UserService } from '@core/services/classes_services/user.service';
-import { Observable } from 'rxjs';
+import { CommentsService } from '@core/services/comments.service';
 
 @Component({
   selector: 'app-publication-view',
@@ -19,18 +18,81 @@ export class PublicationViewComponent implements OnInit {
   user: User;
   pubThemes: string[];
 
-  constructor(private route: ActivatedRoute, private pubService: PublicationsService, private userService: UserService) { }
+  //Comments Things
+  commentsList : any[];
+  cText : string;
+
+  //LikesThings
+  hasLike : boolean = false;
+
+  constructor(private route: ActivatedRoute, private ps: PublicationsService,
+       private us: UserService, private cs : CommentsService, private as : AuthService) { 
+       }
 
   ngOnInit(): void {
+
+    //Cargar Usuario y Publicacion
     this.route.params.subscribe(params => {
-      this.pubService.getPublication(params['pid']).subscribe(value => {
+      this.ps.getPublication(params['pid']).then(value => {
         this.pub = value;
-        this.userService.getUser(this.pub.uid).subscribe(u => {
-          this.user = u;
-        });
+        this.us.getUser(this.pub.uid).then(user => { this.user = user });
         this.pubThemes = this.pub.themes;
+        
+        //Cargar Elementos
+        this.obtenerComments();
       });
     });
+  }
+
+  //Comments
+  obtenerComments(){
+    this.cs.getCommentsByPublication(this.pub.pid).subscribe(data => {
+      this.commentsList = data;
+      //console.log(this.commentsList);
+    });
+  }
+
+  postComment(){
+    let comment : any = {
+      cid : this.generateCID(),
+      pid : this.pub.pid,
+      uid : this.as.userSelected.uid,
+      text : this.cText,
+      image : this.as.userSelected.photoURL
+    }
+    this.cs.postComment(comment);
+  }
+
+  generateCID(){
+    var cid : string = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < 15; i++) {
+        cid += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return cid;
+  }
+
+  deleteComment(cid : string){
+    this.cs.deleteComment(cid);
+  }
+
+  //Likes
+  postLike(){
+    let user : any = this.as.userSelected;
+    this.ps.postPublicationLikeCF(this.pub.pid, user).subscribe(
+      data => this.hasLike = true,
+      err => this.hasLike = false
+    );
+  }
+
+  deleteLike(){
+    let uid : any = this.as.userSelected.uid;
+    this.ps.deletePublicationLikeCF(uid, this.pub.pid).subscribe(
+      data => this.hasLike = false,
+      err => this.hasLike = true
+    );
+
   }
 
 }

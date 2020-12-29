@@ -1,17 +1,19 @@
-<div class="card" style="width: 18rem;">
+<div class="card" style="width: 18rem; margin-bottom: 10px;">
     <div class="card-header">
         <div class="row">
-            <div *ngIf="user$ | async as user" class="col-lg-2 col-md-2 col-sm-2" style="margin-left: -15px">
-                <img src={{user.photoURL}} alt="Foto Usuario" class="rounded-circle" width="30px">
+            <div *ngIf="user" class="col-lg-2 col-md-2 col-sm-2" style="margin-left: -15px">
+                <img src={{user.photoURL}} alt="avatar-user" class="rounded-circle" width="30px">
             </div>
-            <div *ngIf="user$ | async as user" class="col-lg-9 col-md-9 col-sm-9 mt-1">
+            <div *ngIf="user" class="col-lg-9 col-md-9 col-sm-9 mt-1">
                 <a class="card-title" [routerLink]="['../user-profile', user.uid]">
                     <h6>{{user.nickName}}</h6>
                 </a>  
             </div>
         </div>
     </div>
-    <img class="card-img-top" src={{pubR.photoURL}} alt="Card image cap">
+    <a [routerLink]="['../publication-view', pubR.pid]">
+        <img class="card-img-top" src={{pubR.photoURL}} alt="Card image cap">
+    </a>
     <div class="card-footer">
         <div class="text-center">
             <a class="card-title card-title-color" [routerLink]="['../publication-view', pubR.pid]"><h6>{{pubR.title}}</h6></a>

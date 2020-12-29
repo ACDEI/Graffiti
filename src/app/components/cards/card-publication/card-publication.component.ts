@@ -13,12 +13,12 @@ export class CardPublicationComponent implements OnInit {
 
   @Input() pubR: Publication;
 
-  user$: Observable<User>;
+  user: any;
 
-  constructor(private userService: UserService) { }
+  constructor(private us: UserService) { }
 
   ngOnInit(): void {
-    this.user$ = this.userService.getUser(this.pubR.uid);
+    this.us.getUser(this.pubR.uid).then(user => { this.user = user });
   }
 
 }
