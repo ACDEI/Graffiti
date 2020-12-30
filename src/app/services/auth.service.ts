@@ -18,10 +18,12 @@ export class AuthService {
   coleccionUsuarios: AngularFirestoreCollection<User>;
   usuariosObservables: Observable<any[]>;
   userSelected: User = new User();
+
   
 
   constructor(private router: Router, public firestore: AngularFirestore
               , public userService: UserService, private afAuth: AngularFireAuth) {
+        
 }
 
   //Facebook LogIn

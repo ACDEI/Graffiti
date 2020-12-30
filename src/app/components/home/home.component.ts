@@ -5,6 +5,7 @@ import { AngularFirestoreCollection } from '@angular/fire/firestore';
 import { Publication } from '@core/models/publication';
 import { Theme } from '../../models/theme.model';
 import { map } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -23,10 +24,20 @@ export class HomeComponent implements OnInit {
 
   uid:string;
   isFilter: boolean; 
+  //Tokens flickr
+  oauth_token:string;
+  oauth_verifier:string; 
 
-  constructor(private pubService: PublicationsService, private themeService: ThemeService) { }
+  constructor(private pubService: PublicationsService, private themeService: ThemeService, private route:ActivatedRoute) { }
  
   ngOnInit(): void {
+    //obtener por url los token cuando flickr redireccione
+    this.oauth_token = this.route.snapshot.queryParams.oauth_token;
+    this.oauth_verifier = this.route.snapshot.queryParams.oauth_verifier;
+    window.sessionStorage.setItem("oauth_token",JSON.stringify(this.oauth_token));
+    window.sessionStorage.setItem("oauth_verifier",JSON.stringify(this.oauth_verifier));
+    console.log("vefifier -------> " + this.oauth_verifier);
+
     this.isFilter = false;
     this.resetear();
 

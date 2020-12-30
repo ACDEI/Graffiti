@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 //Adicionales
 import { ToastrModule } from 'ngx-toastr'
@@ -105,6 +105,7 @@ import { LazyForDirective } from './directives/lazy-for.directive';
     ToastrModule.forRoot(),
     NgxPaginationModule,
     HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [AuthService, 
               UserService, 
