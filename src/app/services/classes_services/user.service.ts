@@ -46,7 +46,6 @@ export class UserService {
     var res: UserI;
     await this.fs.doc('users/' + user.uid).get().toPromise().then( u => {
       if(u.exists){
-        console.log("ENTRO EN IF");
         res = {
           uid: u.get("uid"),
           email: u.get("email"),
@@ -60,7 +59,6 @@ export class UserService {
           nVisitados: u.get("nVisitados")
         }
       }else{
-        console.log("USUARIO NO EXISTE");
         res = {
           uid: user.uid,
           email: user.email,

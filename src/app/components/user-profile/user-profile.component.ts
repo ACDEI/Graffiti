@@ -15,10 +15,14 @@ import { UserService } from '@core/services/classes_services/user.service';
 export class UserProfileComponent implements OnInit {
 
   user: User;
+  uidUsuarioSesion: string;
+  miPerfil: boolean;
+  miSeguido: boolean;
 
   pubList: any[]; //Publications
   followerList : any[]; //Followers
   followedList : any[]; //Followed
+  followedListSesion: any[];
   likesList : any[];  //Likes
 
   constructor(private route: ActivatedRoute, private as: AuthService, 
@@ -26,10 +30,16 @@ export class UserProfileComponent implements OnInit {
     }
 
   ngOnInit(): void {
+    var usuario = JSON.parse(window.sessionStorage.getItem("usuario"));
+    this.uidUsuarioSesion = usuario.uid;
     this.route.params.subscribe(params => {
       this.us.getUser(params['uid']).then(user => { 
         this.user = user;
+        if((this.user.uid) === (this.uidUsuarioSesion)) this.miPerfil = true;
+        else this.miPerfil = false;
         this.obtenerPublicaciones();
+        this.obtenerFollowedSesion();
+        this.isMyFollowed();
       });
     });
 
@@ -75,11 +85,38 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  obtenerFollowedSesion(){
+    this.us.getFollowedPerUser(this.uidUsuarioSesion).subscribe(data => {
+      this.followedListSesion = data;
+    });
+  }
+
+  isMyFollowed(){
+    var length: number = this.followedListSesion.length;
+    if(length == 0){
+      this.miSeguido = false;
+    } else {
+      if(this.followedListSesion.includes(this.user)){
+        this.miSeguido = true;
+      } else {
+        this.miSeguido = false;
+      }
+    }
+  }
+
   postFollowed(uidF : string){
     //this.us.postFollowedPerUser(this.us);
   }
 
   deleteFollowed(uidF : string) {  //Dejar de seguir a alguien
     this.us.deleteFollowedPerUser(this.user.uid, uidF).subscribe();
+  }
+
+  followUser(uidF: string){
+
+  }
+
+  unfollowUser(uidF: string){
+
   }
 }
