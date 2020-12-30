@@ -21,10 +21,10 @@
         </div>
         <div *ngIf="!miPerfil" class="nav flex-column nav-pill mt-3">
           <div *ngIf="!miSeguido">
-            <button class="btn btn-primary mb-3" (click)="followUser(user.uid)">Seguir</button>
+            <button class="btn btn-dark btn-block mb-3" (click)="followUser(user.uid)">Seguir</button>
           </div>
           <div *ngIf="miSeguido">
-            <button class="btn btn-link mb-3" (click)="unfollowUser(user.uid)">Dejar de Seguir</button>
+            <button class="btn btn-link btn-block mb-3" (click)="unfollowUser(user.uid)">Dejar de Seguir</button>
           </div>
         </div>
     </div>
