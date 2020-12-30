@@ -24,10 +24,10 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit(): void {
     var usuario= JSON.parse(window.sessionStorage.getItem("usuario"));
+    this.uid = usuario.uid;
     this.conectadoFlickr = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
     this.ouath_verifier = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
     this.oauth_token = JSON.parse(window.sessionStorage.getItem("oauth_token"));
-    this.uid = usuario.uid;
   }
 
   cerrarSesion(){

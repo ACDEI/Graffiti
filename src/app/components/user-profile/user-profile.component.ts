@@ -30,16 +30,23 @@ export class UserProfileComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    var usuario = JSON.parse(window.sessionStorage.getItem("usuario"));
-    this.uidUsuarioSesion = usuario.uid;
     this.route.params.subscribe(params => {
       this.us.getUser(params['uid']).then(user => { 
         this.user = user;
-        if((this.user.uid) === (this.uidUsuarioSesion)) this.miPerfil = true;
-        else this.miPerfil = false;
+
+        var usuario = JSON.parse(window.sessionStorage.getItem("usuario"));
+        this.uidUsuarioSesion = usuario.uid;
+    
+        if((this.user.uid) === (this.uidUsuarioSesion)){
+         this.miPerfil = true; 
+         //console.log("MI PERFIL");
+        } else {
+          this.miPerfil = false;
+          //console.log("NO MI PERFIL");
+        }
+
         this.obtenerPublicaciones();
         this.obtenerFollowedSesion();
-        this.isMyFollowed();
       });
     });
 
@@ -88,18 +95,22 @@ export class UserProfileComponent implements OnInit {
   obtenerFollowedSesion(){
     this.us.getFollowedPerUser(this.uidUsuarioSesion).subscribe(data => {
       this.followedListSesion = data;
+      if((this.user.uid) != (this.uidUsuarioSesion)) this.isMyFollowed();
+      //console.log("FUNCION " + this.followedListSesion);
     });
   }
 
   isMyFollowed(){
-    var length: number = this.followedListSesion.length;
-    if(length == 0){
+    if(this.followedListSesion.length == 0){
       this.miSeguido = false;
+      //console.log("NO TENGO SEGUIDOS");
     } else {
       if(this.followedListSesion.includes(this.user)){
         this.miSeguido = true;
+        //console.log("LO SIGO");
       } else {
         this.miSeguido = false;
+        console.log("NO LO SIGO");
       }
     }
   }
