@@ -17,7 +17,7 @@ export class NavbarComponent implements OnInit {
   graffitiTitle:string;
   graffiterName:string;
   oauth_token:string;
-  ouath_verifier:string; 
+  oauth_verifier:string; 
 
   constructor(private auth: AuthService, private http: HttpClient, private route: Router) {
    }
@@ -26,8 +26,11 @@ export class NavbarComponent implements OnInit {
     var usuario= JSON.parse(window.sessionStorage.getItem("usuario"));
     this.uid = usuario.uid;
     this.conectadoFlickr = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
-    this.ouath_verifier = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
+    console.log(this.conectadoFlickr);
+    this.oauth_verifier = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
+    console.log(this.oauth_verifier);
     this.oauth_token = JSON.parse(window.sessionStorage.getItem("oauth_token"));
+    console.log(this.oauth_token);
   }
 
   cerrarSesion(){
@@ -59,7 +62,7 @@ export class NavbarComponent implements OnInit {
      const formData : FormData = new FormData();  
      formData.append('file', this.selectedFile, this.selectedFile.name);
      formData.append('oauth_token',this.oauth_token);
-     formData.append('oauth_verifier', this.ouath_verifier);
+     formData.append('oauth_verifier', this.oauth_verifier);
      formData.append('title',this.graffitiTitle);
  
    
