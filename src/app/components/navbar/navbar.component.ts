@@ -72,7 +72,8 @@ export class NavbarComponent implements OnInit {
        //TODO
        //data.id está la id para construir la url de flickr
        //realizar desde aquí el storage en bbdd de la url de la foto y los demás atributos grafitero etc...
-     })
+       let urlPhoto = "https://www.flickr.com/photos/191586112@N04/" + data.id; 
+      })
    
      this.showButton = false; 
    
