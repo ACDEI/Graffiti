@@ -107,7 +107,7 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  searchUserInFollowedList(uidF): boolean{
+  searchUserInFollowedList(uidF: string): boolean{
     var encontrado: boolean = false;
     for(var i = 0; i < this.followedListSesion.length && !encontrado; i++){
       if(this.followedListSesion[i].uid === uidF){
