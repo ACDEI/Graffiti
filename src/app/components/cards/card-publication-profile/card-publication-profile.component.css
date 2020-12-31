@@ -1,0 +1,21 @@
+.row {
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+}
+
+.card-title-color {
+    color: #000;
+}
+
+.btn-social {
+    border: none;
+    background: transparent;
+}
+
+.card-img-top {
+    height: 220px;
+}
+
+.colorred {
+    color: red;
+}

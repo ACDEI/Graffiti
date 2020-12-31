@@ -60,6 +60,7 @@ import { CardPublicationComponent } from './components/cards/card-publication/ca
 import { PublicationViewComponent } from './components/publication-view/publication-view.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { LazyForDirective } from './directives/lazy-for.directive';
+import { CardPublicationProfileComponent } from './components/cards/card-publication-profile/card-publication-profile.component';
 
 
 @NgModule({
@@ -93,6 +94,7 @@ import { LazyForDirective } from './directives/lazy-for.directive';
     PublicationViewComponent,
     UserProfileComponent,
     LazyForDirective,
+    CardPublicationProfileComponent,
   ],
   imports: [
     BrowserModule,
