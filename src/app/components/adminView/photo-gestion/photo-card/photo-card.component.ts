@@ -37,8 +37,10 @@ export class PhotoCardComponent implements OnInit {
   }
 
   deletePublication(pid: string){
-    this.publicationService.deletePublicacion(pid);
-    this.toastr.success("Publicación Eliminada Correctamente", "", {timeOut: 1000});
+    this.publicationService.deletePublicationCF(pid).subscribe(
+      data => { this.toastr.success("Publicación Eliminada Correctamente", "", {timeOut: 1000}); },
+      err => { this.toastr.error("Ups...", "Parece que ha habido un problema", {timeOut: 1000}); }
+    );
   }
 
   cambiarModal(){

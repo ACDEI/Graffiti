@@ -33,8 +33,9 @@ export class CommentsService {
 
   //CLOUD FUNCTIONS COMMENTS
 
-  private comURL = "url/comments/";
+  private comURL = "https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/comments/";
 
+  //GET
   getAllCommentsCF() : Observable<any[]> {
     return this.http.get<any[]>(this.comURL);
   }
@@ -66,7 +67,7 @@ export class CommentsService {
     Post a comment
       * comment : Comment Data
   */
-  postComment(comment: any){
+  postCommentCF(comment: any){
     return this.http.post(this.comURL, comment);
   }
 
@@ -75,7 +76,7 @@ export class CommentsService {
     Delete a Comment
       * cid : Comment CID
   */
-  deleteCommentByCid(cid : any){
+  deleteCommentByCidCF(cid : any){
     return this.http.delete(this.comURL + cid);
   }
 

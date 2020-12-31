@@ -60,7 +60,7 @@ export class PublicationViewComponent implements OnInit {
       text : this.cText,
       image : this.as.userSelected.photoURL
     }
-    this.cs.postComment(comment);
+    this.cs.postCommentCF(comment).subscribe();
   }
 
   generateCID(){

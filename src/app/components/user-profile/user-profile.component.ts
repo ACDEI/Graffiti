@@ -64,7 +64,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   deletePublicacion(pid : string){
-    this.ps.deletePublicacion(pid);
+    this.ps.deletePublicationCF(pid).subscribe();
   }
 
   //Likes
@@ -75,7 +75,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   deleteLike(pid : string){
-    this.us.deleteLikeFromUser(this.user.uid, pid).subscribe();
+    this.us.deleteLikeFromUserCF(this.user.uid, pid).subscribe();
   }
 
   //Followers
@@ -125,12 +125,19 @@ export class UserProfileComponent implements OnInit {
     }
     return loSigo;
   }
+  postFollowed(uidF : string){
+    //this.us.postFollowedPerUser(this.us);
+  }
+
+  deleteFollowed(uidF : string) {  //Dejar de seguir a alguien
+    this.us.deleteFollowedPerUserCF(this.user.uid, uidF).subscribe();
+  }
 
   followUser(uidF: string){
-    this.us.postFollowedPerUser(this.uidUsuarioSesion,uidF).subscribe();
+    this.us.postFollowedPerUserCF(this.uidUsuarioSesion, uidF).subscribe();
   }
 
   unfollowUser(uidF: string){
-    this.us.deleteFollowedPerUser(this.user.uid, uidF).subscribe();
+    this.us.deleteFollowedPerUserCF(this.uidUsuarioSesion, uidF).subscribe();
   }
 }
