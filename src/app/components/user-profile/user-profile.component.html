@@ -21,10 +21,10 @@
         </div>
         <div *ngIf="!miPerfil" class="nav flex-column nav-pill mt-3">
           <div *ngIf="!miSeguido">
-            <button class="btn btn-dark btn-block mb-3" (click)="followUser(user.uid)">Seguir</button>
+            <button class="btn btn-dark btn-block mb-3" (click)="followUser(user.uid, user.photoURL, user.nickName)">Seguir</button>
           </div>
           <div *ngIf="miSeguido">
-            <button class="btn btn-link btn-block mb-3" (click)="unfollowUser(user.uid)">Dejar de Seguir</button>
+            <button class="btn btn-outline-dark btn-block mb-3" (click)="unfollowUser(user.uid)">Dejar de Seguir</button>
           </div>
         </div>
     </div>
@@ -60,11 +60,13 @@
                     </div>
                   </div>
                   <div class="col-lg text-right">
-                    <div *ngIf="!loSigo(fw.uid)">
-                      <button class="btn btn-primary mb-2" (click)="followUser(fw.uid)">Seguir</button>
-                    </div>
-                    <div *ngIf="loSigo(fw.uid)">
-                      <button class="btn btn-link mb-2" (click)="unfollowUser(fw.uid)">Dejar de Seguir</button>
+                    <div *ngIf="!soyYo(fw.uid)">
+                      <div *ngIf="!loSigo(fw.uid)">
+                        <button class="btn btn-primary mb-2" (click)="followUser(fw.uid, fw.image, fw.nick)">Seguir</button>
+                      </div>
+                      <div *ngIf="loSigo(fw.uid)">
+                        <button class="btn btn-outline-dark mb-2" (click)="unfollowUser(fw.uid)">Dejar de Seguir</button>
+                      </div>
                     </div>
                   </div>
                </div>
@@ -73,7 +75,7 @@
         </div>
 
         <div class="tab-pane conf fade" id="v-pills-followed" role="tabpanel" aria-labelledby="v-pills-followed-tab">
-            <div *ngFor="let fd of followedList" class="media border p-3 bg-white rounded mb-1">
+            <div *ngFor="let fd of followedList" class="media border p-3 bg-light rounded mb-1">
               <div class="container">
                 <div class="row align-items-center">
                   <div class="col-lg">
@@ -85,14 +87,14 @@
                     </div>
                   </div>
                   <div *ngIf="miPerfil" class="col-lg text-right">
-                    <div class="btn btn-link mb-2" (click)="unfollowUser(fd.uid)">Dejar de Seguir</div>
+                    <div class="btn btn-outline-dark mb-2" (click)="unfollowUser(fd.uid)">Dejar de Seguir</div>
                   </div>
-                  <div *ngIf="!miPerfil" class="col-lg text-right">
+                  <div *ngIf="!miPerfil && !soyYo()" class="col-lg text-right">
                     <div *ngIf="!loSigo(fd.uid)">
-                      <button class="btn btn-primary mb-2" (click)="followUser(fd.uid)">Seguir</button>
+                      <button class="btn btn-primary mb-2" (click)="followUser(fd.uid, fd.image, fd.nick)">Seguir</button>
                     </div>
                     <div *ngIf="loSigo(fd.uid)">
-                      <button class="btn btn-link mb-2" (click)="unfollowUser(fd.uid)">Dejar de Seguir</button>
+                      <button class="btn btn-outline-dark mb-2" (click)="unfollowUser(fd.uid)">Dejar de Seguir</button>
                     </div>
                   </div>
                </div>

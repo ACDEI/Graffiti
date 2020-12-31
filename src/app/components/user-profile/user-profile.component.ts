@@ -36,14 +36,8 @@ export class UserProfileComponent implements OnInit {
 
         var usuario = JSON.parse(window.sessionStorage.getItem("usuario"));
         this.uidUsuarioSesion = usuario.uid;
-    
-        if((this.user.uid) === (this.uidUsuarioSesion)){
-         this.miPerfil = true; 
-         //console.log("MI PERFIL");
-        } else {
-          this.miPerfil = false;
-          //console.log("NO MI PERFIL");
-        }
+        
+        this.miPerfil = this.user.uid === this.uidUsuarioSesion;
 
         this.obtenerPublicaciones();
         this.obtenerFollowedSesion();
@@ -96,38 +90,44 @@ export class UserProfileComponent implements OnInit {
     this.us.getFollowedPerUser(this.uidUsuarioSesion).subscribe(data => {
       this.followedListSesion = data;
       if((this.user.uid) != (this.uidUsuarioSesion)) this.isMyFollowed();
-      //console.log("FUNCION " + this.followedListSesion);
     });
   }
 
   isMyFollowed(){
     if(this.followedListSesion.length == 0){
       this.miSeguido = false;
-      //console.log("NO TENGO SEGUIDOS");
     } else {
-      if(this.followedListSesion.includes(this.user)){
-        this.miSeguido = true;
-        //console.log("LO SIGO");
-      } else {
-        this.miSeguido = false;
-        console.log("NO LO SIGO");
-      }
+      this.miSeguido = this.searchUserInFollowedList(this.user.uid);
     }
   }
 
   loSigo(uidF: string): boolean{
-    var loSigo: boolean = false;
     if(this.followedListSesion.length != 0){
-      var user = this.us.getUser(uidF);
-      if(this.followedListSesion.includes(user)){
-        loSigo = true;
+      return this.searchUserInFollowedList(uidF)
+    }
+  }
+
+  searchUserInFollowedList(uidF): boolean{
+    var encontrado: boolean = false;
+    for(var i = 0; i < this.followedListSesion.length && !encontrado; i++){
+      if(this.followedListSesion[i].uid === uidF){
+        encontrado = true;
       }
     }
-    return loSigo;
+    return encontrado;
   }
-  
-  followUser(uidF: string){
-    this.us.postFollowedPerUserCF(this.uidUsuarioSesion, uidF).subscribe();
+
+  soyYo(uidF): boolean {
+    return uidF === this.uidUsuarioSesion;
+  }
+
+  followUser(uidF: string, imageF: string, nickF: string){
+    var data = {
+        "uid": uidF,
+        "nick": nickF,
+        "image": imageF
+    };
+    this.us.postFollowedPerUserCF(this.uidUsuarioSesion, data).subscribe();
   }
 
   unfollowUser(uidF: string){
