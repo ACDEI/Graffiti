@@ -81,7 +81,6 @@ export class UserService {
   }
 
   createUser(user: User) : any{
-
     return this.fs.collection('users').doc(user.uid).set({
       email:user.email,
       fullName:user.fullName,
@@ -91,16 +90,13 @@ export class UserService {
       likes:user.likes,
       followers:user.followers,
       followed:user.followed
-  });
+    });
   }
 
-  updateUser(user: User) : Promise<void>{
-    return this.fs.doc('users/' + user.uid).update(user);
-  }
-
-  deleteUser(uid: string) : Promise<void>{
-    return this.userCollection.doc(uid).delete();
-  }
+  /*
+    updateUser(user: User) : Promise<void>{ return this.fs.doc('users/' + user.uid).update(user); }
+    deleteUser(uid: string) : Promise<void>{ return this.userCollection.doc(uid).delete();}
+  */
 
   //FOLLOWERS
   private followers = 'followers';
@@ -129,9 +125,13 @@ export class UserService {
     .pipe( map(c => c) );
   }
 
+  ////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////////////
+
   //CLOUD FUNCTIONS USER
   //GETS
-  private api = 'url/users/';
+  private api = 'https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/users/';
 
   getAllUsersCF() : Observable<any[]> { //Get All Users
     return this.http.get<any[]>(this.api);
@@ -179,8 +179,11 @@ export class UserService {
   }
 
   //FOLLOWERS
+  
+  private apiFollowers = 'https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/followers/';
+  
+  
   //GET
-  private apiFollowers = 'api/followers/';
   getFollowersPerUserCF(uid : any) : Observable<any[]> {  //Followers by User UID 
     return this.http.get<any[]>(this.apiFollowers + uid);
   }
@@ -221,8 +224,10 @@ export class UserService {
   }
 
   //FOLLOWED
+
+  private apiFollowed = 'https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/followed/';
+  
   //GET
-  private apiFollowed = 'api/followed/';
   getFollowedPerUserCF(uid : any) : Observable<any[]> {
     return this.http.get<any[]>(this.apiFollowed + uid);
   }
@@ -238,7 +243,7 @@ export class UserService {
       * uidF : Followed UID
       * usr : Followed
   */
-  putFollowedPerUser(uid : any, uidF : any, usr : any) {
+  putFollowedPerUserCF(uid : any, uidF : any, usr : any) {
     return this.http.put(this.apiFollowed + uid + '&' + uidF, usr);
   }
 
@@ -248,7 +253,7 @@ export class UserService {
       * uid : Main User UID
       * uidF : Followed Data
   */
-  postFollowedPerUser(uid : any, usrF : any) {
+  postFollowedPerUserCF(uid : any, usrF : any) {
     return this.http.post(this.apiFollowed + uid, usrF);
   }
 
@@ -258,18 +263,20 @@ export class UserService {
       * uid : Main User UID
       * uidF : Followed UID
   */
-  deleteFollowedPerUser(uid : any, uidF : any) {
+  deleteFollowedPerUserCF(uid : any, uidF : any) {
     return this.http.delete(this.apiFollowed + uid + '&' + uidF);
   }
 
   //LIKES
-  private apilikes = 'likes';
+  
+  private apiLikes = 'https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/users/likes';
+  
   getLikesPerUserCF(uid : any) : Observable<any[]> {
-    return this.http.get<any[]>(this.api + this.apilikes + '/' + uid);
+    return this.http.get<any[]>(this.apiLikes + '/' + uid);
   }
 
   getLikesCountPerUserCF(uid : any) : Observable<Number> {
-    return this.http.get<Number>(this.api + this.likes + 'count/' + uid);
+    return this.http.get<Number>(this.apiLikes + 'count/' + uid);
   }
 
   //PUT
@@ -279,8 +286,8 @@ export class UserService {
       * pid : Publication PID
       * pub : Publication Data
   */
-  putLikeToUser(uid : any, pid : any, pub : any) {
-    return this.http.put(this.api + this.apilikes + '/' + uid + '&' + pid, pub);
+  putLikeToUserCF(uid : any, pid : any, pub : any) {
+    return this.http.put(this.apiLikes + '/' + uid + '&' + pid, pub);
   }
 
   //POST
@@ -289,8 +296,8 @@ export class UserService {
       * uid : Main User UID
       * pub : Publication Data
   */
-  postLikeToUser(uid : any, pub : any) {
-    return this.http.post(this.api + this.apilikes + '/' + uid, pub);
+  postLikeToUserCF(uid : any, pub : any) {
+    return this.http.post(this.apiLikes + '/' + uid, pub);
   }
 
   //DELETE
@@ -299,8 +306,8 @@ export class UserService {
       * uid : Main User UID
       * pid : Publication PID
   */
-  deleteLikeFromUser(uid : any, pid : any) {
-    return this.http.delete(this.api + this.apilikes + '/' + uid + '&' + pid);
+  deleteLikeFromUserCF(uid : any, pid : any) {
+    return this.http.delete(this.apiLikes + '/' + uid + '&' + pid);
   }
 
 }

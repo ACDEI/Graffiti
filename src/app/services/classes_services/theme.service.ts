@@ -12,8 +12,7 @@ export class ThemeService {
   
   themeCollection: AngularFirestoreCollection<Theme>;
 
-  private themesUrl = 'https://us-central1-graffiti-9b570.cloudfunctions.net/APIRest/themes';  // URL to web api
-  private path="themes";
+  private path = "themes";
 
   constructor(private http: HttpClient, private fs: AngularFirestore, private publicationService: PublicationsService) { 
     this.themeCollection = fs.collection(this.path);
@@ -31,14 +30,16 @@ export class ThemeService {
     return this.fs.collection(this.path).doc(theme.tid).set(theme);
   }
 
-  updateTheme(theme: Theme) : Promise<void>{
-    return this.fs.doc(this.path + '/' + theme.tid)
-      .update(theme);
-  }
+  /*
+  updateTheme(theme: Theme) : Promise<void>{ return this.fs.doc(this.path + '/' + theme.tid).update(theme); }
+  deleteTheme(tid: string) : Promise<void>{ return this.themeCollection.doc(tid).delete(); }
+  */
 
-  deleteTheme(tid: string) : Promise<void>{
-    return this.themeCollection.doc(tid).delete();
-  }
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  private themesUrl = "https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/themes";
 
   //CLOUD FUNCTIONS THEMES
   //GET
