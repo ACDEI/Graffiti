@@ -60,8 +60,12 @@
                     </div>
                   </div>
                   <div class="col-lg text-right">
-                    <button class="btn btn-primary mb-2" (click)="followUser(fw.uid)">Seguir</button>
-                    <button class="btn btn-link mb-2" (click)="unfollowUser(fw.uid)">Dejar de Seguir</button>
+                    <div *ngIf="!loSigo(fw.uid)">
+                      <button class="btn btn-primary mb-2" (click)="followUser(fw.uid)">Seguir</button>
+                    </div>
+                    <div *ngIf="loSigo(fw.uid)">
+                      <button class="btn btn-link mb-2" (click)="unfollowUser(fw.uid)">Dejar de Seguir</button>
+                    </div>
                   </div>
                </div>
               </div>
@@ -84,8 +88,12 @@
                     <div class="btn btn-link mb-2" (click)="unfollowUser(fd.uid)">Dejar de Seguir</div>
                   </div>
                   <div *ngIf="!miPerfil" class="col-lg text-right">
-                    <button class="btn btn-primary mb-2" (click)="followUser(fd.uid)">Seguir</button>
-                    <button class="btn btn-link mb-2" (click)="unfollowUser(fd.uid)">Dejar de Seguir</button>
+                    <div *ngIf="!loSigo(fd.uid)">
+                      <button class="btn btn-primary mb-2" (click)="followUser(fd.uid)">Seguir</button>
+                    </div>
+                    <div *ngIf="loSigo(fd.uid)">
+                      <button class="btn btn-link mb-2" (click)="unfollowUser(fd.uid)">Dejar de Seguir</button>
+                    </div>
                   </div>
                </div>
               </div>

@@ -115,19 +115,22 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  postFollowed(uidF : string){
-    //this.us.postFollowedPerUser(this.us);
-  }
-
-  deleteFollowed(uidF : string) {  //Dejar de seguir a alguien
-    this.us.deleteFollowedPerUser(this.user.uid, uidF).subscribe();
+  loSigo(uidF: string): boolean{
+    var loSigo: boolean = false;
+    if(this.followedListSesion.length != 0){
+      var user = this.us.getUser(uidF);
+      if(this.followedListSesion.includes(user)){
+        loSigo = true;
+      }
+    }
+    return loSigo;
   }
 
   followUser(uidF: string){
-
+    this.us.postFollowedPerUser(this.uidUsuarioSesion,uidF).subscribe();
   }
 
   unfollowUser(uidF: string){
-
+    this.us.deleteFollowedPerUser(this.user.uid, uidF).subscribe();
   }
 }
