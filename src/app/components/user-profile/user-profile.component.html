@@ -65,7 +65,7 @@
                         <button class="btn btn-primary mb-2" (click)="followUser(fw.uid, fw.image, fw.nick)">Seguir</button>
                       </div>
                       <div *ngIf="loSigo(fw.uid)">
-                        <button class="btn btn-outline-dark mb-2" (click)="unfollowUser(fw.uid)">Dejar de Seguir</button>
+                        <button class="btn btn-outline-dark mb-2" (click)="unfollowUser(fw.uid, fw.nick)">Dejar de Seguir</button>
                       </div>
                     </div>
                   </div>
@@ -94,7 +94,7 @@
                       <button class="btn btn-primary mb-2" (click)="followUser(fd.uid, fd.image, fd.nick)">Seguir</button>
                     </div>
                     <div *ngIf="loSigo(fd.uid)">
-                      <button class="btn btn-outline-dark mb-2" (click)="unfollowUser(fd.uid)">Dejar de Seguir</button>
+                      <button class="btn btn-outline-dark mb-2" (click)="unfollowUser(fd.uid, fd.nick)">Dejar de Seguir</button>
                     </div>
                   </div>
                </div>

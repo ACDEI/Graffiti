@@ -6,6 +6,7 @@ import { AuthService } from '@core/services/auth.service';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { UserService } from '@core/services/classes_services/user.service';
 import { CommentsService } from '@core/services/comments.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-publication-view',
@@ -26,8 +27,8 @@ export class PublicationViewComponent implements OnInit {
   hasLike : boolean = false;
 
   constructor(private route: ActivatedRoute, private ps: PublicationsService,
-       private us: UserService, private cs : CommentsService, private as : AuthService) { 
-       }
+       private us: UserService, private cs : CommentsService, private as : AuthService,
+       private ts : ToastrService) { }
 
   ngOnInit(): void {
 
@@ -60,7 +61,11 @@ export class PublicationViewComponent implements OnInit {
       text : this.cText,
       image : this.as.userSelected.photoURL
     }
-    this.cs.postCommentCF(comment).subscribe();
+    this.cs.postCommentCF(comment).subscribe(
+      data => { this.ts.success("Comentario publicado correctamente", "", {timeOut: 1000}); },
+      err => { this.ts.error("Ups...", "Ha Habido un problema al publicar el comentario." 
+        + " Recargue y pruebe de nuevo", {timeOut: 1000}); }
+    );
   }
 
   generateCID(){

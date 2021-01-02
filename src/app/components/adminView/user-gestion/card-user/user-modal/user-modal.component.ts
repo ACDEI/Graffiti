@@ -3,6 +3,7 @@ import { User } from '@core/models/user.model';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { UserService } from '@core/services/classes_services/user.service';
 import { Observable } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-modal',
@@ -17,7 +18,8 @@ export class UserModalComponent implements OnInit {
   followersList: any[];
   followedList: any[];
 
-  constructor(private ps: PublicationsService, private us: UserService) { }
+  constructor(private ps: PublicationsService, private us: UserService,
+      private ts : ToastrService) { }
 
   ngOnInit(): void {
     //this.userPublications$ = this.ps.getUserPublications(this.userR.uid);
@@ -28,25 +30,28 @@ export class UserModalComponent implements OnInit {
 
   //Followers
   obtenerFollowers(){ //USUARIO DE GOOGLE NO TIENE UID
-    this.us.getFollowersPerUser(this.userR.uid).subscribe(data => {
-      this.followersList = data;
-      //console.log(this.followersList);
-    });
+    this.us.getFollowersPerUser(this.userR.uid).subscribe(
+      data => { this.followersList = data; },
+      err => { this.ts.error("Ups...", "Parece que ha habido un problema"
+        + " al obtener los seguidores", {timeOut: 1000}); }
+      );
   }
 
   //Followed
   obtenerFollowed(){
-    this.us.getFollowedPerUser(this.userR.uid).subscribe(data => {
-      this.followedList = data;
-      //console.log(this.followedList);
-    });
+    this.us.getFollowedPerUser(this.userR.uid).subscribe(
+      data => { this.followedList = data; },
+      err => { this.ts.error("Ups...", "Parece que ha habido un problema"
+        + " al obtener los seguidos", {timeOut: 1000}); }
+    );
   }
 
   //Publications
   obtenerPublicaciones(){
-    this.ps.getUserPublications(this.userR.uid).subscribe(data => {
-      this.publicationsList = data;
-      //console.log(this.publicationsList);
-    });
+    this.ps.getUserPublications(this.userR.uid).subscribe(
+      data => { this.publicationsList = data; },
+      err => { this.ts.error("Ups...", "Parece que ha habido un problema"
+        + "al obtener las publicaciones", {timeOut: 1000}); }
+    );
   }
 }

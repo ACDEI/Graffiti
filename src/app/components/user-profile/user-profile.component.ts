@@ -6,6 +6,7 @@ import { User } from '@core/models/user.model';
 import { AuthService } from '@core/services/auth.service';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { UserService } from '@core/services/classes_services/user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-profile',
@@ -26,8 +27,8 @@ export class UserProfileComponent implements OnInit {
   likesList : any[];  //Likes
 
   constructor(private route: ActivatedRoute, private as: AuthService, 
-    private us: UserService, private ps: PublicationsService) { 
-    }
+    private us: UserService, private ps: PublicationsService,
+    private ts : ToastrService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -58,7 +59,10 @@ export class UserProfileComponent implements OnInit {
   }
 
   deletePublicacion(pid : string){
-    this.ps.deletePublicationCF(pid).subscribe();
+    this.ps.deletePublicationCF(pid).subscribe(
+      data => { this.ts.success("Publicación eliminada correctamente", "", {timeOut: 1000}); },
+      err => { this.ts.error("Lo sentimos", "Ha Habido un problema al eliminar publicación.", {timeOut: 1000}); }
+    );
   }
 
   //Likes
@@ -69,7 +73,11 @@ export class UserProfileComponent implements OnInit {
   }
 
   deleteLike(pid : string){
-    this.us.deleteLikeFromUserCF(this.user.uid, pid).subscribe();
+    this.us.deleteLikeFromUserCF(this.user.uid, pid).subscribe(
+      data => { this.ts.success("Favorito eliminado correctamente", "", {timeOut: 1000}); },
+      err => { this.ts.error("Ups...", "Ha Habido un problema al eliminar Like." 
+        + " Pruebe de nuevo", {timeOut: 1000}); }
+    );
   }
 
   //Followers
@@ -94,11 +102,8 @@ export class UserProfileComponent implements OnInit {
   }
 
   isMyFollowed(){
-    if(this.followedListSesion.length == 0){
-      this.miSeguido = false;
-    } else {
-      this.miSeguido = this.searchUserInFollowedList(this.user.uid);
-    }
+    if(this.followedListSesion.length == 0) { this.miSeguido = false; }
+    else { this.miSeguido = this.searchUserInFollowedList(this.user.uid); }
   }
 
   loSigo(uidF: string): boolean{
@@ -110,9 +115,7 @@ export class UserProfileComponent implements OnInit {
   searchUserInFollowedList(uidF: string): boolean{
     var encontrado: boolean = false;
     for(var i = 0; i < this.followedListSesion.length && !encontrado; i++){
-      if(this.followedListSesion[i].uid === uidF){
-        encontrado = true;
-      }
+      if(this.followedListSesion[i].uid === uidF){ encontrado = true; }
     }
     return encontrado;
   }
@@ -127,10 +130,18 @@ export class UserProfileComponent implements OnInit {
         "nick": nickF,
         "image": imageF
     };
-    this.us.postFollowedPerUserCF(this.uidUsuarioSesion, data).subscribe();
+    this.us.postFollowedPerUserCF(this.uidUsuarioSesion, data).subscribe(
+      data => { this.ts.info("Ahora sigues a " + nickF, "", {timeOut: 1000}); },
+      err => { this.ts.error("Ups...", "Ha Habido un problema al seguir." 
+        + " Pruebe de nuevo más tarde", {timeOut: 1000}); }
+    );
   }
 
-  unfollowUser(uidF: string){
-    this.us.deleteFollowedPerUserCF(this.uidUsuarioSesion, uidF).subscribe();
+  unfollowUser(uidF: string, nickF : string){
+    this.us.deleteFollowedPerUserCF(this.uidUsuarioSesion, uidF).subscribe(
+      data => { this.ts.success("Ha dejado de seguir a " + nickF, "", {timeOut: 1000}); },
+      err => { this.ts.error("Ups...", "Ha Habido un problema al dejar de seguir." 
+        + " Pruebe de nuevo más tarde", {timeOut: 1000}); }
+    );
   }
 }

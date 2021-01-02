@@ -9,19 +9,24 @@ import { PublicationsService } from '@core/services/classes_services/publication
   templateUrl: './card-user.component.html',
   styleUrls: ['./card-user.component.css']
 })
+
 export class CardUserComponent implements OnInit {
 
   @Input() userR : User;
 
-  constructor(private toastr : ToastrService, private userService: UserService, private publicationService: PublicationsService) { }
+  constructor(private toastr : ToastrService, private us: UserService, 
+    private ps: PublicationsService) { }
 
   ngOnInit(): void {
     this.cambiarModal();
   }
 
   deleteUser(uid: string){
-    //this.userService.deleteUser(uid);
-    this.toastr.success("Usuario Eliminado Correctamente", "", {timeOut: 1000});
+    this.us.deleteUsersCF(uid).subscribe(
+      data => { this.toastr.success("Usuario Eliminado Correctamente", "", {timeOut: 1000}); },
+      err => { this.toastr.error("Ups...", "Parece que ha habido un problema"
+        + " al eliminar el usuario. Pruebe de nuevo.", {timeOut: 1000}); }
+    );
   }
 
   cambiarModal(){

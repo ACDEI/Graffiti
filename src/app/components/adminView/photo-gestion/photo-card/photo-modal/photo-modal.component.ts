@@ -8,6 +8,7 @@ import { UserService } from '@core/services/classes_services/user.service';
 import { CommentsService } from '@core/services/comments.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-photo-modal',
@@ -30,7 +31,8 @@ export class PhotoModalComponent implements OnInit {
   user$ : Observable<User>;  //User Uploader
 
   constructor(private ps: PublicationsService, private us: UserService,
-    private themeService: ThemeService, private cs : CommentsService) { }
+    private themeService: ThemeService, private cs : CommentsService, 
+    private ts : ToastrService) { }
 
   ngOnInit(): void {
     this.themes = this.pubR.themes;
@@ -76,10 +78,11 @@ export class PhotoModalComponent implements OnInit {
 
   //LIKES
   obtenerLikes(){
-    this.ps.getLikesByPublication(this.pubR.pid).subscribe(data => {
-      this.likesList = data;
-      //console.log(this.commentsList);
-    });
+    this.ps.getLikesByPublication(this.pubR.pid).subscribe(
+      data => { this.likesList = data;},
+      err => { this.ts.error('Algo ha fallado.', 'No se han podido obtener ' 
+        + 'los likes de alguna publicación', {timeOut : 1000}) }
+    );
   }
 
   deleteLikes(lid : any){
@@ -106,7 +109,11 @@ export class PhotoModalComponent implements OnInit {
       "state": this.state,
       "themes": this.themes
     };
-    this.ps.putPublicationCF(this.pubR.pid, pub).subscribe();
+    this.ps.putPublicationCF(this.pubR.pid, pub).subscribe(
+      data => { this.ts.success("Publicación Actualizada Correctamente", "", {timeOut: 1000}); },
+      err => { this.ts.error("Ups...", "No se ha podido actualizar."
+        + " Pruebe de nuevo más tarde", {timeOut: 1000}); }
+    );
   }
 
   //Cambiar el Estado

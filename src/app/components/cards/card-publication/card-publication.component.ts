@@ -3,6 +3,7 @@ import { Publication } from '@core/models/publication';
 import { User } from '@core/models/user.model';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { UserService } from '@core/services/classes_services/user.service';
+import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -18,7 +19,8 @@ export class CardPublicationComponent implements OnInit {
   likesList: any[];
   usuarioSesion: any;
 
-  constructor(private us: UserService, private pb: PublicationsService) { }
+  constructor(private us: UserService, private pb: PublicationsService,
+    private ts : ToastrService) { }
 
   ngOnInit(): void {
     this.us.getUser(this.pubR.uid).then(user => { this.user = user });
@@ -51,11 +53,20 @@ export class CardPublicationComponent implements OnInit {
       "nickName": this.usuarioSesion.nickName,
       "photoURL": this.usuarioSesion.photoURL
     };
-    this.pb.postPublicationLikeCF(pid, data).subscribe();
+    this.pb.postPublicationLikeCF(pid, data).subscribe(
+      data => { this.ts.success("Favorito añadido correctamente", "", {timeOut: 1000}); },
+      err => { this.ts.error("Ups...", "Ha Habido un problema al dar Like." 
+        + " Pruebe de nuevo", {timeOut: 1000}); }
+    );
   }
 
   unlikePhoto(pid: string){
-    this.pb.deletePublicationLikeCF(this.usuarioSesion.uid, pid).subscribe();
+    this.pb.deletePublicationLikeCF(this.usuarioSesion.uid, pid).subscribe(
+      data => { this.ts.success("Favorito eliminado correctamente", "", {timeOut: 1000}); },
+      err => { this.ts.error("Ups...", "Ha Habido un problema al eliminar Like." 
+        + " Pruebe de nuevo", {timeOut: 1000}); }
+    );
+    );
   }
 
 }
