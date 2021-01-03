@@ -38,14 +38,8 @@ export class AuthService {
   
           console.log(yaRegistrado);
 
-          var likes = [];
-          var followers = [];
-          var followed = [];
-          var visited  = [];
-
           self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
-                                "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
-                                "likes":likes, "followers": followers, "followed":followed, "visited":visited };
+                                "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, nVisitados : 0};
       
           self.userService.createUser(self.userSelected);
         
@@ -80,18 +74,18 @@ export class AuthService {
        
         // var secret = result.credential.secret;
         // ...
-      console.log(result);
-      self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
-                            "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
-                            "likes": [], "followers": [], "followed": [], "visited": [] };
-  
-      await self.userService.createUser(self.userSelected);
-      
-      console.log(self.userSelected);
+        console.log(result);
+        self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
+                              "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
+                              "nVisitados": 0};
+    
+        await self.userService.createUser(self.userSelected);
+        
+        console.log(self.userSelected);
 
-      await window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
+        await window.sessionStorage.setItem("usuario",JSON.stringify(self.userSelected));
 
-      await self.router.navigate(['home']);
+        await self.router.navigate(['home']);
      
       }
       
@@ -115,7 +109,7 @@ export class AuthService {
         console.log(result)
         this.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":result.user.displayName,
                             "nickName": "", "photoURL": result.user.photoURL, "isAdmin": false, 
-                            "likes": [], "followers": [], "followed": [], "visited": []};
+                            "nVisitados":0 };
 
         
         this.userService.loginUser(result.user).then( user => {
@@ -146,7 +140,7 @@ export class AuthService {
 
         self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":"",
                             "nickName": "", "photoURL": "", "isAdmin": false, 
-                            "likes": [], "followers": [], "followed": [], "visited": [] };
+                            "nVisitados":0};
 
         self.userService.createUser(self.userSelected);
       }).catch((error) => {
@@ -162,8 +156,7 @@ export class AuthService {
       .then(function(firebaseUser) {  // Success 
         
         self.userSelected = {"uid":firebaseUser.user.uid, "email":firebaseUser.user.email, "fullName":firebaseUser.user.displayName,
-        "nickName": "", "photoURL": "", "isAdmin": true, 
-        "likes": [], "followers": [], "followed": [], "visited": [] };
+                              "nickName": "", "photoURL": "", "isAdmin": true, "nVisitados" : 0 };
          console.log(self.userSelected);
          self.router.navigate(["admin/home"]);
       }).catch(function(error) { // Error Handling

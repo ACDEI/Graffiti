@@ -7,9 +7,9 @@ export interface UserI {
     nickName: string;
     photoURL: string;
     isAdmin: boolean;
-	likes: string[];
-    followers: string[];
-    followed: string[];
+	//likes: string[];
+    //followers: string[];
+    //followed: string[];
     nVisitados: number;
 }
 
@@ -21,10 +21,11 @@ export class User {
     nickName: string;
     photoURL: string;
     isAdmin: boolean;
-	likes: string[];
-    followers: string[];
-    followed: string[];
-    visited: Place[];
+    nVisitados : number;
+	//likes: string[];
+    //followers: string[];
+    //followed: string[];
+    //visited: Place[];
 	
     constructor(){
 

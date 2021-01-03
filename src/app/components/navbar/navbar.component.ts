@@ -25,12 +25,12 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     var usuario= JSON.parse(window.sessionStorage.getItem("usuario"));
     this.uid = usuario.uid;
-    this.conectadoFlickr = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
-    console.log(this.conectadoFlickr);
-    this.oauth_verifier = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
-    console.log(this.oauth_verifier);
-    this.oauth_token = JSON.parse(window.sessionStorage.getItem("oauth_token"));
-    console.log(this.oauth_token);
+    //this.conectadoFlickr = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
+    //console.log(this.conectadoFlickr);
+    //this.oauth_verifier = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
+    //console.log(this.oauth_verifier);
+    //this.oauth_token = JSON.parse(window.sessionStorage.getItem("oauth_token"));
+    //console.log(this.oauth_token);
   }
 
   cerrarSesion(){
@@ -71,7 +71,7 @@ export class NavbarComponent implements OnInit {
      let result = this.http.post<any>(url,formData);
    
      result.subscribe(data =>{
-       console.log(data);
+       //console.log(data);
        //TODO
        //data.id está la id para construir la url de flickr
        //realizar desde aquí el storage en bbdd de la url de la foto y los demás atributos grafitero etc...

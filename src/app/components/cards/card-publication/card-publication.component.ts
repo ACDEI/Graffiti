@@ -32,15 +32,15 @@ export class CardPublicationComponent implements OnInit {
   }
 
   isLiked(pid: string): boolean {
-    if(this.likesList.length != 0){
+    if(this.likesList?.length != 0){
       return this.searchLikePhoto(pid);
     }
   }
 
   searchLikePhoto(pid: string): boolean {
     var encontrado: boolean = false;
-    for(var i = 0; i < this.likesList.length && !encontrado; i++){
-      if(this.likesList[i].pid === pid){
+    for(var i = 0; i < this.likesList?.length && !encontrado; i++){
+      if(this.likesList[i]?.pid === pid){
         encontrado = true;
       }
     }
@@ -65,7 +65,6 @@ export class CardPublicationComponent implements OnInit {
       data => { this.ts.success("Favorito eliminado correctamente", "", {timeOut: 1000}); },
       err => { this.ts.error("Ups...", "Ha Habido un problema al eliminar Like." 
         + " Pruebe de nuevo", {timeOut: 1000}); }
-    );
     );
   }
 

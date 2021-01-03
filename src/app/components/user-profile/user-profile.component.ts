@@ -40,6 +40,7 @@ export class UserProfileComponent implements OnInit {
         
         this.miPerfil = this.user.uid === this.uidUsuarioSesion;
 
+        this.cambiarPill();
         this.obtenerPublicaciones();
         this.obtenerFollowedSesion();
       });
@@ -143,5 +144,31 @@ export class UserProfileComponent implements OnInit {
       err => { this.ts.error("Ups...", "Ha Habido un problema al dejar de seguir." 
         + " Pruebe de nuevo más tarde", {timeOut: 1000}); }
     );
+  }
+
+  cambiarPill(){
+
+    //Poner Todas Sin Active
+    var pillsBtn = document.getElementsByClassName('nl nav-link');
+    var pillsShow = document.getElementsByClassName('tab-pane conf');
+    //console.log(pillsShow)
+    for (var i = 0; i < pillsBtn.length; i++) {
+
+      //Agregamos / Quitamos Clase
+      var obj = pillsBtn.item(i);
+      var id = obj.getAttribute('id');
+
+      if( id === 'v-pills-myGraffitis-tab') obj.classList.add('active');
+      else obj.classList.remove('active');
+
+      //Mostramos / Ocultamos Panel
+      var panel = pillsShow.item(i);
+      var idP = panel.getAttribute('id');
+      if(idP === 'v-pills-myGraffitis') panel.className += ' active show';
+      else {
+        panel.classList.remove('active');
+        panel.classList.remove('show');
+      }
+    }
   }
 }

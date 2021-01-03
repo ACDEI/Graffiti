@@ -2,22 +2,22 @@
     <div class="card-header">
         <div class="row">
             <div *ngIf="user" class="col-lg-2 col-md-2 col-sm-2" style="margin-left: -15px">
-                <img src={{user.photoURL}} alt="avatar-user" class="rounded-circle" width="30px">
+                <img src={{user?.photoURL}} alt="avatar-user" class="rounded-circle" width="30px">
             </div>
             <div *ngIf="user" class="col-lg-9 col-md-9 col-sm-9 mt-1">
                 <a class="card-title" [routerLink]="['/user-profile', user.uid]">
-                    <h6>{{pubR.upl_nick}}</h6>
+                    <h6>{{pubR?.upl_nick}}</h6>
                 </a>  
             </div>
         </div>
     </div>
     <a [routerLink]="['/publication-view', pubR.pid]">
-        <img class="card-img-top" src={{pubR.image}} alt="Card image cap">
+        <img class="card-img-top" src={{pubR?.image}} alt="Card image cap">
     </a>
     <div class="card-footer">
         <div class="text-center">
             <a class="card-title card-title-color" [routerLink]="['/publication-view', pubR.pid]">
-                <h6>{{pubR.title}}</h6>
+                <h6>{{pubR?.title}}</h6>
             </a>
             <div *ngIf="isLiked(pubR.pid)">
                <button class="btn-social" (click)="unlikePhoto(pubR.pid)"><i class="fas fa-heart colorred"></i></button>

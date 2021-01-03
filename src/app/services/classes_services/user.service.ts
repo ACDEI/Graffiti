@@ -53,9 +53,6 @@ export class UserService {
           nickName: u.get("nickName"),
           photoURL: u.get("photoURL"),
           isAdmin: u.get("isAdmin"),
-          likes: u.get("likes"),
-          followers: u.get("followers"),
-          followed: u.get("followed"),
           nVisitados: u.get("nVisitados")
         }
       }else{
@@ -66,9 +63,6 @@ export class UserService {
           nickName: "",
           photoURL: user.photoURL,
           isAdmin: false,
-          likes: [],
-          followers: [],
-          followed: [],
           nVisitados: 0
         }
         this.fs.doc('users/' + user.uid).set(res)
@@ -87,9 +81,7 @@ export class UserService {
       nickName:user.nickName,
       photoURL:user.photoURL,
       isAdmin:user.isAdmin,
-      likes:user.likes,
-      followers:user.followers,
-      followed:user.followed
+      nVisitados : 0,
     });
   }
 

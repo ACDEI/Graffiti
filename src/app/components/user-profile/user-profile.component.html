@@ -10,13 +10,13 @@
             <h6 *ngIf="user?.nickName != ''" class="mt-1">@{{user?.nickName}}</h6>
         </div>
         <div class="nav flex-column nav-pills text-center" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-          <a class="nav-link active" id="v-pills-myGraffitis-tab" data-toggle="pill" href="#v-pills-myGraffitis" role="tab" 
+          <a class="nl nav-link" id="v-pills-myGraffitis-tab" data-toggle="pill" href="#v-pills-myGraffitis" role="tab" 
                 aria-controls="v-pills-myGraffitis" aria-selected="true">Graffitis</a>
-          <a class="nav-link" id="v-pills-favourites-tab" data-toggle="pill" href="#v-pills-favourites" role="tab" 
+          <a class="nl nav-link" id="v-pills-favourites-tab" data-toggle="pill" href="#v-pills-favourites" role="tab" 
                 aria-controls="v-pills-favourites" aria-selected="false" (click)='obtenerLikes()'>Favoritas</a>
-          <a class="nav-link" id="v-pills-followers-tab" data-toggle="pill" href="#v-pills-followers" role="tab" 
+          <a class="nl nav-link" id="v-pills-followers-tab" data-toggle="pill" href="#v-pills-followers" role="tab" 
                 aria-controls="v-pills-followers" aria-selected="false" (click)='obtenerFollowers()'>Seguidores</a>
-          <a class="nav-link" id="v-pills-followed-tab" data-toggle="pill" href="#v-pills-followed" role="tab" 
+          <a class="nl nav-link" id="v-pills-followed-tab" data-toggle="pill" href="#v-pills-followed" role="tab" 
                 aria-controls="v-pills-followed" aria-selected="false" (click)='obtenerFollowed()'>Seguidos</a>
         </div>
         <div *ngIf="!miPerfil" class="nav flex-column nav-pill mt-3">
@@ -31,7 +31,7 @@
 
     <div class="col-lg-9 tab-content" id="v-pills-tabContent">
 
-        <div class="tab-pane conf fade text-center active show" id="v-pills-myGraffitis" role="tabpanel" aria-labelledby="v-pills-myGraffitis-tab">
+        <div class="tab-pane conf fade text-center" id="v-pills-myGraffitis" role="tabpanel" aria-labelledby="v-pills-myGraffitis-tab">
             <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-4" *ngFor="let pub of pubList">
                     <app-card-publication [pubR]='pub'></app-card-publication>
