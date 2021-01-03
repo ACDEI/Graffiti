@@ -53,7 +53,7 @@ p {
 
 .name-container p {
   font-family: exo2;
-  color: "#drdrdr";
+  color: #000;
   font-size: 1.6em;
 }
 
@@ -74,3 +74,4 @@ p {
   color: "#drdrdr";
   font-size: 1em;
 }
+

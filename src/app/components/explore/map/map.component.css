@@ -5,7 +5,9 @@
   z-index: -1;
 }
 
-#map-gallery-link {
+#gallery-profile-links {
   position: absolute;
+  display: inline-flex;
   z-index: 2;
 }
+

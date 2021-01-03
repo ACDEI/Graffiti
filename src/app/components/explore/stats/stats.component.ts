@@ -13,14 +13,12 @@ export class StatsComponent implements OnInit {
   name:string;
   level: number;
   progress: number[];
-  uid: string;
 
   constructor(private gameService: GameService) { }
 
   ngOnInit(): void {
     var usuario= JSON.parse(window.sessionStorage.getItem("usuario"));
 
-    this.uid = usuario.uid;
     this.name = usuario.nickName;
     this.photo = usuario.photoURL;
 
