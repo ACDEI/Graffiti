@@ -4,3 +4,8 @@
   position: absolute;
   z-index: -1;
 }
+
+#map-gallery-link {
+  position: absolute;
+  z-index: 2;
+}
