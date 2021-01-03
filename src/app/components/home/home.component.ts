@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { ThemeService } from '@core/services/classes_services/theme.service';
 import { AngularFirestoreCollection } from '@angular/fire/firestore';
@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
 
   publicationsList: any[];
   themesList: any[];
+  twttr: any;
 
   //Form
   graffiter: string;
@@ -34,8 +35,8 @@ export class HomeComponent implements OnInit {
     //obtener por url los token cuando flickr redireccione
     this.oauth_token = this.route.snapshot.queryParams.oauth_token;
     this.oauth_verifier = this.route.snapshot.queryParams.oauth_verifier;
-    window.sessionStorage.setItem("oauth_token",JSON.stringify(this.oauth_token));
-    window.sessionStorage.setItem("oauth_verifier",JSON.stringify(this.oauth_verifier));
+    window.sessionStorage.setItem("oauth_token", JSON.stringify(this.oauth_token));
+    window.sessionStorage.setItem("oauth_verifier", JSON.stringify(this.oauth_verifier));
     console.log("vefifier -------> " + this.oauth_verifier);
 
     this.isFilter = false;
@@ -54,6 +55,10 @@ export class HomeComponent implements OnInit {
     .subscribe((data) => {
       this.themesList = data;
     });
+  }
+
+  ngAfterViewInit(): void {
+    (<any>window).twttr.widgets.load();
   }
 
   getByStatus(){

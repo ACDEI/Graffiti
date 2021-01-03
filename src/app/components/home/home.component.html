@@ -86,12 +86,21 @@
     </div>
 </div>
 
-<!--ngFor de cards solo si es necesario-->
-<div id="showResultList" class="row mt-4">
-    <div class="col-lg-3 col-md-6" loading="lazy" *ngFor="let pub of publicationsList">
-      <app-card-publication [pubR]='pub'></app-card-publication>
+<div class="row">
+    <div class="col-lg-9">
+        <!--ngFor de cards solo si es necesario-->
+        <div id="showResultList" class="row mt-4">
+            <div class="col-lg-3 col-md-6" loading="lazy" *ngFor="let pub of publicationsList">
+                <app-card-publication [pubR]='pub'></app-card-publication>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <a class="twitter-timeline" href="https://twitter.com/MalagartG?ref_src=twsrc%5Etfw">
+            Tweets by MalagartG
+        </a> 
+    </div>
 </div>
-
 
 <!--
 <p>Vista usuario logeado</p>
