@@ -53,15 +53,15 @@
 
             <div class="form-group">
               <label for="graffitiTitle"><strong>Título</strong></label>
-              <input type="text" name="graffitiTitle" class="form-control" id="inputGraffiterTitle">
+              <input type="text" name="graffitiTitle" [(ngModel)]="graffitiTitle" class="form-control" id="inputGraffiterTitle">
             </div>
             <div class="form-group">
               <label for="graffiterName"><strong>Graffitero</strong></label>
-              <input type="text" name="graffiterName" class="form-control" id="inputGraffiterName">
+              <input type="text" name="graffiterName" [(ngModel)]="graffiterName" class="form-control" id="inputGraffiterName">
             </div>
             <div class="form-group">
               <label for="themeSelector"><strong>Tema</strong></label>
-              <select multiple class="form-control" id="selectTheme">
+              <select multiple class="form-control" id="selectTheme" [(ngModel)]="themeSelector" name="themeSelector">
                 <option>Urban</option>
                 <option>Nature</option>
                 <option>Stylish</option>
@@ -71,7 +71,7 @@
             </div>
             <div class="form-group">
               <label for="statusSelector"><strong>Estado</strong></label>
-              <select class="form-control" id="selectStatus">
+              <select class="form-control" id="selectStatus" [(ngModel)]="statusSelector" name="statusSelector">
                 <option>Perfect</option>
                 <option>Legible</option>
                 <option>Deteriorated</option>

@@ -15,6 +15,8 @@ export class NavbarComponent implements OnInit {
   conectadoFlickr = false ; 
   selectedFile: File = null;
   showButton = false; 
+  statusSelector:string;
+  themeSelector:string [];
   graffitiTitle:string;
   graffiterName:string;
   oauth_token:string;
@@ -42,8 +44,10 @@ export class NavbarComponent implements OnInit {
   }
 
   conectarFlickr(){
+
+    /*
     let self = this;
-    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+    firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
       // Send token to your backend via HTTPS
       // ...
       self.idToken = idToken; 
@@ -56,12 +60,12 @@ export class NavbarComponent implements OnInit {
 
     let headers = new HttpHeaders({
       'Authorization': this.idToken , 
-       'Accept': '*/*',
+       'Accept': '/*',
        'Accept-Encoding':'gzip, deflate, br'
     });
      let options = { headers: headers };
 
-    
+    */
 
     //let url = "http://localhost:5001/graffiti-9b570/us-central1/APIRest/flickr/conectar";
     let url = "http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/flickr/conectar";
