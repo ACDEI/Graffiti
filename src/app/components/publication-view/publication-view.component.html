@@ -30,11 +30,11 @@
       </div>
       <div class="card-footer mt-2 mx-4 rounded">
         <div *ngIf="isLiked()">
-          <button class="btn-social" (click)="deleteLike()"><i class="fas fa-heart colorred"></i></button>
+          <button class="btn-social" (click)="unlikePhoto()"><i class="fas fa-heart colorred"></i></button>
           <button class="btn-social"><i class="fab fa-twitter colorblue"></i></button>
         </div>
         <div *ngIf="!isLiked()">
-          <button class="btn-social" (click)="postLike()"><i class="far fa-heart colorred"></i></button>
+          <button class="btn-social" (click)="likePhoto()"><i class="far fa-heart colorred"></i></button>
           <button class="btn-social"><i class="fab fa-twitter colorblue"></i></button>
         </div>
       </div>

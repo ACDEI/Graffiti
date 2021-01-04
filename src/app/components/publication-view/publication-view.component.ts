@@ -50,25 +50,9 @@ export class PublicationViewComponent implements OnInit {
       });
     });
     this.usuarioSesion = JSON.parse(window.sessionStorage.getItem("usuario"));
-    this.getLikesUserSesion();
-  }
-
-  //Obtener likes del usuario sesion
-  getLikesUserSesion(){
     this.us.getLikesPerUserCF(this.usuarioSesion.uid).subscribe(values => {
       this.likesSesion = values;
     });
-  }
-
-  //Mirar si la publicacion esta dentro de los likes
-  isLiked(): boolean{
-    var encontrada: boolean = false;
-    for(var i = 0; i < this.likesSesion.length && !encontrada; i++){
-      if(this.likesSesion[i].pid === this.pub.pid){
-        encontrada = true;
-      }
-    }
-    return encontrada;
   }
 
   //Comments
@@ -111,21 +95,38 @@ export class PublicationViewComponent implements OnInit {
   }
 
   //Likes
-  postLike(){
-    let user : any = this.as.userSelected;
-    this.ps.postPublicationLikeCF(this.pub.pid, user).subscribe(
-      data => this.hasLike = true,
-      err => this.hasLike = false
+  //Mirar si la publicacion esta dentro de los likes
+  isLiked(): boolean{
+    var encontrada: boolean = false;
+    if(this.likesSesion?.length > 0) {
+      for(var i = 0; i < this.likesSesion?.length && !encontrada; i++){
+        if(this.likesSesion[i]?.pid === this.pub.pid){
+          encontrada = true;
+        }
+      }
+    }
+    return encontrada;
+  }
+
+  likePhoto(){
+    var data = {
+      "uid": this.usuarioSesion.uid,
+      "nickName": this.usuarioSesion.nickName,
+      "photoURL": this.usuarioSesion.photoURL
+    };
+    this.ps.postPublicationLikeCF(this.pub.pid, data).subscribe(
+      data => { this.ts.success("Favorito añadido correctamente", "", {timeOut: 1000}); },
+      err => { this.ts.error("Ups...", "Ha Habido un problema al dar Like." 
+        + " Pruebe de nuevo", {timeOut: 1000}); }
     );
   }
 
-  deleteLike(){
-    let uid : any = this.as.userSelected.uid;
-    this.ps.deletePublicationLikeCF(uid, this.pub.pid).subscribe(
-      data => this.hasLike = false,
-      err => this.hasLike = true
+  unlikePhoto(){
+    this.ps.deletePublicationLikeCF(this.usuarioSesion.uid, this.pub.pid).subscribe(
+      data => { this.ts.success("Favorito eliminado correctamente", "", {timeOut: 1000}); },
+      err => { this.ts.error("Ups...", "Ha Habido un problema al eliminar Like." 
+        + " Pruebe de nuevo", {timeOut: 1000}); }
     );
-
   }
 
 }
