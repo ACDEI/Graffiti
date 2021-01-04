@@ -43,6 +43,18 @@ export class PublicationsService {
     });
   }
 
+  async getPublicationCount(): Promise<any> {
+    var res : any;
+    await this.fs.collection(this.path).get().toPromise().then( p => {
+      res = p.size;
+      //console.log(res);
+    });
+
+    return new Promise<any>( (resolve,reject) => {
+      resolve(res);
+    });
+  }
+
   createPublication(publication : Publication) : any{
     return this.fs.collection(this.path).doc(publication.pid).set(publication);
   }
@@ -92,8 +104,8 @@ export class PublicationsService {
     return this.http.get<any[]>(this.pubsUrl + "range/" + from + '/' + to);
   }
 
-  getPublicationsCountCF() : Observable<Number> {
-    return this.http.get<Number>(this.pubsUrl + "count");
+  getPublicationsCountCF() : Observable<any> {
+    return this.http.get<any>(this.pubsUrl + "count");
   }
 
   getPublicationsByUserUidCF(uid : any) : Observable<any[]> {
