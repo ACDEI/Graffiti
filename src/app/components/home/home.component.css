@@ -6,3 +6,41 @@
 .col-lg-3 {
     max-width: 100%;
 }
+
+#pags{
+    justify-content: center;
+}
+
+.pagination /deep/ .ngx-pagination .current{
+    background: gray;
+    border-radius: 100%;
+    font-weight: bolder;
+}
+
+.pagination /deep/ .ngx-pagination a{
+    border-radius: 5px;
+    font-weight: bolder;
+}
+
+.pagination /deep/ .ngx-pagination a:hover{
+    background: turquoise;
+    border-radius: 5px;
+    font-weight: bolder;
+    color: white;
+}
+
+.pagination /deep/ .ngx-pagination a::after{
+    display: none;
+}
+
+.pagination /deep/ .ngx-pagination li::before{
+    display: none;
+}
+
+.pagination /deep/ .ngx-pagination li::after{
+    display: none;
+}
+
+.pagination /deep/ .ngx-pagination a::before{
+    display: none;
+}
