@@ -1,0 +1,105 @@
+<app-navbar></app-navbar>
+<!-- Filtros Usuarios -->
+<div class="row">
+    <div class="col-lg-2">
+        <button class="btn btn-block btn-dark ml-3 mt-4" style="font-weight: bold;" data-toggle="collapse" href="#showFilters" aria-expanded="false" aria-controls="collapse-filter">
+            Búsqueda
+            <span style="float: right">
+                <i class="fas fa-chevron-down"></i>
+            </span>
+        </button>
+    </div>
+</div>
+
+<div id="showFilters" class="collapse">
+    <div class="row mt-3">
+        <div class="col-lg col-md col-sm">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        Nombre
+                    </h4>
+                    <form class="form">
+                        <div class="form-group">
+                            <div id="row-card" class="row">
+                                <div class="col-lg-10">
+                                    <select name="fullName" [(ngModel)]="fullName" class="form-control"></select>
+                                </div>
+                                <div class="col-lg-2">
+                                    <button (click)="getByFullName()" class="btn btn-primary ml-2"><i class="fas fa-search"></i></button>   
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg col-md col-sm">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        Email
+                    </h4>
+                    <form class="form">
+                        <div class="form-group">
+                            <div id="row-card" class="row">
+                                <div class="col-lg-10">
+                                    <select name="fullName" [(ngModel)]="email" class="form-control"></select>
+                                </div>
+                                <div class="col-lg-2">
+                                    <button (click)="getByEmail()" class="btn btn-primary ml-2"><i class="fas fa-search"></i></button>   
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg col-md col-sm">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h4 class="card-title">
+                        Nombre de Usuario
+                    </h4>
+                    <form class="form">
+                        <div class="form-group">
+                            <div id="row-card" class="row">
+                                <div class="col-lg-10">
+                                    <select name="fullName" [(ngModel)]="nickName" class="form-control"></select>
+                                </div>
+                                <div class="col-lg-2">
+                                    <button (click)="getByNickName()" class="btn btn-primary ml-2"><i class="fas fa-search"></i></button>   
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3" *ngIf="isFilter">
+            <div class="col-lg col-md col-sm">
+                <button class="btn btn-light btn-block" (click)="resetear()">Resetear</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-9">
+        <!--ngFor de cards solo si es necesario-->
+        <div id="showResultList" class="row mt-4">
+            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6" loading="lazy" *ngFor="let user of usersList | paginate: config">
+                <app-card-user-normal [userR]='user.data'></app-card-user-normal>
+            </div>
+        </div>
+        <div class="row" id="pags">
+            <pagination-controls class="pagination" (pageChange)="pageChanged($event)"></pagination-controls>
+        </div>
+    </div>
+    <div class="col-lg-3">
+        <a class="twitter-timeline" href="https://twitter.com/MalagArt_acdei?ref_src=twsrc%5Etfw">
+            Tweets by MalagartG
+        </a> 
+    </div>
+</div>
+

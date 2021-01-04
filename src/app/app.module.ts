@@ -62,6 +62,8 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { LazyForDirective } from './directives/lazy-for.directive';
 import { CardPublicationProfileComponent } from './components/cards/card-publication-profile/card-publication-profile.component';
 import { PubMapComponent } from './components/publication-view/map/pub-map/pub-map.component';
+import { UsersSearchComponent } from './components/users-search/users-search.component';
+import { CardUserNormalComponent } from './components/cards/card-user-normal/card-user-normal.component';
 
 
 @NgModule({
@@ -97,6 +99,8 @@ import { PubMapComponent } from './components/publication-view/map/pub-map/pub-m
     LazyForDirective,
     CardPublicationProfileComponent,
     PubMapComponent,
+    UsersSearchComponent,
+    CardUserNormalComponent,
   ],
   imports: [
     BrowserModule,

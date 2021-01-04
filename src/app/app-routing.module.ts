@@ -17,6 +17,7 @@ import {AngularFireAuthGuard, hasCustomClaim, redirectUnauthorizedTo, redirectLo
 import {AdminGuard} from './guard/admin.guard';
 import { PublicationViewComponent } from './components/publication-view/publication-view.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { UsersSearchComponent } from './components/users-search/users-search.component';
 
 const adminOnly = () => hasCustomClaim('admin');
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo([""]);
@@ -24,6 +25,7 @@ const redirectUnauthorizedAdmin = () => redirectUnauthorizedTo([""]);
 
 const routes: Routes = [
   {path:"" , component: InicioComponent},
+  {path: "user-search", component: UsersSearchComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }},
   {path: "explore", component: ExploreComponent},
   {path: "home", component: HomeComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }},
   {path: "publication-view/:pid", component: PublicationViewComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }},

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
+import { UserService } from '@core/services/classes_services/user.service';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class NavbarComponent implements OnInit {
   idToken : string;
   urlFoto:string; 
 
-  constructor(private auth: AuthService, private http: HttpClient, private route: Router , private ps: PublicationsService) {
+  constructor(private auth: AuthService, private http: HttpClient, private route: Router , private ps: PublicationsService, private userService: UserService) {
    }
 
   ngOnInit(): void {

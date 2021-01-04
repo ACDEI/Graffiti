@@ -4,12 +4,12 @@ import { UserService } from '@core/services/classes_services/user.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: 'app-card-user',
-  templateUrl: './card-user.component.html',
-  styleUrls: ['./card-user.component.css']
+  selector: 'app-card-user-normal',
+  templateUrl: './card-user-normal.component.html',
+  styleUrls: ['./card-user-normal.component.css']
 })
-export class CardUserComponent implements OnInit {
-
+export class CardUserNormalComponent implements OnInit {
+  
   usuarioSesion: any;
   @Input() userR: User;
 

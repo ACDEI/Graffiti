@@ -165,6 +165,18 @@ export class UserService {
     return this.http.get<Number>(this.api + 'count');
   }
 
+  async getUsersCount(): Promise<any> {
+    var res : any;
+    await this.fs.collection(this.path).get().toPromise().then( p => {
+      res = p.size;
+      //console.log(res);
+    });
+
+    return new Promise<any>( (resolve,reject) => {
+      resolve(res);
+    });
+  }
+
   getUsersByNameCF(name : any) : Observable<any[]> { //Get Users By Name (fragment)
     return this.http.get<any[]>(this.api + 'name/' + name);
   }
