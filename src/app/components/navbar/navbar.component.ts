@@ -1,7 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-navbar',
@@ -18,6 +19,7 @@ export class NavbarComponent implements OnInit {
   graffiterName:string;
   oauth_token:string;
   oauth_verifier:string; 
+  idToken : string;
 
   constructor(private auth: AuthService, private http: HttpClient, private route: Router) {
    }
@@ -40,7 +42,26 @@ export class NavbarComponent implements OnInit {
   }
 
   conectarFlickr(){
+    let self = this;
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true).then(function(idToken) {
+      // Send token to your backend via HTTPS
+      // ...
+      self.idToken = idToken; 
+      console.log(idToken);
+    }).catch(function(error) {
+      // Handle error
+    });
+
     this.conectadoFlickr = true; 
+
+    let headers = new HttpHeaders({
+      'Authorization': this.idToken , 
+       'Accept': '*/*',
+       'Accept-Encoding':'gzip, deflate, br'
+    });
+     let options = { headers: headers };
+
+    
 
     //let url = "http://localhost:5001/graffiti-9b570/us-central1/APIRest/flickr/conectar";
     let url = "http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/flickr/conectar";
@@ -59,7 +80,6 @@ export class NavbarComponent implements OnInit {
 
   subirImagen(){
 
- 
      const formData : FormData = new FormData();  
      formData.append('file', this.selectedFile, this.selectedFile.name);
      formData.append('oauth_token',this.oauth_token);
