@@ -25,11 +25,11 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     var usuario= JSON.parse(window.sessionStorage.getItem("usuario"));
     this.uid = usuario.uid;
-    //this.conectadoFlickr = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
+    this.conectadoFlickr = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
     //console.log(this.conectadoFlickr);
-    //this.oauth_verifier = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
+    this.oauth_verifier = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
     //console.log(this.oauth_verifier);
-    //this.oauth_token = JSON.parse(window.sessionStorage.getItem("oauth_token"));
+    this.oauth_token = JSON.parse(window.sessionStorage.getItem("oauth_token"));
     //console.log(this.oauth_token);
   }
 
@@ -42,7 +42,8 @@ export class NavbarComponent implements OnInit {
   conectarFlickr(){
     this.conectadoFlickr = true; 
 
-    let url = "http://localhost:5001/graffiti-9b570/us-central1/APIRest/flickr/conectar";
+    //let url = "http://localhost:5001/graffiti-9b570/us-central1/APIRest/flickr/conectar";
+    let url = "http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/flickr/conectar";
   
     let result = this.http.get<any>(url);
   
@@ -66,7 +67,8 @@ export class NavbarComponent implements OnInit {
      formData.append('title',this.graffitiTitle);
  
    
-     let url = "http://localhost:5001/graffiti-9b570/us-central1/APIRest/flickr/upload";
+     //let url = "http://localhost:5001/graffiti-9b570/us-central1/APIRest/flickr/upload";
+     let url = "http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/flickr/upload"
    
      let result = this.http.post<any>(url,formData);
    
@@ -76,8 +78,9 @@ export class NavbarComponent implements OnInit {
        //data.id está la id para construir la url de flickr
        //realizar desde aquí el storage en bbdd de la url de la foto y los demás atributos grafitero etc...
        let urlPhoto = "https://www.flickr.com/photos/191586112@N04/" + data.id; 
+       console.log(data);
       })
-   
+     
      this.showButton = false; 
    
    }
