@@ -23,7 +23,7 @@ export class NavbarComponent implements OnInit {
   oauth_token:string;
   oauth_verifier:string; 
   idToken : string;
-  idFoto:string; 
+  urlFoto:string; 
 
   constructor(private auth: AuthService, private http: HttpClient, private route: Router , private ps: PublicationsService) {
    }
@@ -75,27 +75,25 @@ export class NavbarComponent implements OnInit {
    
      let self = this; 
      
-     await result.subscribe(data =>{
-       self.idFoto = data.id ;
-       console.log(data);
-       console.log(data.id);
+     result.subscribe(data =>{
+        //self.idFoto = data.id ;
+        console.log(data);
+        self.urlFoto = "https://live.staticflickr.com/"+ data.photo.server + "/"+ data.photo.id +"_"+ data.photo.secret +".jpg" ;
+        console.log(self.urlFoto);
+
+        let d = new Date();
+         // TODO lat y long
+        let photo : any = { "state": this.statusSelector, "theme": this.themeSelector ,
+        "title": this.graffitiTitle, "name": this.graffiterName , "photoURL": this.urlFoto , "uid": this.uid , 
+        "nLikes": 0 , "graffiter": this.graffiterName, "date": d.toString}
+         
+        this.ps.postPublicationCF(photo);
       })
     
-
-      console.log("idFoto cliente ---------------> "+ this.idFoto);
-      let resultado = await this.http.get<any>("https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=9cab71d9d05b7c91e06ae4da65b6ba8d&photo_id="+ this.idFoto + "&format=json&nojsoncallback=?");
+  
+    
+    
      
-      resultado.subscribe(data => {
-        console.log(data);
-      })
-      let urlFoto = "";
-    //TODO lat y long 
-
-    let photo : any = { "state": this.statusSelector, "theme": this.themeSelector ,
-    "title": this.graffitiTitle, "name": this.graffiterName , "url": urlFoto}
-    this.ps.postPublicationCF(photo);
-     
-
      this.showButton = false; 
    
    }
