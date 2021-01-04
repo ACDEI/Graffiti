@@ -130,7 +130,8 @@ export class AuthService {
 }
 
 signOut(){
-
+  window.sessionStorage.clear(); 
+  this.userSelected = null;
   let self = this;
   firebase.auth().signOut().then(function() { // Sign-out successful. 
     self.router.navigate(['']);
@@ -206,6 +207,7 @@ verifyIdToken(){
     })
 }
 */
+/*
 signOutFacebook(){
 
   let self = this;
@@ -216,5 +218,5 @@ signOutFacebook(){
   });
   
 }
-
+*/
 }

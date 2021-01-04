@@ -20,7 +20,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 
 const adminOnly = () => hasCustomClaim('admin');
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo([""]);
-const redirectUnauthorizedAdmin = () => redirectUnauthorizedTo(["admin"]);
+const redirectUnauthorizedAdmin = () => redirectUnauthorizedTo([""]);
 
 const routes: Routes = [
   {path:"" , component: InicioComponent},
