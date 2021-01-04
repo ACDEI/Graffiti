@@ -20,6 +20,7 @@ export class PublicationViewComponent implements OnInit {
   user: User;
   pubThemes: string[];
   usuarioSesion : any;
+  likesSesion: any[];
 
   //Comments Things
   commentsList : any[];
@@ -49,6 +50,25 @@ export class PublicationViewComponent implements OnInit {
       });
     });
     this.usuarioSesion = JSON.parse(window.sessionStorage.getItem("usuario"));
+    this.getLikesUserSesion();
+  }
+
+  //Obtener likes del usuario sesion
+  getLikesUserSesion(){
+    this.us.getLikesPerUserCF(this.usuarioSesion.uid).subscribe(values => {
+      this.likesSesion = values;
+    });
+  }
+
+  //Mirar si la publicacion esta dentro de los likes
+  isLiked(): boolean{
+    var encontrada: boolean = false;
+    for(var i = 0; i < this.likesSesion.length && !encontrada; i++){
+      if(this.likesSesion[i].pid === this.pub.pid){
+        encontrada = true;
+      }
+    }
+    return encontrada;
   }
 
   //Comments

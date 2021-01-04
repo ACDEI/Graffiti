@@ -29,9 +29,14 @@
         <span *ngFor="let theme of pubThemes" class="badge badge-pill badge-secondary mr-1">{{theme}}</span>
       </div>
       <div class="card-footer mt-2 mx-4 rounded">
-        <button class="btn-social"><i class="fas fa-heart"></i></button>
-        <button class="btn-social"><i class="fas fa-share-alt"></i></button>
-        <button class="btn-social"><i class="fas fa-map-marker-alt"></i></button>
+        <div *ngIf="isLiked()">
+          <button class="btn-social" (click)="deleteLike()"><i class="fas fa-heart colorred"></i></button>
+          <button class="btn-social"><i class="fab fa-twitter colorblue"></i></button>
+        </div>
+        <div *ngIf="!isLiked()">
+          <button class="btn-social" (click)="postLike()"><i class="far fa-heart colorred"></i></button>
+          <button class="btn-social"><i class="fab fa-twitter colorblue"></i></button>
+        </div>
       </div>
       <div id="map-card" class="card-footer mt-2 mx-4 rounded">
         <app-pub-map [publication]="'pub'" ></app-pub-map>

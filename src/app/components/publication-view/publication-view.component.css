@@ -11,3 +11,11 @@
 #map-card {
   height: 400px;
 }
+
+.colorred {
+  color: red;
+}
+
+.colorblue {
+  color: #0398fc;
+}
