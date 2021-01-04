@@ -46,7 +46,6 @@ export class NavbarComponent implements OnInit {
 
   conectarFlickr(){
 
-    //let url = "http://localhost:5001/graffiti-9b570/us-central1/APIRest/flickr/conectar";
     let url = "http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/flickr/conectar";
   
     let result = this.http.get<any>(url);
@@ -69,18 +68,19 @@ export class NavbarComponent implements OnInit {
      formData.append('oauth_verifier', this.oauth_verifier);
      formData.append('title',this.graffitiTitle);
  
-   
-     //let url = "http://localhost:5001/graffiti-9b570/us-central1/APIRest/flickr/upload";
+
      let url = "http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/flickr/upload"
    
      let result = await this.http.post<any>(url,formData);
    
      let self = this; 
+     
      await result.subscribe(data =>{
        self.idFoto = data.id ;
        console.log(data);
        console.log(data.id);
       })
+    
 
       console.log("idFoto cliente ---------------> "+ this.idFoto);
       let resultado = await this.http.get<any>("https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=9cab71d9d05b7c91e06ae4da65b6ba8d&photo_id="+ this.idFoto + "&format=json&nojsoncallback=?");
