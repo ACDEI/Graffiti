@@ -26,6 +26,7 @@ export class UserProfileComponent implements OnInit {
   followedList : any[]; //Followed
   followedListSesion: any[];
   likesList : any[];  //Likes
+  visitedList : any[]; //Visitados
 
   //Account Settings
   profile_fullname: string;
@@ -62,14 +63,10 @@ export class UserProfileComponent implements OnInit {
         (this.profile_username !== "" && this.profile_username != null)) {
       if(this.profile_fullname == null || this.profile_fullname === "") this.profile_fullname = this.user.fullName;
       if(this.profile_username == null || this.profile_username === "") this.profile_username = this.user.nickName;
-      var data:any = {
-        "uid" : this.uidUsuarioSesion,
+      var data : any = {
         "fullName" : this.profile_fullname,
         "nickName" : this.profile_username,
-        "email" : this.user.email,
-        "isAdmin" : false,
-        "photoURL" : this.user.photoURL,
-        "nVisitados": this.user.nVisitados
+        "photoURL" : this.user.photoURL
       };
       this.us.putUsersCF(this.uidUsuarioSesion, data).subscribe(
         success => {
@@ -79,7 +76,7 @@ export class UserProfileComponent implements OnInit {
             window.sessionStorage.setItem("usuario",JSON.stringify(user));
           });
         },
-        err => {this.ts.error("Lo sentimos", "Ha habido un problema al guardar los cambios.",{timeOut:2000});}
+        err => {this.ts.error("Lo sentimos", "Ha habido un problema al guardar los cambios.", {timeOut:2000});}
       );
       this.profile_fullname = "";
       this.profile_username = "";
@@ -149,7 +146,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   loSigo(uidF: string): boolean{
-    if(this.followedListSesion.length != 0){
+    if(this.followedListSesion.length != 0) {
       return this.searchUserInFollowedList(uidF)
     }
   }
@@ -185,6 +182,13 @@ export class UserProfileComponent implements OnInit {
       err => { this.ts.error("Ups...", "Ha Habido un problema al dejar de seguir." 
         + " Pruebe de nuevo más tarde", {timeOut: 1000}); }
     );
+  }
+
+  //VISITADOS
+  obtenerVisitados(){
+    this.us.getVisitadosPerUser(this.user.uid).subscribe( data => {
+      this.visitedList = data;
+    });
   }
 
   cambiarPill(){
