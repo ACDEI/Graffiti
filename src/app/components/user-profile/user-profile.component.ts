@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestoreDocument } from '@angular/fire/firestore';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Publication } from '@core/models/publication';
 import { User } from '@core/models/user.model';
 import { AuthService } from '@core/services/auth.service';
@@ -16,6 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 export class UserProfileComponent implements OnInit {
 
   user: User;
+  usuarioSesion: any;
   uidUsuarioSesion: string;
   miPerfil: boolean;
   miSeguido: boolean;
@@ -26,17 +27,21 @@ export class UserProfileComponent implements OnInit {
   followedListSesion: any[];
   likesList : any[];  //Likes
 
+  //Account Settings
+  profile_fullname: string;
+  profile_username: string;
+
   constructor(private route: ActivatedRoute, private as: AuthService, 
     private us: UserService, private ps: PublicationsService,
-    private ts : ToastrService) { }
+    private ts : ToastrService, private r: Router) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.us.getUser(params['uid']).then(user => { 
         this.user = user;
 
-        var usuario = JSON.parse(window.sessionStorage.getItem("usuario"));
-        this.uidUsuarioSesion = usuario.uid;
+        this.usuarioSesion = JSON.parse(window.sessionStorage.getItem("usuario"));
+        this.uidUsuarioSesion = this.usuarioSesion.uid;
         
         this.miPerfil = this.user.uid === this.uidUsuarioSesion;
 
@@ -50,6 +55,42 @@ export class UserProfileComponent implements OnInit {
     this.followedList = [];
     this.followerList = [];
     this.likesList = [];
+  }
+
+  saveChanges(){
+    if((this.profile_fullname !== "" && this.profile_fullname != null) || 
+        (this.profile_username !== "" && this.profile_username != null)) {
+      if(this.profile_fullname == null || this.profile_fullname === "") this.profile_fullname = this.user.fullName;
+      if(this.profile_username == null || this.profile_username === "") this.profile_username = this.user.nickName;
+      var data:any = {
+        "uid" : this.uidUsuarioSesion,
+        "fullName" : this.profile_fullname,
+        "nickName" : this.profile_username,
+        "email" : this.user.email,
+        "isAdmin" : false,
+        "photoURL" : this.user.photoURL,
+        "nVisitados": this.user.nVisitados
+      };
+      this.us.putUsersCF(this.uidUsuarioSesion, data).subscribe(
+        success => {
+          this.ts.success("Cambios realizados con Éxito.", "", {timeOut:1000});
+          window.sessionStorage.removeItem("usuario");
+          this.us.loginUser(data).then( user => {
+            window.sessionStorage.setItem("usuario",JSON.stringify(user));
+          });
+        },
+        err => {this.ts.error("Lo sentimos", "Ha habido un problema al guardar los cambios.",{timeOut:2000});}
+      );
+      this.profile_fullname = "";
+      this.profile_username = "";
+    }
+  }
+
+  deleteAccount(){
+    this.us.deleteUsersCF(this.uidUsuarioSesion).subscribe(
+      data => {this.r.navigate([''])},
+      err => {this.ts.error("Lo sentimos", "Ha habido un problema al eliminar su cuenta. Inténtelo más tarde.", {timeOut: 1500});}
+    );
   }
 
   //Publicaciones
