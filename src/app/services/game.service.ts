@@ -46,8 +46,7 @@ export class GameService {
           coordinates:undefined,
           date:undefined,
           state:undefined,
-          themes: undefined,
-          nLikes:undefined
+          themes: undefined
         };
 
         this.visitadosDictionary.set(res.pid,res);

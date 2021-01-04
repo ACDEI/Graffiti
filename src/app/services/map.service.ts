@@ -69,7 +69,7 @@ export class MapService {
   // make a marker for each feature and add to the map
   showPoint(photo) {
 
-    var p = new Publication(photo.pid,photo.uid,photo.title,photo.graffiter,photo.photoURL,photo.g.geopoint,new Date(),photo.state, photo.themes, photo.nLikes);
+    var p = new Publication(photo.pid,photo.uid,photo.title,photo.graffiter,photo.photoURL,photo.g.geopoint,new Date(),photo.state, photo.themes);
 
       // create the popup
       var popup = new mapboxgl.Popup({ offset: 25 })

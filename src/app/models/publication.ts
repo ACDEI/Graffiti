@@ -10,7 +10,6 @@ export interface PublicationI {
     date:Date;
     state:string;
     themes: string[];
-    nLikes:Number;
 }
 
 export class Publication {
@@ -23,10 +22,9 @@ export class Publication {
     date:Date;
     state:string;
     themes: string[];
-    nLikes:Number;
 
     constructor(pid:string,uid: string, title: string,graffiter: string,photoURL: string
-        ,coordinates: firestore.GeoPoint,date:Date,state:string,themes:string[],nLikes:Number){
+        ,coordinates: firestore.GeoPoint,date:Date,state:string,themes:string[]){
         this.pid = pid;
         this.uid = uid;
         this.title = title;
@@ -36,7 +34,6 @@ export class Publication {
         this.graffiter= graffiter;
         this.coordinates = coordinates;
         this.themes = themes;
-        this.nLikes = nLikes;
     }
 }
 

@@ -18,6 +18,20 @@ export interface SelectedPub {
   near: boolean;
 }
 
+//------------------------------ Monument ------------------------------
+export interface MonumentJSON {
+  id:          number;
+  name:        string;
+  coordinates: Coordinates;
+  distancia:   number;
+}
+
+export interface Coordinates {
+  _latitude:  number;
+  _longitude: number;
+}
+
+//------------------------------ Publication ------------------------------
 export interface PublicationJSON {
   themes: string[]
   title: string
@@ -47,11 +61,12 @@ export interface Geopoint {
   h_: number
 }
 
+const DISTANCIA:number = 10;
+
 @Injectable({
   providedIn: 'root'
 })
 export class ExplorationService {
-
   position: {lng: number, lat: number};
   posMarker:mapboxgl.Marker = undefined;
 
@@ -66,7 +81,8 @@ export class ExplorationService {
     //this.colleccionFotos = firestore.collection("fotos");
 
     this.location.getPosition().then(pos => {
-      this.position = pos;
+      //this.position = pos;
+      this.position = {lat: 36.71860991, lng: -4.42016};
       this.map.buildMap(this.position.lng, this.position.lat, false);
       this.map.map.setPadding({left: 0, right: 0, top: 400, bottom: 0});
       this.map.map.setPitch(60);
@@ -75,6 +91,7 @@ export class ExplorationService {
 
       let self = this;
 
+      /*
       this.location.watchPosition().subscribe({
         next(pos) {
           self.position = {lng: pos.coords.longitude, lat: pos.coords.latitude};
@@ -84,8 +101,9 @@ export class ExplorationService {
           });
         }
       });
+      */
 
-      getJSON("https://us-central1-graffiti-9b570.cloudfunctions.net/APIRest/near/" + this.position.lat + "&" + this.position.lng + "&" + 10).then( data => {
+      getJSON("https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/near/" + this.position.lat + "&" + this.position.lng + "&" + DISTANCIA).then( data => {
 
         data.forEach( pc => {
           let e:boolean = gameService.visitadosDictionary.get(pc.id) != undefined;
@@ -102,11 +120,8 @@ export class ExplorationService {
               coordinates:new firestore.GeoPoint(json.g.geopoint.u_,json.g.geopoint.h_),
               date:new Date(),
               state:json.state,
-              themes:json.themes,
-              nLikes:json.nLikes
+              themes:json.themes
             };
-
-            console.log("PUBLICACION CERCANA:",v)
 
             if(e){
               this.showVisitedMarker(v, false);
@@ -118,6 +133,35 @@ export class ExplorationService {
           });
 
         })
+
+      });
+
+      getJSON("https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/openData/landmarks/near/" + this.position.lat + "&" + this.position.lng + "&" + DISTANCIA * 1000).then ( data => {
+
+        data.forEach(element => {
+          let json:MonumentJSON = element;
+          let e:boolean = gameService.visitadosDictionary.get(String(json.id)) != undefined;
+
+          let v = {
+            pid:String(json.id),
+            uid:undefined,
+            title:json.name,
+            graffiter:undefined,
+            photoURL: "assets/logo_aytomalaga.jpg",
+            coordinates:new firestore.GeoPoint(json.coordinates._latitude,json.coordinates._longitude),
+            date:new Date(),
+            state:undefined,
+            themes:undefined
+          };
+
+          if(e){
+            this.showVisitedMarker(v, false);
+          }else{
+            var near = json.distancia <= 0.15 * 1000;
+            this.showMarker(v, near);
+          }
+
+        });
 
       });
 
@@ -142,6 +186,8 @@ export class ExplorationService {
     el.addEventListener("click", (event) => {
       this.showModal(pub, near);
     })
+
+    console.log("Publicacion: " + pub.title + "->",pub);
 
     this.markerDictionary.set(pub.pid, new mapboxgl.Marker(el)
       .setLngLat([pub.coordinates.longitude, pub.coordinates.latitude])

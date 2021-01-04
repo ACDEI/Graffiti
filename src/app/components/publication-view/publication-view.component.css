@@ -1,9 +1,12 @@
 .btn-social {
-    border: none;
-    background: transparent;
+  border: none;
+  background: transparent;
 }
 
 .row {
-    margin-left: 0px !important;
-    margin-right: 0px !important;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
+}
+
+#map-card {
 }

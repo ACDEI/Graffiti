@@ -1,25 +1,26 @@
 .row {
-    margin-left: 0px !important;
-    margin-right: 0px !important;
+  margin-left: 0px !important;
+  margin-right: 0px !important;
 }
 
 .card-title-color {
-    color: #000;
+  color: #000;
 }
 
 .btn-social {
-    border: none;
-    background: transparent;
+  border: none;
+  background: transparent;
 }
 
 .card-img-top {
-    height: 220px;
+  height: 220px;
+  object-fit: cover;
 }
 
 .colorred {
-    color: red;
+  color: red;
 }
 
 .colorblue {
-    color: #0398fc;
+  color: #0398fc;
 }
