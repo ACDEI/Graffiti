@@ -1,13 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 .marker {
-  background-size: cover;
-  width: 100px;
-  height: 100px;
+  background-color: rgb(250, 81, 81);
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border-style: solid;
   border-width: 3px;
   border-color: aliceblue;
-  cursor: pointer;
 }
 
 .markerUser {

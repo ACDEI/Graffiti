@@ -6,6 +6,7 @@ import { AuthService } from '@core/services/auth.service';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { UserService } from '@core/services/classes_services/user.service';
 import { CommentsService } from '@core/services/comments.service';
+import { MapService } from '@core/services/map.service';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -26,7 +27,7 @@ export class PublicationViewComponent implements OnInit {
   //LikesThings
   hasLike : boolean = false;
 
-  constructor(private route: ActivatedRoute, private ps: PublicationsService,
+  constructor(private mapPubService: MapService, private route: ActivatedRoute, private ps: PublicationsService,
        private us: UserService, private cs : CommentsService, private as : AuthService,
        private ts : ToastrService) { }
 
@@ -39,6 +40,9 @@ export class PublicationViewComponent implements OnInit {
         this.us.getUser(this.pub.uid).then(user => { this.user = user });
         this.pubThemes = this.pub.themes;
         
+        this.mapPubService.buildMap(this.pub.coordinates.longitude, this.pub.coordinates.latitude, true);
+        this.mapPubService.showPoint(this.pub);
+
         //Cargar Elementos
         this.obtenerComments();
       });
