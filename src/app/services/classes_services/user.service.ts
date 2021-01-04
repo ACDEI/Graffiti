@@ -55,12 +55,18 @@ export class UserService {
           isAdmin: u.get("isAdmin"),
           nVisitados: u.get("nVisitados")
         }
-      }else{
+      } else {
+        var nickName : string;
+        nickName = user.email.substring(0, user.email.indexOf('@'));
+
+        if(user.photoURL === null || user.photoURL === '') 
+          user.photoURL = 'https://imgur.com/a/hKt8Gev';  //Default Avatar User
+
         res = {
           uid: user.uid,
           email: user.email,
           fullName: user.displayName,
-          nickName: "",
+          nickName: nickName,
           photoURL: user.photoURL,
           isAdmin: false,
           nVisitados: 0
