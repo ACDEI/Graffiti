@@ -24,6 +24,10 @@ export class CardUserNormalComponent implements OnInit {
     });
   }
 
+  isMe(): boolean {
+    return this.usuarioSesion.uid === this.userR.uid;
+  }
+
   loSigo(): boolean{
     var encontrado: boolean = false;
     if(this.followedList?.length > 0){
