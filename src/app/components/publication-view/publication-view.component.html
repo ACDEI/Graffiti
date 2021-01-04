@@ -49,7 +49,7 @@
       <div class="media-body">
         <h5 class="mt-0 mb-1">
           <a href="/">{{c?.nick}}</a>
-          <small class="ml-4 text-muted">{{c?.timestamp.toLocaleDateString("es-ES")}}</small>
+          <small class="ml-4 text-muted">{{c?.timestamp.toDate().toLocaleDateString("es-ES")}}</small>
         </h5>
         {{c?.text}}
       </div>

@@ -18,6 +18,7 @@ export class PublicationViewComponent implements OnInit {
   pub: Publication;
   user: User;
   pubThemes: string[];
+  usuarioSesion : any;
 
   //Comments Things
   commentsList : any[];
@@ -43,6 +44,7 @@ export class PublicationViewComponent implements OnInit {
         this.obtenerComments();
       });
     });
+    this.usuarioSesion = JSON.parse(window.sessionStorage.getItem("usuario"));
   }
 
   //Comments
@@ -57,10 +59,12 @@ export class PublicationViewComponent implements OnInit {
     let comment : any = {
       cid : this.generateCID(),
       pid : this.pub.pid,
-      uid : this.as.userSelected.uid,
+      uid : this.usuarioSesion.uid,
       text : this.cText,
-      image : this.as.userSelected.photoURL
+      nick : this.usuarioSesion.nickName,
+      image : this.usuarioSesion.photoURL
     }
+
     this.cs.postCommentCF(comment).subscribe(
       data => { this.ts.success("Comentario publicado correctamente", "", {timeOut: 1000}); },
       err => { this.ts.error("Ups...", "Ha Habido un problema al publicar el comentario." 
