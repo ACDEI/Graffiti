@@ -33,17 +33,29 @@ export class MapService {
       lat = 36.717827;
     }
 
+    if(interact){
+      this.map = new mapboxgl.Map({
+        container: 'map',
+        style: this.style,
+        zoom: this.zoom,
+        center: [lng,lat],
+        antialias: true,
+      });
+    }else{
+      this.map = new mapboxgl.Map({
+        container: 'map',
+        style: this.style,
+        zoom: this.zoom,
+        center: [lng,lat],
+        antialias: true,
+        maxZoom: 19,
+        minZoom: 18,
+        dragPan: false,
+      });
+    }
+
     //Inicializamos el mapa
-    this.map = new mapboxgl.Map({
-      container: 'map',
-      style: this.style,
-      zoom: this.zoom,
-      center: [lng,lat],
-      antialias: true,
-      maxZoom: 19,
-      minZoom: 18,
-      dragPan: false
-    });
+    
 
   }
 
@@ -67,9 +79,9 @@ export class MapService {
   }
 
   // make a marker for each feature and add to the map
-  showPoint(photo) {
+  showPoint(p:Publication) {
 
-    var p = new Publication(photo.pid,photo.uid,photo.title,photo.graffiter,photo.photoURL,photo.g.geopoint,new Date(),photo.state, photo.themes);
+    //var p = new Publication(photo.pid,photo.uid,photo.title,photo.graffiter,photo.photoURL,photo.g.geopoint,new Date(),photo.state, photo.themes);
 
       // create the popup
       var popup = new mapboxgl.Popup({ offset: 25 })
@@ -84,7 +96,7 @@ export class MapService {
       })
 
       new mapboxgl.Marker(el)
-        .setLngLat([photo.g.geopoint.h_, photo.g.geopoint.u_])
+        .setLngLat([p.coordinates.longitude, p.coordinates.latitude])
         .addTo(this.map)
   }
 
