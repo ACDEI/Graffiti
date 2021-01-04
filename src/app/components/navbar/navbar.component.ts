@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -22,6 +23,7 @@ export class NavbarComponent implements OnInit {
   oauth_token:string;
   oauth_verifier:string; 
   idToken : string;
+  idFoto:string; 
 
   constructor(private auth: AuthService, private http: HttpClient, private route: Router , private ps: PublicationsService) {
    }
@@ -59,7 +61,7 @@ export class NavbarComponent implements OnInit {
   }
 
 
-  subirImagen(){
+  async subirImagen(){
 
      const formData : FormData = new FormData();  
      formData.append('file', this.selectedFile, this.selectedFile.name);
@@ -71,23 +73,29 @@ export class NavbarComponent implements OnInit {
      //let url = "http://localhost:5001/graffiti-9b570/us-central1/APIRest/flickr/upload";
      let url = "http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/flickr/upload"
    
-     let result = this.http.post<any>(url,formData);
+     let result = await this.http.post<any>(url,formData);
    
-     result.subscribe(data =>{
-       //console.log(data);
-       //TODO
-       //data.id está la id para construir la url de flickr
-       //realizar desde aquí el storage en bbdd de la url de la foto y los demás atributos grafitero etc...
-       let urlPhoto = "https://www.flickr.com/photos/191586112@N04/" + data.id; 
+     let self = this; 
+     await result.subscribe(data =>{
+       self.idFoto = data.id ;
        console.log(data);
-       //TODO lat y long 
-
-       let photo : any = { "state": this.statusSelector, "theme": this.themeSelector ,
-       "title": this.graffitiTitle, "name": this.graffiterName }
-       this.ps.postPublicationCF(photo);
-
+       console.log(data.id);
       })
+
+      console.log("idFoto cliente ---------------> "+ this.idFoto);
+      let resultado = await this.http.get<any>("https://api.flickr.com/services/rest/?method=flickr.photos.getInfo&api_key=9cab71d9d05b7c91e06ae4da65b6ba8d&photo_id="+ this.idFoto + "&format=json&nojsoncallback=?");
      
+      resultado.subscribe(data => {
+        console.log(data);
+      })
+      let urlFoto = "";
+    //TODO lat y long 
+
+    let photo : any = { "state": this.statusSelector, "theme": this.themeSelector ,
+    "title": this.graffitiTitle, "name": this.graffiterName , "url": urlFoto}
+    this.ps.postPublicationCF(photo);
+     
+
      this.showButton = false; 
    
    }
