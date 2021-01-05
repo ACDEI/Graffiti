@@ -15,7 +15,7 @@
           <a class="nav-link" routerLink="/explore" routerLinkActive="active"><i class="fas fa-map-marked-alt"></i> Explorar</a>
         </li>
         <li class="nav-item mr-3">
-          <a class="nav-link" routerLink="/user-search" routerLinkActive="active"><i class="fas fa-user-secret"> Buscar Usuarios</i></a>
+          <a class="nav-link" routerLink="/user-search" routerLinkActive="active"><i class="fas fa-user-secret"></i> Buscar Usuarios</a>
         </li>
       </ul>
       <ul class="navbar-nav ml-md-auto">
@@ -24,7 +24,7 @@
                   <a class="nav-link" href="#" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-arrow-circle-up"></i> Subir Graffiti</a>
               </div>
               <div *ngIf="!conectadoFlickr">
-                <button class="nav-link"   (click)="conectarFlickr()"><i class="fas fa-arrow-circle-up"></i> Conectar con Flickr</button>
+                <a class="nav-link"   (click)="conectarFlickr()"><i class="fas fa-arrow-circle-up"></i> Conectar con Flickr</a>
               </div>
           </li>
           <li class="nav-item dropdown mr-5">

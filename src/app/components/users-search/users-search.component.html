@@ -89,7 +89,7 @@
         <!--ngFor de cards solo si es necesario-->
         <div id="showResultList" class="row mt-4">
             <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6" loading="lazy" *ngFor="let user of usersList | paginate: config">
-                <app-card-user-normal [userR]='user.data'></app-card-user-normal>
+                <app-card-user-normal [userR]='user'></app-card-user-normal>
             </div>
         </div>
         <div class="row" id="pags">

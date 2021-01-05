@@ -10,17 +10,6 @@
     width: 100%;
 }
 
-.col-lg-4 {
-    max-width: 100%;
-} 
-.col-md-4 {
-    max-width: 30%;
-} 
-
-.col-sm-4 {
-    max-width: 60%;
-}
-
 .card-img-top{
-    object-fit: contain;
+    object-fit: cover;
 }
