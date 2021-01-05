@@ -154,20 +154,20 @@ export class UserProfileComponent implements OnInit {
   }
 
   isMyFollowed(){
-    if(this.followedListSesion.length == 0) { this.miSeguido = false; }
+    if(this.followedListSesion?.length == 0) { this.miSeguido = false; }
     else { this.miSeguido = this.searchUserInFollowedList(this.user.uid); }
   }
 
   loSigo(uidF: string): boolean{
-    if(this.followedListSesion.length != 0) {
+    if(this.followedListSesion?.length != 0) {
       return this.searchUserInFollowedList(uidF)
     }
   }
 
   searchUserInFollowedList(uidF: string): boolean{
     var encontrado: boolean = false;
-    for(var i = 0; i < this.followedListSesion.length && !encontrado; i++){
-      if(this.followedListSesion[i].uid === uidF){ encontrado = true; }
+    for(var i = 0; i < this.followedListSesion?.length && !encontrado; i++){
+      if(this.followedListSesion[i]?.uid === uidF){ encontrado = true; }
     }
     return encontrado;
   }

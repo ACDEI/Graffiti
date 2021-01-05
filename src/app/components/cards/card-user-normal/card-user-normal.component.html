@@ -13,17 +13,5 @@
                 <h6>{{userR?.fullName}}</h6>
             </div>   
         </div>
-        <div class="row text-center">
-            <div class="col-lg col-md col-sm">
-                <div *ngIf="!isMe()">
-                    <div *ngIf="loSigo()">
-                        <button class="btn btn-outline-dark mb-3" (click)="unfollowUser()">Dejar de Seguir</button>
-                    </div>
-                    <div *ngIf="!loSigo()">
-                        <button class="btn btn-dark mb-3" (click)="followUser()">Seguir</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
