@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { UserService } from '@core/services/classes_services/user.service';
-
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-navbar',
@@ -25,6 +25,7 @@ export class NavbarComponent implements OnInit {
   oauth_verifier:string; 
   idToken : string;
   urlFoto:string; 
+  tokenFirebase:string;
 
   constructor(private auth: AuthService, private http: HttpClient, private route: Router , private ps: PublicationsService, private userService: UserService) {
    }
@@ -45,11 +46,27 @@ export class NavbarComponent implements OnInit {
     this.auth.signOut();
   }
 
-  conectarFlickr(){
+  async conectarFlickr(){
+
+
+    let self = this; 
+    await firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
+      // Send token to your backend via HTTPS
+      // ...
+      self.tokenFirebase = idToken; 
+      //console.log(idToken);
+    }).catch(function(error) {
+      // Handle error
+    });
+
+
+     console.log(this.tokenFirebase);
+
+     const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.tokenFirebase });
 
     let url = "http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/flickr/conectar";
   
-    let result = this.http.get<any>(url);
+    let result = this.http.get<any>(url,{headers});
   
     result.subscribe(data =>{
       console.log(data.url);
