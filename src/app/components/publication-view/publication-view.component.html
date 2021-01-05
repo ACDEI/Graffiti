@@ -23,7 +23,7 @@
           <div *ngIf="pub?.state == 'Illegible'">
             <p><span class="badge badge-dark">{{pub?.state}}</span></p>
           </div>
-          <div *ngIf="!miPublicacion">
+          <div *ngIf="miPublicacion">
             <button class="btn btn-success" data-toggle="modal" data-target="#editPublication">Editar</button>
             <button class="btn btn-danger" style="float: right;" (click)="deletePublication()">Eliminar</button>
           </div>
