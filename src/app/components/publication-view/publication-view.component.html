@@ -23,7 +23,7 @@
           <div *ngIf="pub?.state == 'Illegible'">
             <p><span class="badge badge-dark">{{pub?.state}}</span></p>
           </div>
-          <div *ngIf="miPublicacion()">
+          <div *ngIf="!miPublicacion">
             <button class="btn btn-success" data-toggle="modal" data-target="#editPublication">Editar</button>
             <button class="btn btn-danger" style="float: right;" (click)="deletePublication()">Eliminar</button>
           </div>
@@ -59,7 +59,7 @@
         <h5 class="mt-0 mb-1">
           <a href="/">{{c?.nick}}</a>
           <small class="ml-4 text-muted">{{c?.timestamp.toDate().toLocaleDateString("es-ES")}}</small>
-          <small *ngIf="miComentario(c?.cid)" class="btn btn-danger" style="float: right;" (click)="deleteComment(c.cid)"><i class="fas fa-trash-alt"></i></small>
+          <small *ngIf="miComentario(c?.uid)" class="btn btn-danger" style="float: right;" (click)="deleteComment(c.cid)"><i class="fas fa-trash-alt"></i></small>
         </h5>
         {{c?.text}}
       </div>
@@ -117,11 +117,8 @@
             </div>
             <div class="form-group">
               <label for="editState">Estado</label>
-              <select id="editState" class="form-control" name="editState" [(ngModel)]="editState">
-                <option>Perfect</option>
-                <option>Legible</option>
-                <option>Deteriorated</option>
-                <option>Illegible</option>
+              <select id="editState" class="form-control" (change)="onChange()" name="editState" [(ngModel)]="editState">
+                <option *ngFor="let s of stateList" value="{{s}}">{{s}}</option>
             </select>
             </div>
           </form>

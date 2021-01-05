@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { AngularFirestoreDocument } from '@angular/fire/firestore';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Publication } from '@core/models/publication';
 import { User } from '@core/models/user.model';
 import { AuthService } from '@core/services/auth.service';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { UserService } from '@core/services/classes_services/user.service';
 import { ScrollPaginationService } from '@core/services/scroll-pagination.service';
-import { PaginationService } from 'ngx-pagination';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -63,10 +60,10 @@ export class UserProfileComponent implements OnInit {
   }
 
   saveChanges(){
-    if((this.profile_fullname !== "" && this.profile_fullname != null) || 
-        (this.profile_username !== "" && this.profile_username != null)) {
-      if(this.profile_fullname == null || this.profile_fullname === "") this.profile_fullname = this.user.fullName;
-      if(this.profile_username == null || this.profile_username === "") this.profile_username = this.user.nickName;
+    if((this.profile_fullname != null && this.profile_fullname.trim() !== "" && this.profile_fullname !== this.user.fullName) || 
+        (this.profile_username != null && this.profile_username.trim() !== "" && this.profile_username !== this.user.nickName)) {
+      if(this.profile_fullname == null || this.profile_fullname.trim() === "") this.profile_fullname = this.user.fullName;
+      if(this.profile_username == null || this.profile_username.trim() === "") this.profile_username = this.user.nickName;
       var data : any = {
         "fullName" : this.profile_fullname,
         "nickName" : this.profile_username,
@@ -84,6 +81,8 @@ export class UserProfileComponent implements OnInit {
       );
       this.profile_fullname = "";
       this.profile_username = "";
+    } else {
+      this.ts.warning("Atención", "No se han detectado cambios", {timeOut:2000});
     }
   }
 

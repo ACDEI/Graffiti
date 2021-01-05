@@ -22,6 +22,8 @@ export class PublicationViewComponent implements OnInit {
   usuarioSesion : any;
   publicacionesSesion: any[];
   commentsSesion: any[];
+  miPublicacion: boolean;
+  stateList : string[] = ['Perfect', 'Legible', 'Illegible', 'Deteriorated'];
 
   //Comments Things
   commentsList : any[];
@@ -40,14 +42,18 @@ export class PublicationViewComponent implements OnInit {
        private ts : ToastrService, private r: Router) { }
 
   ngOnInit(): void {
-
     //Cargar Usuario y Publicacion
+    this.usuarioSesion = JSON.parse(window.sessionStorage.getItem("usuario"));
     this.route.params.subscribe(params => {
       this.ps.getPublication(params['pid']).then(value => {
+        
         this.pub = value;
         this.us.getUser(this.pub.uid).then(user => { this.user = user });
         this.pubThemes = this.pub.themes;
         this.isLiked();
+        this.miPublicacion = this.usuarioSesion.uid === this.pub.uid;
+
+        this.editState = this.pub.state;
         
         this.mapPubService.buildMap(this.pub.coordinates.longitude, this.pub.coordinates.latitude, true);
         this.mapPubService.showPoint(this.pub);
@@ -56,12 +62,10 @@ export class PublicationViewComponent implements OnInit {
         this.obtenerComments();
       });
     });
+  }
 
-    this.usuarioSesion = JSON.parse(window.sessionStorage.getItem("usuario"));
-
-    this.ps.getPublicationsByUserUidCF(this.usuarioSesion.uid).subscribe(values => {
-      this.publicacionesSesion = values;
-    });
+  onChange(){
+    console.log(this.editState);
   }
 
   //Comments
@@ -99,32 +103,12 @@ export class PublicationViewComponent implements OnInit {
     return cid;
   }
 
-  miComentario(cid: string): boolean {
-    var encontrado: boolean;
-    //console.log(cid);
-    this.cs.isCommentFromUser(this.usuarioSesion.uid, cid).then( l => {
-      console.log("in " + encontrado);
-      encontrado = l;
-      
-    });
-    console.log("after " + encontrado);
-    return encontrado;
+  miComentario(uid: string): boolean {
+    return this.usuarioSesion.uid === uid;
   }
 
   deleteComment(cid : string){
     this.cs.deleteComment(cid);
-  }
-
-  miPublicacion(): boolean {
-    var encontrada: boolean = false;
-    if(this.publicacionesSesion?.length > 0){
-      for(var i = 0; i < this.publicacionesSesion?.length && !encontrada; i++){
-        if(this.publicacionesSesion[i]?.uid === this.usuarioSesion.uid){
-          encontrada = true;
-        }
-      }
-    }
-    return encontrada;
   }
 
   deletePublication(){
@@ -133,10 +117,9 @@ export class PublicationViewComponent implements OnInit {
   }
 
   saveChanges() {
-    if((this.editTitle !== "" && this.editTitle != null) || (this.editGraffiter !== "" && this.editGraffiter != null) || (this.editState !== "" && this.editState != null)){
-      if(this.editTitle == null || this.editTitle === "") this.editTitle = this.pub.title;
-      if(this.editGraffiter == null || this.editGraffiter === "") this.editGraffiter = this.pub.graffiter;
-      if(this.editState == null || this.editState === "") this.editState = this.pub.state;
+    if((this.editTitle != null && this.editTitle.trim() !== "" && this.editTitle !== this.pub.title) || (this.editGraffiter != null && this.editGraffiter.trim() !== "" && this.editGraffiter !== this.pub.graffiter) || (this.editState !== this.pub.state)){
+      if(this.editTitle == null || this.editTitle.trim() === "") this.editTitle = this.pub.title;
+      if(this.editGraffiter == null || this.editGraffiter.trim() === "") this.editGraffiter = this.pub.graffiter;
 
       var data: any = {
         "title": this.editTitle,
@@ -149,6 +132,8 @@ export class PublicationViewComponent implements OnInit {
       );
       this.editTitle = "";
       this.editGraffiter = "";
+    } else {
+      this.ts.warning("Atención", "No se han detectado cambios", {timeOut:2000});
     }
   }
 
