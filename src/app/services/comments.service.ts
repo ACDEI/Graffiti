@@ -22,13 +22,25 @@ export class CommentsService {
 
   getCommentsByPublication(pid : any) : Observable<any> {
     //console.log(pid);
-      return this.fs.collection('comments', ref => ref.where('pid', '==', pid.toString()))
+      return this.fs.collection('comments', ref => ref.where('pid', '==', pid.toString())
+        .orderBy('timestamp', 'desc'))
       .valueChanges()
       .pipe( map(c => c) );
   }
 
   deleteComment(cid : any) : Promise<void> {
     return this.commentCollection.doc(cid).delete();
+  }
+
+  async isCommentFromUser(uid : string, cid : string) : Promise<any> {
+    var res : any;
+    await this.fs.collection('comments').doc(cid).get()
+      .toPromise().then(l => {
+        res = l.exists;
+      });
+      return new Promise<any>( (resolve,reject) => {
+        resolve(res);
+      });
   }
 
   //CLOUD FUNCTIONS COMMENTS

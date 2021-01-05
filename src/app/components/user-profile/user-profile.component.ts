@@ -6,6 +6,8 @@ import { User } from '@core/models/user.model';
 import { AuthService } from '@core/services/auth.service';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { UserService } from '@core/services/classes_services/user.service';
+import { ScrollPaginationService } from '@core/services/scroll-pagination.service';
+import { PaginationService } from 'ngx-pagination';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -22,11 +24,11 @@ export class UserProfileComponent implements OnInit {
   miSeguido: boolean;
 
   pubList: any[]; //Publications
-  followerList : any[]; //Followers
-  followedList : any[]; //Followed
   followedListSesion: any[];
   likesList : any[];  //Likes
-  visitedList : any[]; //Visitados
+  //followerList : any[]; //Followers
+  //followedList : any[]; //Followed
+  //visitedList : any[]; //Visitados
 
   //Account Settings
   profile_fullname: string;
@@ -34,7 +36,8 @@ export class UserProfileComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private as: AuthService, 
     private us: UserService, private ps: PublicationsService,
-    private ts : ToastrService, private r: Router) { }
+    private ts : ToastrService, private r: Router, 
+    public page : ScrollPaginationService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -50,11 +53,12 @@ export class UserProfileComponent implements OnInit {
         this.obtenerPublicaciones();
         this.obtenerFollowedSesion();
       });
+      
     });
 
     //this.pubList = [];
-    this.followedList = [];
-    this.followerList = [];
+    //this.followedList = [];
+    //this.followerList = [];
     this.likesList = [];
   }
 
@@ -80,6 +84,12 @@ export class UserProfileComponent implements OnInit {
       );
       this.profile_fullname = "";
       this.profile_username = "";
+    }
+  }
+
+  scrollHandler(e) {
+    if (e === 'bottom') {
+      this.page.more()
     }
   }
 
@@ -121,16 +131,20 @@ export class UserProfileComponent implements OnInit {
 
   //Followers
   obtenerFollowers(){
-    this.us.getFollowersPerUser(this.user.uid).subscribe( data => {
-      this.followerList = data;
-    });
+    this.page.reset()
+    this.page.init('users/' + this.user.uid + '/followers', 'nick', { limit: 5, reverse: false, prepend: false });
+    //this.us.getFollowersPerUser(this.user.uid).subscribe( data => {
+    //  this.followerList = data;
+    //});
   }
 
   //Followed
   obtenerFollowed(){
-    this.us.getFollowedPerUser(this.user.uid).subscribe( data => {
-      this.followedList = data;
-    });
+    this.page.reset()
+    this.page.init('users/' + this.user.uid + '/followed', 'nick', { limit: 5, reverse: false, prepend: false });
+    //this.us.getFollowedPerUser(this.user.uid).subscribe( data => {
+    //  this.followedList = data;
+    //});
   }
 
   obtenerFollowedSesion(){
@@ -186,9 +200,11 @@ export class UserProfileComponent implements OnInit {
 
   //VISITADOS
   obtenerVisitados(){
-    this.us.getVisitadosPerUser(this.user.uid).subscribe( data => {
-      this.visitedList = data;
-    });
+    this.page.reset()
+    this.page.init('users/' + this.user.uid + '/visitados', 'pid', { limit: 5, reverse: false, prepend: false });
+    //this.us.getVisitadosPerUser(this.user.uid).subscribe( data => {
+    //  this.visitedList = data;
+    //});
   }
 
   cambiarPill(){
@@ -196,7 +212,6 @@ export class UserProfileComponent implements OnInit {
     //Poner Todas Sin Active
     var pillsBtn = document.getElementsByClassName('nl nav-link');
     var pillsShow = document.getElementsByClassName('tab-pane conf');
-    //console.log(pillsShow)
     for (var i = 0; i < pillsBtn.length; i++) {
 
       //Agregamos / Quitamos Clase

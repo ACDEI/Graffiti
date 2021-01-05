@@ -21,7 +21,6 @@ export class PublicationViewComponent implements OnInit {
   pubThemes: string[];
   usuarioSesion : any;
   publicacionesSesion: any[];
-  likesSesion: any[];
   commentsSesion: any[];
 
   //Comments Things
@@ -48,6 +47,7 @@ export class PublicationViewComponent implements OnInit {
         this.pub = value;
         this.us.getUser(this.pub.uid).then(user => { this.user = user });
         this.pubThemes = this.pub.themes;
+        this.isLiked();
         
         this.mapPubService.buildMap(this.pub.coordinates.longitude, this.pub.coordinates.latitude, true);
         this.mapPubService.showPoint(this.pub);
@@ -56,15 +56,11 @@ export class PublicationViewComponent implements OnInit {
         this.obtenerComments();
       });
     });
+
     this.usuarioSesion = JSON.parse(window.sessionStorage.getItem("usuario"));
-    this.us.getLikesPerUserCF(this.usuarioSesion.uid).subscribe(values => {
-      this.likesSesion = values;
-    });
+
     this.ps.getPublicationsByUserUidCF(this.usuarioSesion.uid).subscribe(values => {
       this.publicacionesSesion = values;
-    });
-    this.cs.getCommentsPerUserCF(this.usuarioSesion.uid).subscribe(values => {
-      this.commentsSesion = values;
     });
   }
 
@@ -97,21 +93,21 @@ export class PublicationViewComponent implements OnInit {
     var cid : string = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 24; i++) {
         cid += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return cid;
   }
 
   miComentario(cid: string): boolean {
-    var encontrado: boolean = false;
-    if(this.commentsSesion?.length > 0){
-      for(var i = 0; i < this.commentsSesion?.length && !encontrado; i++){
-        if(this.commentsSesion[i]?.cid === cid){
-          encontrado = true;
-        }
-      }
-    }
+    var encontrado: boolean;
+    //console.log(cid);
+    this.cs.isCommentFromUser(this.usuarioSesion.uid, cid).then( l => {
+      console.log("in " + encontrado);
+      encontrado = l;
+      
+    });
+    console.log("after " + encontrado);
     return encontrado;
   }
 
@@ -158,16 +154,8 @@ export class PublicationViewComponent implements OnInit {
 
   //Likes
   //Mirar si la publicacion esta dentro de los likes
-  isLiked(): boolean{
-    var encontrada: boolean = false;
-    if(this.likesSesion?.length > 0) {
-      for(var i = 0; i < this.likesSesion?.length && !encontrada; i++){
-        if(this.likesSesion[i]?.pid === this.pub.pid){
-          encontrada = true;
-        }
-      }
-    }
-    return encontrada;
+  isLiked() {
+   this.us.isLikeFromUser(this.usuarioSesion.uid, this.pub.pid).then( l => {this.hasLike = l});
   }
 
   likePhoto(){
@@ -177,7 +165,10 @@ export class PublicationViewComponent implements OnInit {
       "photoURL": this.usuarioSesion.photoURL
     };
     this.ps.postPublicationLikeCF(this.pub.pid, data).subscribe(
-      data => { this.ts.success("Favorito añadido correctamente", "", {timeOut: 1000}); },
+      data => { 
+        this.ts.success("Favorito añadido correctamente", "", {timeOut: 1000}); 
+        this.hasLike = true; 
+      },
       err => { this.ts.error("Ups...", "Ha Habido un problema al dar Like." 
         + " Pruebe de nuevo", {timeOut: 1000}); }
     );
@@ -185,7 +176,10 @@ export class PublicationViewComponent implements OnInit {
 
   unlikePhoto(){
     this.ps.deletePublicationLikeCF(this.usuarioSesion.uid, this.pub.pid).subscribe(
-      data => { this.ts.success("Favorito eliminado correctamente", "", {timeOut: 1000}); },
+      data => { 
+        this.ts.success("Favorito eliminado correctamente", "", {timeOut: 1000}); 
+        this.hasLike = false;
+      },
       err => { this.ts.error("Ups...", "Ha Habido un problema al eliminar Like." 
         + " Pruebe de nuevo", {timeOut: 1000}); }
     );

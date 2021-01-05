@@ -64,6 +64,8 @@ import { CardPublicationProfileComponent } from './components/cards/card-publica
 import { PubMapComponent } from './components/publication-view/map/pub-map/pub-map.component';
 import { UsersSearchComponent } from './components/users-search/users-search.component';
 import { CardUserNormalComponent } from './components/cards/card-user-normal/card-user-normal.component';
+import { ScrollableDirective } from './directives/scrollable.directive';
+import { LoadingSpinnerComponent } from './components/user-profile/loading-spinner/loading-spinner.component';
 
 
 @NgModule({
@@ -101,6 +103,8 @@ import { CardUserNormalComponent } from './components/cards/card-user-normal/car
     PubMapComponent,
     UsersSearchComponent,
     CardUserNormalComponent,
+    ScrollableDirective,
+    LoadingSpinnerComponent,
   ],
   imports: [
     BrowserModule,

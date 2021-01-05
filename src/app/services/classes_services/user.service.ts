@@ -123,6 +123,17 @@ export class UserService {
     .pipe( map(c => c) );
   }
 
+  async isLikeFromUser(uid : string, pid : string) : Promise<any> {
+    var res : any;
+    await this.fs.collection('users').doc(uid).collection('likes').doc(pid).get()
+      .toPromise().then(l => {
+        res = l.exists;
+      });
+      return new Promise<any>( (resolve,reject) => {
+        resolve(res);
+      });
+  }
+
   //VISITADOS
   private visitados = 'visitados';
   getVisitadosPerUser(uid : any) : Observable<any> {

@@ -9,6 +9,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import * as firebase from 'firebase';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { ScrollPaginationService } from '@core/services/scroll-pagination.service';
+import { ScrollPaginationPublicationsService } from '@core/services/scroll-pagination-publications.service';
 
 @Component({
   selector: 'app-home',
@@ -18,7 +20,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 export class HomeComponent implements OnInit {
 
   publicationsList: any[];
+  stateList : string[] = ['Perfect', 'Legible', 'Illegible', 'Deteriorated'];
   themesList: any[];
+  pubsPerPage = 12;
   twttr: any;
 
   //Form
@@ -28,21 +32,23 @@ export class HomeComponent implements OnInit {
 
   uid:string;
   isFilter: boolean; 
+  
   //Tokens flickr
   oauth_token:string;
   oauth_verifier:string; 
+
   //token firebase
   token:string; 
 
   config: any = {
-    itemsPerPage: 12,
+    itemsPerPage: this.pubsPerPage,
     currentPage: 1,
     totalItems: 0
   }
 
   constructor(private pubService: PublicationsService, private themeService: ThemeService, 
     private route:ActivatedRoute, private fs : AngularFirestore, 
-    private http: HttpClient) {}
+    private http: HttpClient, public page : ScrollPaginationPublicationsService) {}
  
   ngOnInit(): void {
     //obtener por url los token cuando flickr redireccione
@@ -63,10 +69,6 @@ export class HomeComponent implements OnInit {
     (<any>window).twttr.widgets.load();
   }
 
-  getByStatus(){
-    
-  }
-
   obtenerTematicas(){
     this.themeService.getAllThemes()
     .snapshotChanges()
@@ -83,11 +85,31 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  getByTheme(){
-    this.pubService.getPublicationsByThemeCF(this.theme).subscribe(value => {
-      this.publicationsList = value;
-      this.isFilter = true;
-    });
+  onChange(event?){
+    this.isFilter = true;
+    let opts : any = {
+      limit : this.pubsPerPage,
+      prepend : false,
+      reverse : false
+    }
+    if(this.theme != null && this.theme !== '') opts = { ...opts, themes : [this.theme]}
+    if(this.status != null && this.status !== '') opts = { ...opts, state : this.status}
+    this.page.reset();
+    this.page.init('publications', 'date', {...opts})
+  }
+
+  /*
+  getByTheme(event?){
+    this.page.reset();
+    this.page.init('publications', 'date', {limit : 12, reverse : true, prepend : false, themes: [event]});
+    //this.pubService.getPublicationsByThemeCF(this.theme).subscribe(value => {
+    //  this.publicationsList = value;
+    //  this.isFilter = true;
+    //});
+  }
+
+  getByStatus(){
+    
   }
 
   getByGraffiter(){
@@ -96,30 +118,28 @@ export class HomeComponent implements OnInit {
       this.isFilter = true;
     });
   }
+  */
 
   resetear(){
-    this.pubService.getAllPublications()
-    .snapshotChanges()
-    .pipe(
-      map((changes) =>
-        changes.map((c) => ({
-          id: c.payload.doc.id,
-          ...c.payload.doc.data(),
-        }))
-      )
-    )
-    .subscribe((data) => {
-      this.publicationsList = data;
-      this.isFilter = false
-      this.graffiter = "";
-    });
+    this.isFilter = false;
+    this.theme = "";
+    this.status = '';
+    let opts : any = {
+      limit : this.pubsPerPage,
+      prepend : false,
+      reverse : false
+    }
+    this.page.reset();
+    this.page.init('publications', 'date', {...opts})
   }
 
   getPublications(){
-    this.pubService.getAllPublicationsCF().subscribe(data => {
-      this.publicationsList = data;
-      this.config.totalItems = this.publicationsList.length;
-    })
+    this.page.reset();
+    this.page.init('publications', 'date', {limit : this.pubsPerPage, reverse : false, prepend : false});
+    //this.pubService.getAllPublicationsCF().subscribe(data => {
+    //  this.publicationsList = data;
+    //  this.config.totalItems = this.publicationsList.length;
+    //})
   }
 
   pageChanged(event){

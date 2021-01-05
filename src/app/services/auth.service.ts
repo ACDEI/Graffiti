@@ -77,7 +77,7 @@ export class AuthService {
       return this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then( result => {
         
         this.userService.loginUser(result.user).then( user => {
-          window.sessionStorage.setItem("usuario",JSON.stringify(user));
+          window.sessionStorage.setItem("usuario", JSON.stringify(user));
           this.router.navigate(['home']);
         });
 

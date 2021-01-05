@@ -33,11 +33,11 @@
         <span *ngFor="let theme of pubThemes" class="badge badge-pill badge-secondary mr-1">{{theme}}</span>
       </div>
       <div class="card-footer mt-2 mx-4 rounded">
-        <div *ngIf="isLiked()">
+        <div *ngIf="hasLike">
           <button class="btn-social" (click)="unlikePhoto()"><i class="fas fa-heart colorred"></i></button>
           <button class="btn-social"><i class="fab fa-twitter colorblue"></i></button>
         </div>
-        <div *ngIf="!isLiked()">
+        <div *ngIf="!hasLike">
           <button class="btn-social" (click)="likePhoto()"><i class="far fa-heart colorred"></i></button>
           <button class="btn-social"><i class="fab fa-twitter colorblue"></i></button>
         </div>
@@ -59,7 +59,7 @@
         <h5 class="mt-0 mb-1">
           <a href="/">{{c?.nick}}</a>
           <small class="ml-4 text-muted">{{c?.timestamp.toDate().toLocaleDateString("es-ES")}}</small>
-          <small *ngIf="miComentario(c.cid)" class="btn btn-danger" style="float: right;" (click)="deleteComment(c.cid)"><i class="fas fa-trash-alt"></i></small>
+          <small *ngIf="miComentario(c?.cid)" class="btn btn-danger" style="float: right;" (click)="deleteComment(c.cid)"><i class="fas fa-trash-alt"></i></small>
         </h5>
         {{c?.text}}
       </div>
@@ -109,11 +109,11 @@
           <form class="form">
             <div class="form-group">
               <label for="editTitle">Título</label>
-              <input id="editTitle" name="editTitle" type="text" class="form-control" [(ngModel)]="editTitle" placeholder="{{pub.title}}"/>
+              <input id="editTitle" name="editTitle" type="text" class="form-control" [(ngModel)]="editTitle" placeholder="{{pub?.title}}"/>
             </div>
             <div class="form-group">
               <label for="editGraffiter">Grafitero</label>
-              <input id="editGraffiter" name="editGraffiter" type="text" class="form-control" [(ngModel)]="editGraffiter" placeholder="{{pub.graffiter}}"/>
+              <input id="editGraffiter" name="editGraffiter" type="text" class="form-control" [(ngModel)]="editGraffiter" placeholder="{{pub?.graffiter}}"/>
             </div>
             <div class="form-group">
               <label for="editState">Estado</label>
