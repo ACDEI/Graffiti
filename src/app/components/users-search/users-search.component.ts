@@ -11,29 +11,18 @@ import { map } from 'rxjs/operators';
 })
 export class UsersSearchComponent implements OnInit {
 
-  usersList: any[];
-  isFilter: boolean;
+  usersList: any[] = [];
+  isFilter: boolean = false;
   twttr: any;
 
   //Forms
-  fullName: string;
-  email: string;
-  nickName: string;
+  fullName: string = '';
+  nickName: string = '';
 
-  config: any = {
-    itemsPerPage: 12,
-    currentPage: 1,
-    totalItems: 0
-  };
-
-  constructor(private userService: UserService, private fs : AngularFirestore, private http: HttpClient) { }
+  constructor(private us: UserService) { }
 
   ngOnInit(): void {
-    this.userService.getUserByAdminCF(0).subscribe(data =>{
-      this.usersList = data;
-      this.config.totalItems = this.usersList.length;
-      this.usersList = this.usersList.filter(user => user.uid != JSON.parse(window.sessionStorage.getItem("usuario")).uid);
-    })
+    this.resetear();
     this.isFilter = false;
   }
 
@@ -41,46 +30,14 @@ export class UsersSearchComponent implements OnInit {
     (<any>window).twttr.widgets.load();
   }
 
-  getByFullName() {
-    this.userService.getUsersByNameCF(this.fullName).subscribe(values => {
-      this.usersList = values;
-      this.isFilter = true;
-    });
-  }
-
-  getByEmail() {
-    this.userService.getUserByEmailCF(this.email).subscribe(values => {
-      this.usersList = values;
-      this.isFilter = true;
-    });
-  }
-
-  getByNickName() {
-    
-  }
-
-  pageChanged(event){
-    this.config.currentPage = event;
+  applyFilter() {
+    this.isFilter = true;
+    this.us.getAllUsersNoAdminPerNickOrFull(this.nickName, this.fullName).then(res => {this.usersList = res});
   }
 
   resetear(){
-    this.userService.get_AllUsers()
-    .snapshotChanges()
-    .pipe(
-      map((changes) =>
-        changes.map((c) => ({
-          id: c.payload.doc.id,
-          ...c.payload.doc.data(),
-        }))
-      )
-    )
-    .subscribe((data) => {
-      this.usersList = data;
-      this.isFilter = false
-      this.fullName = "";
-      this.email = "";
-      this.nickName = "";
-    });
+    this.isFilter = false;
+    this.us.getAllUsersNoAdminPerNickOrFull('', '').then(res => {this.usersList = res});
   }
 
 }

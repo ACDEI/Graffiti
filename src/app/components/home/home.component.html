@@ -107,17 +107,19 @@
                 </div>
             </div>
             <div class="col-2" style="align-content: center;" *ngIf="isFilter">
-                <img class="btn" style="background-color: white;" (click)="resetear()" style="height: 85px;" src="assets/images/filter-remove.png"/>
+                <img class="btn" style="background-color: white;" (click)="getPublications()" style="height: 85px;" src="assets/images/filter-remove.png"/>
             </div>
         </div>
         <!--ngFor de cards solo si es necesario-->
         <div id="showResultList" class="row mt-4">
-            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6" loading="lazy" *ngFor="let pub of page.data | async | paginate: config">
+            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6" loading="lazy" *ngFor="let pub of page.data | async">
                 <app-card-publication [pubR]='pub'></app-card-publication>
             </div>
         </div>
-        <div class="row" id="pags">
-            <pagination-controls class="pagination" (pageChange)="pageChanged($event)"></pagination-controls>
+        <div id="loadMore" class="row mt-2 mb-3"> 
+            <button class="btn btn-outline-info" (click)='loadMore()'>
+                <i class="fas fa-search-plus"></i> Cargar Más
+            </button>
         </div>
     </div>
     <div class="col-lg-3">

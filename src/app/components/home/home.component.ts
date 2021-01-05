@@ -32,11 +32,9 @@ export class HomeComponent implements OnInit {
 
   uid:string;
   isFilter: boolean; 
-  
   //Tokens flickr
   oauth_token:string;
   oauth_verifier:string; 
-
   //token firebase
   token:string; 
 
@@ -59,7 +57,6 @@ export class HomeComponent implements OnInit {
     console.log("vefifier -------> " + this.oauth_verifier);
 
     this.isFilter = false;
-    //this.resetear();
     this.getPublications();
     this.obtenerTematicas();
 
@@ -86,7 +83,6 @@ export class HomeComponent implements OnInit {
   }
 
   onChange(event?){
-    this.isFilter = true;
     let opts : any = {
       limit : this.pubsPerPage,
       prepend : false,
@@ -95,33 +91,11 @@ export class HomeComponent implements OnInit {
     if(this.theme != null && this.theme !== '') opts = { ...opts, themes : [this.theme]}
     if(this.status != null && this.status !== '') opts = { ...opts, state : this.status}
     this.page.reset();
-    this.page.init('publications', 'date', {...opts})
+    this.page.init('publications', 'date', {...opts});
+    this.isFilter = true;
   }
 
-  /*
-  getByTheme(event?){
-    this.page.reset();
-    this.page.init('publications', 'date', {limit : 12, reverse : true, prepend : false, themes: [event]});
-    //this.pubService.getPublicationsByThemeCF(this.theme).subscribe(value => {
-    //  this.publicationsList = value;
-    //  this.isFilter = true;
-    //});
-  }
-
-  getByStatus(){
-    
-  }
-
-  getByGraffiter(){
-    this.pubService.getPublicationsByGraffiterCF(this.graffiter).subscribe(value => {
-      this.publicationsList = value;
-      this.isFilter = true;
-    });
-  }
-  */
-
-  resetear(){
-    this.isFilter = false;
+  getPublications(){
     this.theme = "";
     this.status = '';
     let opts : any = {
@@ -129,21 +103,13 @@ export class HomeComponent implements OnInit {
       prepend : false,
       reverse : false
     }
+    this.isFilter = false;
     this.page.reset();
     this.page.init('publications', 'date', {...opts})
   }
 
-  getPublications(){
-    this.page.reset();
-    this.page.init('publications', 'date', {limit : this.pubsPerPage, reverse : false, prepend : false});
-    //this.pubService.getAllPublicationsCF().subscribe(data => {
-    //  this.publicationsList = data;
-    //  this.config.totalItems = this.publicationsList.length;
-    //})
-  }
-
-  pageChanged(event){
-    this.config.currentPage = event;
+  loadMore(){
+    this.page.more();
   }
 
   async getQualityAir(){

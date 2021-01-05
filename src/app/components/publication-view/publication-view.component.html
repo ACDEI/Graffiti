@@ -57,7 +57,7 @@
       <img src="{{c?.image}}" class="mr-3 img-fluid rounded-circle" alt="avatar-user" width="6%">
       <div class="media-body">
         <h5 class="mt-0 mb-1">
-          <a href="/">{{c?.nick}}</a>
+          <a [routerLink]="['/user-profile', c?.uid]">{{c?.nick}}</a>
           <small class="ml-4 text-muted">{{c?.timestamp.toDate().toLocaleDateString("es-ES")}}</small>
           <small *ngIf="miComentario(c?.uid)" class="btn btn-danger" style="float: right;" (click)="deleteComment(c.cid)"><i class="fas fa-trash-alt"></i></small>
         </h5>

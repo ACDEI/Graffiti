@@ -36,7 +36,7 @@ export class CommentsService {
     var res : any;
     await this.fs.collection('comments').doc(cid).get()
       .toPromise().then(l => {
-        res = l.exists;
+        res = (l.exists && l.get('uid'));
       });
       return new Promise<any>( (resolve,reject) => {
         resolve(res);

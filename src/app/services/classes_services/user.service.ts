@@ -42,6 +42,21 @@ export class UserService {
     });
   }
 
+  async getAllUsersNoAdminPerNickOrFull(nick : string, name : string) {
+    //console.log(nick + name);
+    var res : any[] = [];
+    await this.fs.collection('users', ref => 
+      ref.where('isAdmin', '==', false)).get().toPromise().then(u => {
+        u.docs.forEach(d => {
+          if(d.get('nickName').toLowerCase().includes(nick.toLowerCase()) && 
+              d.get('fullName').toLowerCase().includes(name.toLowerCase())) res.push(d.data());
+        })
+      })
+    return new Promise<any>( (resolve,reject) => {
+      resolve(res);
+    });
+  }
+
   async loginUser(user: firebase.User): Promise<UserI> {
     var res: UserI;
     await this.fs.doc('users/' + user.uid).get().toPromise().then( u => {
