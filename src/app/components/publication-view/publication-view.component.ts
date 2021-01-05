@@ -22,6 +22,7 @@ export class PublicationViewComponent implements OnInit {
   usuarioSesion : any;
   publicacionesSesion: any[];
   likesSesion: any[];
+  commentsSesion: any[];
 
   //Comments Things
   commentsList : any[];
@@ -62,6 +63,9 @@ export class PublicationViewComponent implements OnInit {
     this.ps.getPublicationsByUserUidCF(this.usuarioSesion.uid).subscribe(values => {
       this.publicacionesSesion = values;
     });
+    this.cs.getCommentsPerUserCF(this.usuarioSesion.uid).subscribe(values => {
+      this.commentsSesion = values;
+    });
   }
 
   //Comments
@@ -97,6 +101,18 @@ export class PublicationViewComponent implements OnInit {
         cid += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return cid;
+  }
+
+  miComentario(cid: string): boolean {
+    var encontrado: boolean = false;
+    if(this.commentsSesion?.length > 0){
+      for(var i = 0; i < this.commentsSesion?.length && !encontrado; i++){
+        if(this.commentsSesion[i]?.cid === cid){
+          encontrado = true;
+        }
+      }
+    }
+    return encontrado;
   }
 
   deleteComment(cid : string){
