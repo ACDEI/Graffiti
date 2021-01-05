@@ -23,6 +23,10 @@
           <div *ngIf="pub?.state == 'Illegible'">
             <p><span class="badge badge-dark">{{pub?.state}}</span></p>
           </div>
+          <div *ngIf="miPublicacion()">
+            <button class="btn btn-success" data-toggle="modal" data-target="#editPublication">Editar</button>
+            <button class="btn btn-danger" style="float: right;" (click)="deletePublication()">Eliminar</button>
+          </div>
         </div>
       </div>
       <div class="card-footer mt-2 mx-4 rounded">
@@ -83,6 +87,47 @@
         <div class="modal-footer">
           <button class="btn btn-link" data-dismiss="modal">Cancelar</button>
           <button class="btn btn-primary" data-dismiss="modal" (click)="postComment()">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal Editar Publicación -->
+
+  <div class="modal fade" id="editPublication" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="editPublicationLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editPublication">Editar Publicación</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form class="form">
+            <div class="form-group">
+              <label for="editTitle">Título</label>
+              <input id="editTitle" name="editTitle" type="text" class="form-control" [(ngModel)]="editTitle" placeholder="{{pub.title}}"/>
+            </div>
+            <div class="form-group">
+              <label for="editGraffiter">Grafitero</label>
+              <input id="editGraffiter" name="editGraffiter" type="text" class="form-control" [(ngModel)]="editGraffiter" placeholder="{{pub.graffiter}}"/>
+            </div>
+            <div class="form-group">
+              <label for="editState">Estado</label>
+              <select id="editState" class="form-control" name="editState" [(ngModel)]="editState">
+                <option>Perfect</option>
+                <option>Legible</option>
+                <option>Deteriorated</option>
+                <option>Illegible</option>
+            </select>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-text" data-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-success" data-dismiss="modal" (click)="saveChanges()">Guardar Cambios</button>
         </div>
       </div>
     </div>

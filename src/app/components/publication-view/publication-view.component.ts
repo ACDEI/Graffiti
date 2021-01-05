@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Publication } from '@core/models/publication';
 import { User } from '@core/models/user.model';
 import { AuthService } from '@core/services/auth.service';
@@ -20,6 +20,7 @@ export class PublicationViewComponent implements OnInit {
   user: User;
   pubThemes: string[];
   usuarioSesion : any;
+  publicacionesSesion: any[];
   likesSesion: any[];
 
   //Comments Things
@@ -29,9 +30,14 @@ export class PublicationViewComponent implements OnInit {
   //LikesThings
   hasLike : boolean = false;
 
+  //Edit Form
+  editTitle: string;
+  editGraffiter: string;
+  editState: string;
+
   constructor(private mapPubService: MapService, private route: ActivatedRoute, private ps: PublicationsService,
        private us: UserService, private cs : CommentsService, private as : AuthService,
-       private ts : ToastrService) { }
+       private ts : ToastrService, private r: Router) { }
 
   ngOnInit(): void {
 
@@ -52,6 +58,9 @@ export class PublicationViewComponent implements OnInit {
     this.usuarioSesion = JSON.parse(window.sessionStorage.getItem("usuario"));
     this.us.getLikesPerUserCF(this.usuarioSesion.uid).subscribe(values => {
       this.likesSesion = values;
+    });
+    this.ps.getPublicationsByUserUidCF(this.usuarioSesion.uid).subscribe(values => {
+      this.publicacionesSesion = values;
     });
   }
 
@@ -92,6 +101,43 @@ export class PublicationViewComponent implements OnInit {
 
   deleteComment(cid : string){
     this.cs.deleteComment(cid);
+  }
+
+  miPublicacion(): boolean {
+    var encontrada: boolean = false;
+    if(this.publicacionesSesion?.length > 0){
+      for(var i = 0; i < this.publicacionesSesion?.length && !encontrada; i++){
+        if(this.publicacionesSesion[i]?.uid === this.usuarioSesion.uid){
+          encontrada = true;
+        }
+      }
+    }
+    return encontrada;
+  }
+
+  deletePublication(){
+    this.ps.deletePublicationCF(this.pub.pid).subscribe();
+    this.r.navigate(['home']);
+  }
+
+  saveChanges() {
+    if((this.editTitle !== "" && this.editTitle != null) || (this.editGraffiter !== "" && this.editGraffiter != null) || (this.editState !== "" && this.editState != null)){
+      if(this.editTitle == null || this.editTitle === "") this.editTitle = this.pub.title;
+      if(this.editGraffiter == null || this.editGraffiter === "") this.editGraffiter = this.pub.graffiter;
+      if(this.editState == null || this.editState === "") this.editState = this.pub.state;
+
+      var data: any = {
+        "title": this.editTitle,
+        "graffiter": this.editGraffiter,
+        "state": this.editState
+      };
+      this.ps.putPublicationCF(this.pub.pid, data).subscribe(
+        success => {this.ts.success("Cambios realizados correctamente", "", {timeOut:1000});},
+        err => {this.ts.error("Lo sentimos", "No se han podido guardar los cambios", {timeOut:2000});}
+      );
+      this.editTitle = "";
+      this.editGraffiter = "";
+    }
   }
 
   //Likes
