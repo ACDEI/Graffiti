@@ -54,11 +54,12 @@
   </div>
   <ul class="list-unstyled mt-5 mx-3">
     <li *ngFor='let c of commentsList' class="media mb-3 bg-light p-4 rounded">
-      <img src="{{c?.image}}" class="mr-3 img-fluid rounded" alt="avatar-user" width="6%">
+      <img src="{{c?.image}}" class="mr-3 img-fluid rounded-circle" alt="avatar-user" width="6%">
       <div class="media-body">
         <h5 class="mt-0 mb-1">
           <a href="/">{{c?.nick}}</a>
           <small class="ml-4 text-muted">{{c?.timestamp.toDate().toLocaleDateString("es-ES")}}</small>
+          <small *ngIf="miComentario(c.cid)" class="btn btn-danger" style="float: right;" (click)="deleteComment(c.cid)"><i class="fas fa-trash-alt"></i></small>
         </h5>
         {{c?.text}}
       </div>
