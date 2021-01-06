@@ -20,8 +20,8 @@ export class MapService {
   pitch = 90;
   zoom = 15;
 
-  selectedPosition:mapboxgl.LngLat; 
-  aux:mapboxgl.Marker;
+  selectedPosition : mapboxgl.LngLat; 
+  aux : mapboxgl.Marker;
 
   isOpened = false;
 

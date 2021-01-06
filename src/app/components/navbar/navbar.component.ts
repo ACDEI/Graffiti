@@ -139,7 +139,10 @@ export class NavbarComponent implements OnInit {
     formData.append('oauth_verifier', this.oauth_verifier);
     formData.append('title', this.title);
 
-    var number : Number = this.validateFields();
+    //---------------------- Obtener localizacion del mapa ----------------------------
+    let location = this.mapService.selectedPosition;
+
+    var number : Number = this.validateFields(location);
     if(number == -1){
       //En caso de que el graffitero sea nulo o cadena vacía, lo ponemos anónimo
       if(this.graffiter == null || this.graffiter.trim() === '') this.graffiter = "Anónimo";
@@ -151,15 +154,16 @@ export class NavbarComponent implements OnInit {
           "graffiter": this.graffiter,
           "uid": this.usuarioSesion.uid, 
           "pid": this.generatePID(),
-          "lat": this.latSelected,
-          "lng": this.lngSelected
+          "lat": location.lat,
+          "lng": location.lng
         }
 
         this.fs.subirFlickr(formData, photo);
         this.ts.success("Publicación Subida Correctamente", "", {timeOut: 2000});
       } else if(number == 1) this.ts.error("Introduzca un Título", "", {timeOut: 2000});
-      else if(number == 2) this.ts.error("Se requiere alguna categoría", "", {timeOut: 2000});
-      else this.ts.error("¿En qué estado se encuentra?", "", {timeOut: 2000});
+      else if(number == 2) this.ts.error("Se requiere alguna Temática", "", {timeOut: 2000});
+      else if(number == 3) this.ts.error("¿En qué estado se encuentra?", "", {timeOut: 2000});
+      else this.ts.error("Escoja una localización", "", {timeOut: 2000});
      
       this.showButton = false; 
     /*  QUITAR CUANDO SEPAMOS QUE FUNCIONA
@@ -211,11 +215,12 @@ export class NavbarComponent implements OnInit {
     return pid;
   }
 
-  validateFields() : Number {
+  validateFields(location) : Number {
     var num: number = -1;
     if(!this.validateTitle()) num = 1; //No hay título
     if(!this.validateThemes()) num = 2; //No hay temáticas
     if(!this.validateState()) num = 3; //No hay estado de conservación
+    if(!this.validateLocation(location)) num = 4; //No hay estado de conservación
     return num;
   }
 
@@ -229,6 +234,10 @@ export class NavbarComponent implements OnInit {
 
   validateState(): boolean {
     return this.statusSelector != null && this.statusSelector.trim() !== '';
+  }
+
+  validateLocation(location){
+    return location != null && location.lat != null && location.lng != null;
   }
 
 }
