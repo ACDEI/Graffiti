@@ -84,7 +84,7 @@ export class NavbarComponent implements OnInit {
       this.oauth_verifier = this.aroute.snapshot.queryParams.oauth_verifier;
       window.sessionStorage.setItem("flickr_oauth_token", JSON.stringify(this.oauth_token));
       window.sessionStorage.setItem("flickr_oauth_verifier", JSON.stringify(this.oauth_verifier));
-      //console.log("vefifier -------> " + this.oauth_verifier);
+      console.log("vefifier -------> " + this.oauth_verifier);
 
       //¿Guardar Tokens?
       this.fs.flickr_oauth_token = this.oauth_token;

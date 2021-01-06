@@ -51,6 +51,7 @@ export class HomeComponent implements OnInit {
     private ts : ToastrService) {}
  
   ngOnInit(): void {
+    
     this.resetAll();
 
     this.getPublications();
