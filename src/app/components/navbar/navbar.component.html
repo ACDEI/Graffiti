@@ -24,7 +24,7 @@
                   <a class="nav-link" href="#" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-arrow-circle-up"></i> Subir Graffiti</a>
               </div>
               <div *ngIf="!conectadoFlickr">
-                <a class="nav-link"   (click)="conectarFlickr()"><i class="fas fa-arrow-circle-up"></i> Conectar con Flickr</a>
+                <a class="nav-link" (click)="conectarFlickr()"><i class="fas fa-arrow-circle-up"></i> Conectar con Flickr</a>
               </div>
           </li>
           <li class="nav-item dropdown mr-5">
@@ -32,7 +32,7 @@
                 <i class="fas fa-user-circle"></i> Perfil
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" [routerLink]="['/user-profile', uid]" routerLinkActive="active">Ver Perfil</a>
+                <a class="dropdown-item" [routerLink]="['/user-profile', usuarioSesion.uid]" routerLinkActive="active">Ver Perfil</a>
                 <span class="dropdown-item" (click)="cerrarSesion()">Cerrar Sesión</span>
               </div>
           </li>
@@ -73,7 +73,7 @@
                 <div class="form-group">
                   <label for="themesSelector"><strong>Categorías</strong></label>
                   <ng-multiselect-dropdown name = 'themesSelector' [placeholder]="'Seleccionadas'" [data]="themesList" [(ngModel)]="themesSelector" 
-                    [settings]="themesSettings" (onSelect)="onChangeTheme($event)">
+                    [settings]="themesSettings">
                   </ng-multiselect-dropdown>
                 </div>
               </div>
