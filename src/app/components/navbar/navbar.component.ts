@@ -40,6 +40,9 @@ export class NavbarComponent implements OnInit {
   themesSelector: string[];
   title: string;
   graffiter: string;
+  latSelected:string;
+  lngSelected:string;
+
 
   //Flickr
   conectadoFlickr = false; 
@@ -49,11 +52,13 @@ export class NavbarComponent implements OnInit {
   oauth_verifier:string; 
   idToken : string;
   tokenFirebase:string;
+  token_secret:string; 
+  urlFoto:string; 
 
   constructor(private mapService: MapService, private auth: AuthService, private http: HttpClient, 
       private route: Router, private aroute : ActivatedRoute, 
       private userService: UserService, private themeService: ThemeService, 
-      private fs : FlickrService, private ts: ToastrService) {
+      private fs : FlickrService, private ts: ToastrService , private ps: PublicationsService) {
    }
 
   ngOnInit(): void {
@@ -62,7 +67,6 @@ export class NavbarComponent implements OnInit {
     this.arreglarModal();
 
     this.cogerFlickrTokens();
-
     //this.conectadoFlickr = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
     //console.log(this.conectadoFlickr);
     //this.oauth_verifier = JSON.parse(window.sessionStorage.getItem("flickr_oauth_verifier"));
@@ -72,28 +76,33 @@ export class NavbarComponent implements OnInit {
   }
 
   cogerFlickrTokens(){
+    console.log("Hola buenas");
+    
     //Obtener Tokens de la URL
     if(this.aroute.snapshot.queryParams != null){
       this.oauth_token = this.aroute.snapshot.queryParams.oauth_token;
       this.oauth_verifier = this.aroute.snapshot.queryParams.oauth_verifier;
       window.sessionStorage.setItem("flickr_oauth_token", JSON.stringify(this.oauth_token));
       window.sessionStorage.setItem("flickr_oauth_verifier", JSON.stringify(this.oauth_verifier));
-      //console.log("vefifier -------> " + this.oauth_verifier);
+      console.log("vefifier -------> " + this.oauth_verifier);
 
       //¿Guardar Tokens?
       this.fs.flickr_oauth_token = this.oauth_token;
       this.fs.flickr_oauth_token_secret = this.oauth_verifier;
+
+      console.log(this.oauth_token);
     }
 
     if(this.fs.flickr_oauth_token != null && this.fs.flickr_oauth_token_secret != null){
       this.conectadoFlickr = true;
 
       this.oauth_verifier = JSON.parse(window.sessionStorage.getItem("flickr_oauth_verifier"));
-      //console.log(this.oauth_verifier);
+      console.log("verifier------------> " + this.oauth_verifier);
       this.oauth_token = JSON.parse(window.sessionStorage.getItem("flickr_oauth_token"));
       //console.log(this.oauth_token);
     }
     else this.conectadoFlickr = false;
+    
   }
 
   obtenerTematicas(){
@@ -111,6 +120,7 @@ export class NavbarComponent implements OnInit {
       this.themesList = data;
     });
   }
+  
 
   arreglarModal(){  //Habra que modificar, pero bueno
     document.getElementsByClassName('dropdown-list')[0].setAttribute('id', 'dowp');
@@ -125,7 +135,8 @@ export class NavbarComponent implements OnInit {
   async conectarFlickr(){
     this.fs.conectarFlickr(window.location.href);
     console.log(this.fs.tokenFirebase)
-    /* QUITAR CUANDO SEPAMOS QUE FUNCIONA
+
+
     let self = this; 
     await firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
       // Send token to your backend via HTTPS
@@ -143,15 +154,31 @@ export class NavbarComponent implements OnInit {
 
     let url = "http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/flickr/conectar";
   
-    let result = this.http.get<any>(url,{headers});
-  
-    result.subscribe(data =>{
+    
+    //let result = 
+    
+    this.http.get<any>(url,{headers}).toPromise().then( data => {
       console.log(data.url);
+      self.token_secret = data.token_secret; 
       ///Si el usuario acepta flickr devolverá un callback a la home del usuario en malagart
       //this.route.navigateByUrl(data.url);
       window.location.href = data.url; 
+      self.cogerFlickrTokens();
+    }).catch( error => {
+      console.log(error)
+    });
+
+    /*
+    result.subscribe(data =>{
+      console.log(data.url);
+      self.token_secret = data.token_secret; 
+      ///Si el usuario acepta flickr devolverá un callback a la home del usuario en malagart
+      //this.route.navigateByUrl(data.url);
+      window.location.href = data.url; 
+      self.cogerFlickrTokens();
     })
     */
+    
   }
 
 
@@ -162,6 +189,7 @@ export class NavbarComponent implements OnInit {
     formData.append('oauth_token', this.oauth_token);
     formData.append('oauth_verifier', this.oauth_verifier);
     formData.append('title', this.title);
+    formData.append('token_secret', this.token_secret);
 
     //---------------------- Obtener localizacion del mapa ----------------------------
     let location = this.mapService.selectedPosition;
@@ -222,7 +250,7 @@ export class NavbarComponent implements OnInit {
       })
       
      this.showButton = false; 
-   */
+   
    }
 
   onFileSelected(event){
