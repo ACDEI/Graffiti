@@ -49,7 +49,7 @@ export class NavbarComponent implements OnInit {
   idToken : string;
   tokenFirebase:string;
 
-  constructor(private mapService:MapService , private locationService:LocationService,private auth: AuthService, private http: HttpClient, 
+  constructor(private mapService:MapService, private auth: AuthService, private http: HttpClient, 
       private route: Router , private ps: PublicationsService, 
       private userService: UserService, private themeService: ThemeService, private ts: ToastrService) {
    }
@@ -131,6 +131,9 @@ export class NavbarComponent implements OnInit {
      formData.append('oauth_token',this.oauth_token);
      formData.append('oauth_verifier', this.oauth_verifier);
      formData.append('title',this.title);
+
+     //---------------------- Obtener localizacion del mapa ----------------------------
+     let location = this.mapService.selectedPosition;
  
 
      let url = "http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/flickr/upload";

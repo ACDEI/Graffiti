@@ -21,6 +21,7 @@ export class MapService {
   zoom = 15;
 
   selectedPosition:mapboxgl.LngLat; 
+  aux:mapboxgl.Marker;
 
   isOpened = false;
 
@@ -67,6 +68,9 @@ export class MapService {
       this.map.on('load', () => {
         this.map.resize();
       })
+      this.aux = new mapboxgl.Marker()
+        .setLngLat(new mapboxgl.LngLat(lng,lat))
+        .addTo(this.map);
     }
 
     //Inicializamos el mapa
@@ -77,19 +81,17 @@ export class MapService {
   setOnClick() {
     let self = this;
 
-    let aux:mapboxgl.Marker;
-
     this.map.on("click", function (e) {
 
       console.log(e.lngLat);
 
-      this.selectedPosition = e.lngLat;
+      self.selectedPosition = e.lngLat;
 
-      if(aux != undefined){
-        aux.remove();
+      if(self.aux != undefined){
+        self.aux.remove();
       }
 
-      aux = new mapboxgl.Marker()
+      self.aux = new mapboxgl.Marker()
         .setLngLat(e.lngLat)
         .addTo(self.map);
       });
