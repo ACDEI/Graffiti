@@ -10,7 +10,6 @@ import * as firebase from 'firebase';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ScrollPaginationPublicationsService } from '@core/services/scroll-pagination-publications.service';
 import { ToastrService } from 'ngx-toastr';
-import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-home',
@@ -21,14 +20,6 @@ export class HomeComponent implements OnInit {
 
   stateList : string[] = ['Perfect', 'Legible', 'Illegible', 'Deteriorated'];
   themesList: any[];
-  themesSettings : IDropdownSettings = {
-    enableCheckAll: false,
-    allowSearchFilter: true,
-    limitSelection: 3,
-    searchPlaceholderText: 'Buscar por Nombre',
-    textField: 'name',
-    defaultOpen: false
-  };
   pubsPerPage = 12;
   isFilter: boolean; 
   loadAll: boolean;
@@ -41,7 +32,7 @@ export class HomeComponent implements OnInit {
 
   //Form
   graffiter: string;
-  themesSelector: string[];
+  theme: string;
   status: string;
   title: string;
 
@@ -74,7 +65,7 @@ export class HomeComponent implements OnInit {
   resetAll(){
     this.graffiter = '';
     this.status = '';
-    this.themesSelector = [];
+    this.theme = '';
     this.title = '';
     this.isFilter = false;
     this.loadAll = false;
@@ -98,7 +89,7 @@ export class HomeComponent implements OnInit {
 
   onChange(event?){
 
-    if(this.themesSelector === [] && this.status.trim() === ''
+    if(this.theme.trim() === '' && this.status.trim() === ''
         && this.title.trim() === '' && this.graffiter.trim() === '') this.getPublications();
     else {
       let opts : any = {
@@ -106,7 +97,7 @@ export class HomeComponent implements OnInit {
         prepend : false,
         reverse : false
       }
-      if(this.themesSelector != null && this.themesSelector !== []) opts = { ...opts, themes : [this.themesSelector]}
+      if(this.theme != null && this.theme !== '') opts = { ...opts, themes : [this.theme]}
       if(this.status != null && this.status !== '') opts = { ...opts, state : this.status}
       if(this.title != null && this.title !== '') opts = { ...opts, title : this.title}
       if(this.graffiter != null && this.graffiter !== '') opts = { ...opts, graffiter : this.graffiter}
@@ -118,7 +109,7 @@ export class HomeComponent implements OnInit {
   }
 
   getPublications(){
-    this.themesSelector = [];
+    this.theme = '';
     this.status = '';
     let opts : any = {
       limit : this.pubsPerPage,
@@ -145,11 +136,11 @@ export class HomeComponent implements OnInit {
   clear(n : number) {
     if(n == 1) this.title = '';
     if(n == 2) this.graffiter = '';
-    if(n == 3) this.themesSelector = [];
+    if(n == 3) this.theme = '';
     if(n == 4) this.status = '';
 
     if(this.title === '' && this.graffiter === '' 
-        && this.themesSelector === [] && this.status === '') this.getPublications()
+        && this.theme === '' && this.status === '') this.getPublications()
     else this.onChange();
   }
 
