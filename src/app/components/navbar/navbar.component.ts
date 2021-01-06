@@ -182,14 +182,15 @@ export class NavbarComponent implements OnInit {
           "lng": location.lng
         }
 
-        this.fs.subirFlickr(formData, photo);
-        this.ts.success("Publicación Subida Correctamente", "", {timeOut: 2000});
+        await this.fs.subirFlickr(formData, photo)//.then( l => {
+          this.ts.success("Publicación Subida Correctamente", "", {timeOut: 2000});
+          this.showButton = false;
+        //});
       } else if(number == 1) this.ts.error("Introduzca un Título", "", {timeOut: 2000});
       else if(number == 2) this.ts.error("Se requiere alguna Temática", "", {timeOut: 2000});
       else if(number == 3) this.ts.error("¿En qué estado se encuentra?", "", {timeOut: 2000});
       else this.ts.error("Escoja una localización", "", {timeOut: 2000});
-     
-      this.showButton = false; 
+   
     /*  QUITAR CUANDO SEPAMOS QUE FUNCIONA
 
      let photo : any;

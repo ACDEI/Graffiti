@@ -16,7 +16,7 @@ export class FlickrService {
 
   constructor(private http: HttpClient, private auth: AuthService, 
       private ps : PublicationsService) {
-    this.oauthUser();
+    //this.oauthUser();
   }
 
   private flickUrl = "http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/flickr/";
@@ -43,6 +43,7 @@ export class FlickrService {
       headers: new HttpHeaders({'Authorization': 'Bearer ' + this.tokenFirebase })
     }
 
+    //console.log('ABC: ' + photo);
     let result = await this.http.post<any>(this.flickUrl + 'upload', formData, httpOpt);
 
     await result.subscribe(data =>{
@@ -52,8 +53,12 @@ export class FlickrService {
       //console.log(urlFoto);
 
       photo = { ...photo, 'photoURL' : urlFoto};
-      
-      this.ps.postPublicationCF(photo).subscribe();
+      //console.log('p: ' + JSON.stringify(photo));
+
+      //HASTA QUE SUBAMOS LAS FUNCTIONS, ASI FUNCIONA
+      this.http.post<any>("http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/publications", photo, httpOpt).subscribe();
+
+      //this.ps.postPublicationCF(photo).subscribe();
     })
 
 
