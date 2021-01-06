@@ -32,10 +32,10 @@ export class HomeComponent implements OnInit {
   }
 
   //Form
-  graffiter: string = '';
-  theme: string = '';
-  status: string = '';
-  title: string = '';
+  graffiter: string;
+  theme: string;
+  status: string;
+  title: string;
 
   uid:string;
   //Tokens flickr
@@ -56,9 +56,20 @@ export class HomeComponent implements OnInit {
     window.sessionStorage.setItem("oauth_verifier", JSON.stringify(this.oauth_verifier));
     console.log("vefifier -------> " + this.oauth_verifier);
 
+    this.resetAll();
+
     this.getPublications();
     this.obtenerTematicas();
 
+  }
+
+  resetAll(){
+    this.graffiter = '';
+    this.status = '';
+    this.theme = '';
+    this.title = '';
+    this.isFilter = false;
+    this.loadAll = false;
   }
 
   obtenerTematicas(){

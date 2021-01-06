@@ -14,22 +14,23 @@ import { map } from 'rxjs/operators';
 })
 export class UsersSearchComponent implements OnInit {
 
-  loadAll: boolean = false;
-  isFilter: boolean = false;
-  pubsPerPage = 9;
+  isBegin: boolean;
+  loadAll: boolean;
+  isFilter: boolean;
+  usersPerPage = 12;
   twttr: any;
 
   //Forms
-  fullName: string = '';
-  nickName: string = '';
+  fullName: string;
+  nickName: string;
 
   constructor(private us: UserService, 
       public usersList : ScrollPaginationUsersSearchService,
       private ts : ToastrService) { }
 
   ngOnInit(): void {
+    this.isBegin = true;
     this.resetear();
-    this.isFilter = false;
   }
 
   ngAfterViewInit(): void {
@@ -54,7 +55,7 @@ export class UsersSearchComponent implements OnInit {
     if(this.nickName.trim() === '' && this.fullName.trim() === '') this.resetear();
     else {
       let opts : any = {
-        limit : this.pubsPerPage,
+        limit : this.usersPerPage,
         prepend : false,
         reverse : false
       }
@@ -69,8 +70,16 @@ export class UsersSearchComponent implements OnInit {
   }
 
   resetear(){
+
+    if(this.isBegin){
+      this.fullName = '';
+      this.nickName = '';
+      this.loadAll = false;
+      this.isBegin = false;
+    }
+
     let opts : any = {
-      limit : this.pubsPerPage,
+      limit : this.usersPerPage,
       prepend : false,
       reverse : false
     }

@@ -34,6 +34,7 @@
     "git": "^0.1.5",
     "jquery": "^3.5.1",
     "mapbox-gl": "^1.13.0",
+    "ng-multiselect-dropdown": "^0.2.14",
     "ngx-pagination": "^5.0.0",
     "ngx-toastr": "^13.2.0",
     "popper.js": "^1.16.1",

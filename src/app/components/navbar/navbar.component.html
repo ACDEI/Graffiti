@@ -53,47 +53,54 @@
         <div class="modal-body">
          
           <form>
-
-            <div class="form-group">
-              <label for="graffitiTitle"><strong>Título</strong></label>
-              <input type="text" name="graffitiTitle" [(ngModel)]="graffitiTitle" class="form-control" id="inputGraffiterTitle">
-            </div>
-            <div class="form-group">
-              <label for="graffiterName"><strong>Graffitero</strong></label>
-              <input type="text" name="graffiterName" [(ngModel)]="graffiterName" class="form-control" id="inputGraffiterName">
-            </div>
-            <div class="form-group">
-              <label for="themeSelector"><strong>Tema</strong></label>
-              <select multiple class="form-control" id="selectTheme" [(ngModel)]="themeSelector" name="themeSelector">
-                <option>Urban</option>
-                <option>Nature</option>
-                <option>Stylish</option>
-                <option>People</option>
-                <option>Protest</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="statusSelector"><strong>Estado</strong></label>
-              <select class="form-control" id="selectStatus" [(ngModel)]="statusSelector" name="statusSelector">
-                <option>Perfect</option>
-                <option>Legible</option>
-                <option>Deteriorated</option>
-                <option>Illegible</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label for="selectPhoto"><strong>Seleccionar Foto</strong></label>
-              <!--<input type="file" class="form-control-file" id="selectFile">-->
-              <input type="file" (change)="onFileSelected($event)">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="inputTitle"><strong>Título</strong></label>
+                  <input type="text" name="title" [(ngModel)]="title" class="form-control" id="inputTitle">
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="inputGraffiter"><strong>Graffitero</strong></label>
+                  <input type="text" name="graffiter" [(ngModel)]="graffiter" class="form-control" id="inputGraffiter">
+                </div>
+              </div>
             </div>
 
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="themesSelector"><strong>Categorías</strong></label>
+                  <ng-multiselect-dropdown name = 'themesSelector' [placeholder]="'Seleccionadas'" [data]="themesList" [(ngModel)]="themesSelector" 
+                    [settings]="themesSettings" (onSelect)="onChangeTheme($event)">
+                  </ng-multiselect-dropdown>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="statusSelector"><strong>Conservación</strong></label>
+                  <select class="form-control" id="selectStatus" [(ngModel)]="statusSelector" name="statusSelector">
+                    <option *ngFor="let s of stateList" value="{{s}}">{{s}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="selectPhoto"><strong>Seleccionar Foto</strong></label>
+                  <!--<input type="file" class="form-control-file" id="selectFile">-->
+                  <input type="file" (change)="onFileSelected($event)">
+                </div>
+              </div>
+            </div>
           </form>
-     
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
           <div *ngIf="showButton">
-             <button type="button" (click)="subirImagen()"  class="btn btn-primary" data-dismiss="modal">Subir</button>
+             <button type="button" (click)="subirImagen()" class="btn btn-primary" data-dismiss="modal">Subir</button>
           </div>
         </div>
       </div>

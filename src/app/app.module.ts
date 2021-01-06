@@ -6,6 +6,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 
 //Routes
 import { AppRoutingModule, routingComponents } from './app-routing.module';
@@ -117,7 +118,8 @@ import { LoadingSpinnerComponent } from './components/user-profile/loading-spinn
     ToastrModule.forRoot(),
     NgxPaginationModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgMultiSelectDropDownModule
   ],
   providers: [AuthService, 
               UserService, 
