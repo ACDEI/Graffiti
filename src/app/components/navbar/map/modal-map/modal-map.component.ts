@@ -9,7 +9,7 @@ import { MapService } from '@core/services/map.service';
 })
 export class ModalMapComponent implements OnInit {
 
-  constructor(private locationService:LocationService ,private mapService: MapService) { }
+  constructor(private locationService: LocationService, private mapService: MapService) { }
 
   ngOnInit(): void {
     this.locationService.getPosition().then( pos => {
