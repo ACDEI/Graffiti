@@ -8,6 +8,7 @@ import { UserService } from '@core/services/classes_services/user.service';
 import { CommentsService } from '@core/services/comments.service';
 import { MapService } from '@core/services/map.service';
 import { ToastrService } from 'ngx-toastr';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-publication-view',
@@ -36,6 +37,16 @@ export class PublicationViewComponent implements OnInit {
   editTitle: string;
   editGraffiter: string;
   editState: string;
+  editThemes: string[];
+
+  themesSettings : IDropdownSettings = {
+    enableCheckAll: false,
+    allowSearchFilter: true,
+    limitSelection: 3,
+    searchPlaceholderText: 'Buscar por Nombre',
+    textField: 'name',
+    defaultOpen: false
+  };
 
   constructor(private mapPubService: MapService, private route: ActivatedRoute, private ps: PublicationsService,
        private us: UserService, private cs : CommentsService, private as : AuthService,
@@ -50,6 +61,7 @@ export class PublicationViewComponent implements OnInit {
         this.pub = value;
         this.us.getUser(this.pub.uid).then(user => { this.user = user });
         this.pubThemes = this.pub.themes;
+        this.editThemes = this.pubThemes;
         this.isLiked();
         this.miPublicacion = this.usuarioSesion.uid === this.pub.uid;
 
@@ -117,14 +129,21 @@ export class PublicationViewComponent implements OnInit {
   }
 
   saveChanges() {
-    if((this.editTitle != null && this.editTitle.trim() !== "" && this.editTitle !== this.pub.title) || (this.editGraffiter != null && this.editGraffiter.trim() !== "" && this.editGraffiter !== this.pub.graffiter) || (this.editState !== this.pub.state)){
-      if(this.editTitle == null || this.editTitle.trim() === "") this.editTitle = this.pub.title;
-      if(this.editGraffiter == null || this.editGraffiter.trim() === "") this.editGraffiter = this.pub.graffiter;
+    if(
+      this.validateTitle() || 
+      this.validateGraffiter || 
+      this.validateState() ||
+      this.validateThemes()
+      ){
+
+      if(this.emptyTitle()) this.editTitle = this.pub.title;
+      if(this.emptyGraffiter()) this.editGraffiter = this.pub.graffiter;
 
       var data: any = {
         "title": this.editTitle,
         "graffiter": this.editGraffiter,
-        "state": this.editState
+        "state": this.editState,
+        "themes": this.editThemes
       };
       this.ps.putPublicationCF(this.pub.pid, data).subscribe(
         success => {this.ts.success("Cambios realizados correctamente", "", {timeOut:1000});},
@@ -132,9 +151,60 @@ export class PublicationViewComponent implements OnInit {
       );
       this.editTitle = "";
       this.editGraffiter = "";
+      this.editThemes = [];
     } else {
       this.ts.warning("Atención", "No se han detectado cambios", {timeOut:2000});
     }
+  }
+
+  validateTitle(): boolean {
+    return this.editTitle != null && 
+           this.editTitle.trim() !== "" && 
+           this.editTitle !== this.pub.title;
+  }
+
+  validateGraffiter(): boolean {
+    return this.editGraffiter != null && 
+           this.editGraffiter.trim() !== "" && 
+           this.editGraffiter !== this.pub.graffiter;
+  }
+
+  validateState(): boolean {
+    return this.editState !== this.pub.state;
+  }
+
+  validateThemes(): boolean {
+    return this.editThemes != null &&
+           this.editThemes != [] &&
+           (
+             this.editThemes.length != this.pubThemes.length ||
+             (
+               this.editThemes.length == this.pubThemes.length &&
+               this.differentThemes()
+             )
+           );
+  }
+
+  differentThemes(): boolean {
+    var iguales: boolean = false;
+
+    for(var i = 0; i < this.editThemes.length && !iguales; i++) {
+      if(this.pubThemes.includes(this.editThemes[i])) {
+        iguales = true;
+      }
+    }
+
+    return iguales;
+  }
+
+  emptyTitle(): boolean {
+    return this.editTitle == null || 
+           this.editTitle.trim() === "";
+  }
+
+  emptyGraffiter(): boolean {
+    return this.editGraffiter == null || 
+           this.editGraffiter.trim() === "";
   }
 
   //Likes
