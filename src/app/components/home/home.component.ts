@@ -6,7 +6,6 @@ import { Publication } from '@core/models/publication';
 import { Theme } from '../../models/theme.model';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import * as firebase from 'firebase';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ScrollPaginationPublicationsService } from '@core/services/scroll-pagination-publications.service';
@@ -116,7 +115,7 @@ export class HomeComponent implements OnInit {
   }
 
   getPublications(){
-    this.theme = "";
+    this.theme = '';
     this.status = '';
     let opts : any = {
       limit : this.pubsPerPage,

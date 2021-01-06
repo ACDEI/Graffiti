@@ -9,6 +9,7 @@ import { LocationService } from '@core/services/location.service';
 import { MapService } from '@core/services/map.service';
 import * as firebase from 'firebase';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { ToastrService } from 'ngx-toastr';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -50,7 +51,7 @@ export class NavbarComponent implements OnInit {
 
   constructor(private mapService:MapService , private locationService:LocationService,private auth: AuthService, private http: HttpClient, 
       private route: Router , private ps: PublicationsService, 
-      private userService: UserService, private themeService: ThemeService) {
+      private userService: UserService, private themeService: ThemeService, private ts: ToastrService) {
    }
 
   ngOnInit(): void {
@@ -144,32 +145,40 @@ export class NavbarComponent implements OnInit {
 
         let d = new Date();
          // TODO lat y long
-        let photo : any = { 
-          "state": this.statusSelector, 
-          "themes": this.themesSelector,
-          "title": this.title, 
-          "graffiter": this.graffiter , 
-          "photoURL": this.urlFoto , 
-          "uid": this.usuarioSesion.uid, 
-          "pid": this.generatePID(),
-          //"lat": ,
-          //"lon": 
-          
+        var number: number = this.validateFields();
+        if(number == -1){
+          //En caso de que el graffitero sea nulo o cadena vacía, lo ponemos anónimo
+          if(this.graffiter == null || this.graffiter.trim() === '') this.graffiter = "Anónimo";
+          let photo : any = { 
+            "state": this.statusSelector, 
+            "themes": this.themesSelector,
+            "title": this.title, 
+            "graffiter": this.graffiter , 
+            "photoURL": this.urlFoto , 
+            "uid": this.usuarioSesion.uid, 
+            "pid": this.generatePID(),
+            //"lat": ,
+            //"lon": 
+          }
+          this.ps.postPublicationCF(photo);
+          this.ts.success("Publicación Subida Correctamente", "", {timeOut: 2000});
+        } else if(number == 1) {
+          this.ts.error("Introduzca título porfavor", "", {timeOut: 2000});
+        } else if(number == 2) {
+          this.ts.error("Eliga al menos una temática porfavor", "", {timeOut: 2000});
+        } else {
+          this.ts.error("Eliga un estado de conservación porfavor", "", {timeOut: 2000});
         }
-         
-        this.ps.postPublicationCF(photo);
       })
-
      this.showButton = false; 
-   
-   }
+  }
 
-   onFileSelected(event){
-     this.showButton = true; 
-     this.selectedFile = <File>event.target.files[0];
-   }
+  onFileSelected(event){
+    this.showButton = true; 
+    this.selectedFile = <File>event.target.files[0];
+  }
 
-   generatePID(){
+  generatePID(){
     var pid : string = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
@@ -177,6 +186,26 @@ export class NavbarComponent implements OnInit {
         pid += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return pid;
-   }
+  }
+
+  validateFields(): number {
+    var num: number = -1;
+    if(!this.validateTitle()) num = 1; //No hay título
+    if(!this.validateThemes()) num = 2; //No hay temáticas
+    if(!this.validateState()) num = 3; //No hay estado de conservación
+    return num;
+  }
+
+  validateTitle(): boolean{
+    return this.title != null && this.title.trim() !== '';
+  }
+
+  validateThemes(): boolean {
+    return this.themesSelector != null && this.themesSelector != [];
+  }
+
+  validateState(): boolean {
+    return this.statusSelector != null && this.statusSelector.trim() !== '';
+  }
 
 }
