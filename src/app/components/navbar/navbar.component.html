@@ -20,10 +20,10 @@
       </ul>
       <ul class="navbar-nav ml-md-auto">
           <li class="nav-item mr-5">
-              <div *ngIf="conectadoFlickr">
+              <div *ngIf="!conectadoFlickr">
                   <a class="nav-link" href="#" data-toggle="modal" data-target="#uploadModal"><i class="fas fa-arrow-circle-up"></i> Subir Graffiti</a>
               </div>
-              <div *ngIf="!conectadoFlickr">
+              <div *ngIf="conectadoFlickr">
                 <a class="nav-link"   (click)="conectarFlickr()"><i class="fas fa-arrow-circle-up"></i> Conectar con Flickr</a>
               </div>
           </li>
@@ -32,7 +32,9 @@
                 <i class="fas fa-user-circle"></i> Perfil
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                <!--
                 <a class="dropdown-item" [routerLink]="['/user-profile', uid]" routerLinkActive="active">Ver Perfil</a>
+                -->
                 <span class="dropdown-item" (click)="cerrarSesion()">Cerrar Sesión</span>
               </div>
           </li>
@@ -72,9 +74,11 @@
               <div class="col">
                 <div class="form-group">
                   <label for="themesSelector"><strong>Categorías</strong></label>
+                  <!--
                   <ng-multiselect-dropdown name = 'themesSelector' [placeholder]="'Seleccionadas'" [data]="themesList" [(ngModel)]="themesSelector" 
                     [settings]="themesSettings" (onSelect)="onChangeTheme($event)">
                   </ng-multiselect-dropdown>
+                  -->
                 </div>
               </div>
             </div>
@@ -87,6 +91,18 @@
                   </select>
                 </div>
               </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="statusSelector"><strong>Localización</strong></label>
+                  <div id="form-map">
+                    <app-modal-map></app-modal-map>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
               <div class="col">
                 <div class="form-group">
                   <label for="selectPhoto"><strong>Seleccionar Foto</strong></label>

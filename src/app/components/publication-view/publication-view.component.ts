@@ -55,7 +55,7 @@ export class PublicationViewComponent implements OnInit {
 
         this.editState = this.pub.state;
         
-        this.mapPubService.buildMap(this.pub.coordinates.longitude, this.pub.coordinates.latitude, true);
+        this.mapPubService.buildMap(this.pub.coordinates.longitude, this.pub.coordinates.latitude, false);
         this.mapPubService.showPoint(this.pub);
 
         //Cargar Elementos

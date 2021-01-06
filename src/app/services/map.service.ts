@@ -5,6 +5,7 @@ import { LocationService } from '@core/services/location.service';
 import { switchMap } from 'rxjs/operators';
 import { type } from 'os';
 import { Publication } from '@core/models/publication';
+import { MapOperator } from 'rxjs/internal/operators/map';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,9 @@ export class MapService {
   // Coordenadas de la localización donde queremos centrar el mapa
   position: {lng: number, lat:number};
   pitch = 90;
-  zoom = 18;
+  zoom = 15;
+
+  selectedPosition:mapboxgl.LngLat; 
 
   isOpened = false;
 
@@ -33,25 +36,37 @@ export class MapService {
       lat = 36.717827;
     }
 
-    if(interact){
+    if(interact == null){
       this.map = new mapboxgl.Map({
         container: 'map',
         style: this.style,
-        zoom: this.zoom,
-        center: [lng,lat],
-        antialias: true,
-      });
-    }else{
-      this.map = new mapboxgl.Map({
-        container: 'map',
-        style: this.style,
-        zoom: this.zoom,
+        zoom: 18,
         center: [lng,lat],
         antialias: true,
         maxZoom: 19,
         minZoom: 18,
         dragPan: false,
       });
+    }else if(!interact){
+      this.map = new mapboxgl.Map({
+        container: 'map',
+        style: this.style,
+        zoom: this.zoom,
+        center: [lng,lat],
+        antialias: true,
+      });
+    }else if(interact){
+      this.map = new mapboxgl.Map({
+        container: 'modal-map',
+        style: this.style,
+        zoom: this.zoom,
+        center: [lng,lat],
+        antialias: true,
+      });
+      this.setOnClick();
+      this.map.on('load', () => {
+        this.map.resize();
+      })
     }
 
     //Inicializamos el mapa
@@ -66,7 +81,9 @@ export class MapService {
 
     this.map.on("click", function (e) {
 
-      console.log(e);
+      console.log(e.lngLat);
+
+      this.selectedPosition = e.lngLat;
 
       if(aux != undefined){
         aux.remove();

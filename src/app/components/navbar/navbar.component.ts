@@ -5,6 +5,8 @@ import { AuthService } from '@core/services/auth.service';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { ThemeService } from '@core/services/classes_services/theme.service';
 import { UserService } from '@core/services/classes_services/user.service';
+import { LocationService } from '@core/services/location.service';
+import { MapService } from '@core/services/map.service';
 import * as firebase from 'firebase';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { map } from 'rxjs/operators';
@@ -46,7 +48,7 @@ export class NavbarComponent implements OnInit {
   idToken : string;
   tokenFirebase:string;
 
-  constructor(private auth: AuthService, private http: HttpClient, 
+  constructor(private mapService:MapService , private locationService:LocationService,private auth: AuthService, private http: HttpClient, 
       private route: Router , private ps: PublicationsService, 
       private userService: UserService, private themeService: ThemeService) {
    }
@@ -123,7 +125,6 @@ export class NavbarComponent implements OnInit {
 
 
   async subirImagen(){
-
      const formData : FormData = new FormData();  
      formData.append('file', this.selectedFile, this.selectedFile.name);
      formData.append('oauth_token',this.oauth_token);

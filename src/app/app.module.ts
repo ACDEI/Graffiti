@@ -67,6 +67,7 @@ import { UsersSearchComponent } from './components/users-search/users-search.com
 import { CardUserNormalComponent } from './components/cards/card-user-normal/card-user-normal.component';
 import { ScrollableDirective } from './directives/scrollable.directive';
 import { LoadingSpinnerComponent } from './components/user-profile/loading-spinner/loading-spinner.component';
+import { ModalMapComponent } from './components/navbar/map/modal-map/modal-map.component';
 
 
 @NgModule({
@@ -106,6 +107,7 @@ import { LoadingSpinnerComponent } from './components/user-profile/loading-spinn
     CardUserNormalComponent,
     ScrollableDirective,
     LoadingSpinnerComponent,
+    ModalMapComponent,
   ],
   imports: [
     BrowserModule,
