@@ -45,18 +45,12 @@ export class HomeComponent implements OnInit {
   //token firebase
   token:string; 
 
-  constructor(private locationService: LocationService, private mapService:MapService, private themeService: ThemeService, private route:ActivatedRoute, 
+  constructor(private locationService: LocationService, private mapService:MapService, 
+    private themeService: ThemeService, private route: ActivatedRoute, 
     private http: HttpClient, public page : ScrollPaginationPublicationsService, 
     private ts : ToastrService) {}
  
   ngOnInit(): void {
-    //obtener por url los token cuando flickr redireccione
-    this.oauth_token = this.route.snapshot.queryParams.oauth_token;
-    this.oauth_verifier = this.route.snapshot.queryParams.oauth_verifier;
-    window.sessionStorage.setItem("oauth_token", JSON.stringify(this.oauth_token));
-    window.sessionStorage.setItem("oauth_verifier", JSON.stringify(this.oauth_verifier));
-    console.log("vefifier -------> " + this.oauth_verifier);
-
     this.resetAll();
 
     this.getPublications();
@@ -149,31 +143,5 @@ export class HomeComponent implements OnInit {
         && this.theme === '' && this.status === '') this.getPublications()
     else this.onChange();
   }
-
-  async getQualityAir(){
-    
-    let self = this; 
-    await firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
-      // Send token to your backend via HTTPS
-      // ...
-      self.token = idToken; 
-      //console.log(idToken);
-    }).catch(function(error) {
-      // Handle error
-    });
-
-
-     console.log(this.token);
-
-     const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.token });
-
-     let result = this.http.get<any>("http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/openData/airQuality/",{headers});
-
-     result.subscribe(data => {
-       console.log(data);
-     })
-
-  }
-
 
 }

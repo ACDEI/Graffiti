@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@core/services/auth.service';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { ThemeService } from '@core/services/classes_services/theme.service';
@@ -40,9 +40,6 @@ export class NavbarComponent implements OnInit {
   themesSelector: string[];
   title: string;
   graffiter: string;
-  urlFoto: string; 
-  latSelected : any;
-  lngSelected : any;
 
   //Flickr
   conectadoFlickr = false; 
@@ -54,7 +51,7 @@ export class NavbarComponent implements OnInit {
   tokenFirebase:string;
 
   constructor(private mapService: MapService, private auth: AuthService, private http: HttpClient, 
-      private route: Router , private ps: PublicationsService, 
+      private route: Router, private aroute : ActivatedRoute, 
       private userService: UserService, private themeService: ThemeService, 
       private fs : FlickrService, private ts: ToastrService) {
    }
@@ -64,12 +61,39 @@ export class NavbarComponent implements OnInit {
     this.obtenerTematicas();
     this.arreglarModal();
 
-    this.conectadoFlickr = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
+    this.cogerFlickrTokens();
+
+    //this.conectadoFlickr = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
     //console.log(this.conectadoFlickr);
-    this.oauth_verifier = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
+    //this.oauth_verifier = JSON.parse(window.sessionStorage.getItem("flickr_oauth_verifier"));
     //console.log(this.oauth_verifier);
-    this.oauth_token = JSON.parse(window.sessionStorage.getItem("oauth_token"));
+    //this.oauth_token = JSON.parse(window.sessionStorage.getItem("flickr_oauth_token"));
     //console.log(this.oauth_token);
+  }
+
+  cogerFlickrTokens(){
+    //Obtener Tokens de la URL
+    if(this.aroute.snapshot.queryParams != null){
+      this.oauth_token = this.aroute.snapshot.queryParams.oauth_token;
+      this.oauth_verifier = this.aroute.snapshot.queryParams.oauth_verifier;
+      window.sessionStorage.setItem("flickr_oauth_token", JSON.stringify(this.oauth_token));
+      window.sessionStorage.setItem("flickr_oauth_verifier", JSON.stringify(this.oauth_verifier));
+      //console.log("vefifier -------> " + this.oauth_verifier);
+
+      //¿Guardar Tokens?
+      this.fs.flickr_oauth_token = this.oauth_token;
+      this.fs.flickr_oauth_token_secret = this.oauth_verifier;
+    }
+
+    if(this.fs.flickr_oauth_token != null && this.fs.flickr_oauth_token_secret != null){
+      this.conectadoFlickr = true;
+
+      this.oauth_verifier = JSON.parse(window.sessionStorage.getItem("flickr_oauth_verifier"));
+      //console.log(this.oauth_verifier);
+      this.oauth_token = JSON.parse(window.sessionStorage.getItem("flickr_oauth_token"));
+      //console.log(this.oauth_token);
+    }
+    else this.conectadoFlickr = false;
   }
 
   obtenerTematicas(){

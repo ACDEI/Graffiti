@@ -11,6 +11,8 @@ export class FlickrService {
 
   //OAuth
   tokenFirebase : string;
+  flickr_oauth_token : string;
+  flickr_oauth_token_secret : string;
 
   constructor(private http: HttpClient, private auth: AuthService, 
       private ps : PublicationsService) {
