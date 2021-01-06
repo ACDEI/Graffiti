@@ -49,6 +49,8 @@ export class ScrollPaginationPublicationsService {
         prepend: false,
         themes: [],
         state : '',
+        graffiter: '',
+        title: '',
         ...opts
       }
   
@@ -66,11 +68,12 @@ export class ScrollPaginationPublicationsService {
           q = q.where('themes', 'array-contains', this.query.themes[0]);
           //console.log('in Theme');
         }
+        
         //console.log(q);
         return q;
       })
       //console.log(first);
-  
+
       this.mapAndUpdate(first)
   
       // Create the observable array for consumption in components
@@ -127,8 +130,12 @@ export class ScrollPaginationPublicationsService {
           let values = arr.map(snap => {
             const data = snap.payload.doc.data()
             const doc = snap.payload.doc
-            return { ...data, doc }
+            if(data.title.toLowerCase().includes(this.query.title.toLowerCase())
+                && data.graffiter.toLowerCase().includes(this.query.graffiter.toLowerCase())) 
+              return { ...data, doc }
+            else return;
           })
+          values = values.filter(v => v != null);
     
           // If prepending, reverse array
           values = this.query.prepend ? values.reverse() : values

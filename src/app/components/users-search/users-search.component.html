@@ -1,6 +1,15 @@
 <app-navbar></app-navbar>
 
 <div class="row mt-5">
+
+    <!-- TWITTER -->
+    <div class="col-lg-3">
+        <a class="twitter-timeline" href="https://twitter.com/MalagArt_acdei?ref_src=twsrc%5Etfw">
+            Tweets by MalagartG
+        </a> 
+    </div>
+
+    <!-- Filtros -->
     <div class="col-lg-9">
         <div class="row">
             <div [ngClass]="(!isFilter)?'col-6':'col-5'">
@@ -19,17 +28,14 @@
                 <img class="btn" style="background-color: white;" (click)="resetear()" style="height: 85px;" src="assets/images/filter-remove.png"/>
             </div>
         </div>
-        <!--ngFor de cards solo si es necesario-->
-        <div id="showResultList" class="row mt-4">
-            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6" loading="lazy" *ngFor="let user of usersList">
+
+        <!--ngFor de cards solo si es necesario -->
+        <div style="justify-content: center;" id="showResultList" class="row mt-4">
+            <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6" loading="lazy" *ngFor="let user of usersList.data | async">
                 <app-card-user-normal [userR]='user'></app-card-user-normal>
             </div>
+            <app-loading-spinner *ngIf="usersList.loading | async"></app-loading-spinner>
         </div>
-    </div>
-    <div class="col-lg-3">
-        <a class="twitter-timeline" href="https://twitter.com/MalagArt_acdei?ref_src=twsrc%5Etfw">
-            Tweets by MalagartG
-        </a> 
     </div>
 </div>
 
