@@ -250,7 +250,7 @@ export class NavbarComponent implements OnInit {
       })
       
      this.showButton = false; 
-   
+   */
    }
 
   onFileSelected(event){
