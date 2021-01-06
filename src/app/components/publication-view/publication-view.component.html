@@ -125,9 +125,9 @@
               <label for="editThemes">Temáticas</label>
               <ng-multiselect-dropdown id="editThemes" name="editThemes" [data] ="themesList" [(ngModel)]="editThemes" [settings]="themesSettings"></ng-multiselect-dropdown>
 
-              <select id="editThemes" class="form-control" (change)="onChange()" name="editThemes" [(ngModel)]="editThemes">
+              <!--<select id="editThemes" class="form-control" (change)="onChange()" name="editThemes" [(ngModel)]="editThemes">
                 <option *ngFor="let t of themesList" value="{{t}}">{{t}}</option>
-              </select>
+              </select>-->
 
             </div>
           </form>

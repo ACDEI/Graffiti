@@ -9,6 +9,7 @@ import { CommentsService } from '@core/services/comments.service';
 import { MapService } from '@core/services/map.service';
 import { ToastrService } from 'ngx-toastr';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { ThemeService } from '@core/services/classes_services/theme.service';
 
 @Component({
   selector: 'app-publication-view',
@@ -20,6 +21,7 @@ export class PublicationViewComponent implements OnInit {
   pub: Publication;
   user: User;
   pubThemes: string[];
+  themesList: any[];
   usuarioSesion : any;
   publicacionesSesion: any[];
   commentsSesion: any[];
@@ -50,7 +52,7 @@ export class PublicationViewComponent implements OnInit {
 
   constructor(private mapPubService: MapService, private route: ActivatedRoute, private ps: PublicationsService,
        private us: UserService, private cs : CommentsService, private as : AuthService,
-       private ts : ToastrService, private r: Router) { }
+       private ts : ToastrService, private r: Router, private themesService: ThemeService) { }
 
   ngOnInit(): void {
     //Cargar Usuario y Publicacion
@@ -62,6 +64,9 @@ export class PublicationViewComponent implements OnInit {
         this.us.getUser(this.pub.uid).then(user => { this.user = user });
         this.pubThemes = this.pub.themes;
         this.editThemes = this.pubThemes;
+        this.themesService.getAllThemesCF().subscribe(values => {
+          this.themesList = values;
+        });
         this.isLiked();
         this.miPublicacion = this.usuarioSesion.uid === this.pub.uid;
 
