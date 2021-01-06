@@ -40,9 +40,6 @@ export class NavbarComponent implements OnInit {
   themesSelector: string[];
   title: string;
   graffiter: string;
-  latSelected:string;
-  lngSelected:string;
-
 
   //Flickr
   conectadoFlickr = false; 
@@ -76,7 +73,6 @@ export class NavbarComponent implements OnInit {
   }
 
   cogerFlickrTokens(){
-    console.log("Hola buenas");
     
     //Obtener Tokens de la URL
     if(this.aroute.snapshot.queryParams != null){
@@ -84,20 +80,20 @@ export class NavbarComponent implements OnInit {
       this.oauth_verifier = this.aroute.snapshot.queryParams.oauth_verifier;
       window.sessionStorage.setItem("flickr_oauth_token", JSON.stringify(this.oauth_token));
       window.sessionStorage.setItem("flickr_oauth_verifier", JSON.stringify(this.oauth_verifier));
-      console.log("vefifier -------> " + this.oauth_verifier);
+      //console.log("vefifier -------> " + this.oauth_verifier);
 
       //¿Guardar Tokens?
       this.fs.flickr_oauth_token = this.oauth_token;
       this.fs.flickr_oauth_token_secret = this.oauth_verifier;
 
-      console.log(this.oauth_token);
+      //console.log(this.oauth_token);
     }
 
     if(this.fs.flickr_oauth_token != null && this.fs.flickr_oauth_token_secret != null){
       this.conectadoFlickr = true;
 
       this.oauth_verifier = JSON.parse(window.sessionStorage.getItem("flickr_oauth_verifier"));
-      console.log("verifier------------> " + this.oauth_verifier);
+      //console.log("verifier------------> " + this.oauth_verifier);
       this.oauth_token = JSON.parse(window.sessionStorage.getItem("flickr_oauth_token"));
       //console.log(this.oauth_token);
     }
@@ -134,9 +130,9 @@ export class NavbarComponent implements OnInit {
 
   async conectarFlickr(){
     this.fs.conectarFlickr(window.location.href);
-    console.log(this.fs.tokenFirebase)
+    console.log(this.fs.tokenFirebase);
 
-
+  /* QUITAR CUANDO SEPAMOS QUE FUNCIONA
     let self = this; 
     await firebase.auth().currentUser.getIdToken(true).then(function(idToken) {
       // Send token to your backend via HTTPS
@@ -146,39 +142,20 @@ export class NavbarComponent implements OnInit {
     }).catch(function(error) {
       // Handle error
     });
-
-
-     console.log(this.tokenFirebase);
-
-     const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.tokenFirebase });
-
+      console.log(this.tokenFirebase);
+      const headers = new HttpHeaders({'Authorization': 'Bearer ' + this.tokenFirebase });
     let url = "http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/flickr/conectar";
-  
-    
-    //let result = 
-    
-    this.http.get<any>(url,{headers}).toPromise().then( data => {
-      console.log(data.url);
-      self.token_secret = data.token_secret; 
-      ///Si el usuario acepta flickr devolverá un callback a la home del usuario en malagart
-      //this.route.navigateByUrl(data.url);
-      window.location.href = data.url; 
-      self.cogerFlickrTokens();
-    }).catch( error => {
-      console.log(error)
-    });
 
-    /*
+    let result = this.http.get<any>(url,{headers});
+
     result.subscribe(data =>{
       console.log(data.url);
-      self.token_secret = data.token_secret; 
       ///Si el usuario acepta flickr devolverá un callback a la home del usuario en malagart
       //this.route.navigateByUrl(data.url);
       window.location.href = data.url; 
-      self.cogerFlickrTokens();
     })
-    */
-    
+  */
+
   }
 
 
