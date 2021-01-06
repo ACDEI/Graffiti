@@ -31,12 +31,14 @@
         <div class="row">
             <div class="col-lg-12 col-md-6 col-sm-12">
                 <div class="card bg-light mt-3" style="padding: 10px;">
-                    <h5 class="card-title">Temática
-                        <img class="btn" *ngIf="(theme != '')" style="background-color: white;" (click)="clear(3)" style="height: 40px;" src="assets/images/filter-remove-teal.png"/>
+                    <h5 class="card-title">Temáticas
+                        <img class="btn" *ngIf="(themesSelector.length > 0)" style="background-color: white;" (click)="clear(3)" style="height: 40px;" src="assets/images/filter-remove-teal.png"/>
                     </h5>
-                    <select class="form-control" name="theme" [(ngModel)]="theme" (change)="onChange()">
+                    <ng-multiselect-dropdown class="bg-white" name="themesSelector" [placeholder]="'Elige Temáticas'" [data]="themesList" [(ngModel)]="themesSelector" [settings]="themesSettings" (onSelect)="onChangeTheme($event)"></ng-multiselect-dropdown>
+
+                    <!--<select class="form-control" name="theme" [(ngModel)]="theme" (change)="onChange()">
                         <option *ngFor="let t of themesList" value="{{t.name}}">{{t.name}}</option>
-                    </select>
+                    </select>-->
                 </div>
             </div>
             <div class="col-lg-12 col-md-6 col-sm-12">
