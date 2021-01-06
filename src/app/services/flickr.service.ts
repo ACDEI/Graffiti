@@ -37,6 +37,7 @@ export class FlickrService {
   }
 
   async subirFlickr(formData, photo) {
+    console.log()
 
     if(this.tokenFirebase == null) this.oauthUser();
     const httpOpt = {

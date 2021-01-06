@@ -160,13 +160,14 @@ export class NavbarComponent implements OnInit {
 
 
   async subirImagen(){
+    console.log(this.fs.flickr_oauth_token_secret);
 
     const formData : FormData = new FormData();  
     formData.append('file', this.selectedFile, this.selectedFile.name);
     formData.append('oauth_token', this.oauth_token);
     formData.append('oauth_verifier', this.oauth_verifier);
     formData.append('title', this.title);
-    formData.append('token_secret', this.token_secret);
+    formData.append('token_secret', this.fs.flickr_oauth_token_secret);
 
     //---------------------- Obtener localizacion del mapa ----------------------------
     let location = this.mapService.selectedPosition;
