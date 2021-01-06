@@ -6,8 +6,11 @@ import { PublicationsService } from '@core/services/classes_services/publication
 import { ThemeService } from '@core/services/classes_services/theme.service';
 import { UserService } from '@core/services/classes_services/user.service';
 import { FlickrService } from '@core/services/flickr.service';
+import { LocationService } from '@core/services/location.service';
+import { MapService } from '@core/services/map.service';
 import * as firebase from 'firebase';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { ToastrService } from 'ngx-toastr';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -50,10 +53,10 @@ export class NavbarComponent implements OnInit {
   idToken : string;
   tokenFirebase:string;
 
-  constructor(private auth: AuthService, private http: HttpClient, 
+  constructor(private mapService: MapService, private auth: AuthService, private http: HttpClient, 
       private route: Router , private ps: PublicationsService, 
       private userService: UserService, private themeService: ThemeService, 
-      private fs : FlickrService) {
+      private fs : FlickrService, private ts: ToastrService) {
    }
 
   ngOnInit(): void {
@@ -135,20 +138,30 @@ export class NavbarComponent implements OnInit {
     formData.append('oauth_token', this.oauth_token);
     formData.append('oauth_verifier', this.oauth_verifier);
     formData.append('title', this.title);
-    
-    let photo = { 
-      "state": this.statusSelector, 
-      "themes": this.themesSelector,
-      "title": this.title, 
-      "graffiter": this.graffiter , 
-      "photoURL": this.urlFoto , 
-      "uid": this.usuarioSesion.uid, 
-      "pid": this.generatePID(),
-      "lat": this.latSelected,
-      "lng": this.lngSelected
-    }
 
-    this.fs.subirFlickr(formData, photo);
+    var number : Number = this.validateFields();
+    if(number == -1){
+      //En caso de que el graffitero sea nulo o cadena vacía, lo ponemos anónimo
+      if(this.graffiter == null || this.graffiter.trim() === '') this.graffiter = "Anónimo";
+        
+        let photo = { 
+          "state": this.statusSelector, 
+          "themes": this.themesSelector,
+          "title": this.title, 
+          "graffiter": this.graffiter,
+          "uid": this.usuarioSesion.uid, 
+          "pid": this.generatePID(),
+          "lat": this.latSelected,
+          "lng": this.lngSelected
+        }
+
+        this.fs.subirFlickr(formData, photo);
+        this.ts.success("Publicación Subida Correctamente", "", {timeOut: 2000});
+      } else if(number == 1) this.ts.error("Introduzca un Título", "", {timeOut: 2000});
+      else if(number == 2) this.ts.error("Se requiere alguna categoría", "", {timeOut: 2000});
+      else this.ts.error("¿En qué estado se encuentra?", "", {timeOut: 2000});
+     
+      this.showButton = false; 
     /*  QUITAR CUANDO SEPAMOS QUE FUNCIONA
 
      let photo : any;
@@ -183,12 +196,12 @@ export class NavbarComponent implements OnInit {
    */
    }
 
-   onFileSelected(event){
-     this.showButton = true; 
-     this.selectedFile = <File>event.target.files[0];
-   }
+  onFileSelected(event){
+    this.showButton = true; 
+    this.selectedFile = <File>event.target.files[0];
+  }
 
-   generatePID(){
+  generatePID(){
     var pid : string = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     const charactersLength = characters.length;
@@ -196,6 +209,26 @@ export class NavbarComponent implements OnInit {
         pid += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return pid;
-   }
+  }
+
+  validateFields() : Number {
+    var num: number = -1;
+    if(!this.validateTitle()) num = 1; //No hay título
+    if(!this.validateThemes()) num = 2; //No hay temáticas
+    if(!this.validateState()) num = 3; //No hay estado de conservación
+    return num;
+  }
+
+  validateTitle(): boolean{
+    return this.title != null && this.title.trim() !== '';
+  }
+
+  validateThemes(): boolean {
+    return this.themesSelector != null && this.themesSelector != [];
+  }
+
+  validateState(): boolean {
+    return this.statusSelector != null && this.statusSelector.trim() !== '';
+  }
 
 }

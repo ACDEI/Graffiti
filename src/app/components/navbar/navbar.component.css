@@ -1,3 +1,8 @@
-.dropdown-list{
-    position: inherit;
+.dropdown-list {
+  position: inherit;
+}
+
+#form-map {
+  height: 300px;
+  width: 100%;
 }

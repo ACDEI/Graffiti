@@ -6,11 +6,12 @@ import { Publication } from '@core/models/publication';
 import { Theme } from '../../models/theme.model';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
 import * as firebase from 'firebase';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ScrollPaginationPublicationsService } from '@core/services/scroll-pagination-publications.service';
 import { ToastrService } from 'ngx-toastr';
+import { LocationService } from '@core/services/location.service';
+import { MapService } from '@core/services/map.service';
 
 @Component({
   selector: 'app-home',
@@ -44,7 +45,7 @@ export class HomeComponent implements OnInit {
   //token firebase
   token:string; 
 
-  constructor(private themeService: ThemeService, private route:ActivatedRoute, 
+  constructor(private locationService: LocationService, private mapService:MapService, private themeService: ThemeService, private route:ActivatedRoute, 
     private http: HttpClient, public page : ScrollPaginationPublicationsService, 
     private ts : ToastrService) {}
  
@@ -61,6 +62,10 @@ export class HomeComponent implements OnInit {
     this.getPublications();
     this.obtenerTematicas();
 
+    this.locationService.getPosition().then( data => {
+      console.log(data)
+      this.mapService.buildMap(data.lng, data.lat, true);
+    })
   }
 
   resetAll(){
@@ -110,7 +115,7 @@ export class HomeComponent implements OnInit {
   }
 
   getPublications(){
-    this.theme = "";
+    this.theme = '';
     this.status = '';
     let opts : any = {
       limit : this.pubsPerPage,

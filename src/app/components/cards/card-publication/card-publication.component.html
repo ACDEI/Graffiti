@@ -1,16 +1,29 @@
 <div class="card" style="margin-bottom: 10px;">
     <div class="card-header">
-        <div class="row">
+        
+        <div *ngIf="user">
+            <a class="card-title" [routerLink]="['/user-profile', user.uid]">
+                <h6>
+                    <span class="mr-2">
+                        <img src={{user.photoURL}} alt="avatar-user" class="rounded-circle" width="30px">
+                    </span>
+                    {{user.nickName}}
+                </h6>
+            </a>  
+        </div>
+
+        <!--<div class="row">
             <div *ngIf="user" class="col-lg-2 col-md-2 col-sm-2" style="margin-left: -15px">
                 <img src={{user.photoURL}} alt="avatar-user" class="rounded-circle" width="30px">
             </div>
-            <div *ngIf="user" class="col-lg-9 col-md-9 col-sm-9 mt-1 ml-2">
+            <div *ngIf="user" class="col-lg.10 col-md-10 col-sm-10 mt-1">
                 <a class="card-title" [routerLink]="['/user-profile', user.uid]">
                     <h6>{{user.nickName}}</h6>
                 </a>  
             </div>
-        </div>
+        </div>-->
     </div>
+
     <a [routerLink]="['/publication-view', pubR.pid]">
         <img class="card-img-top" src={{pubR.photoURL}} alt="Card image cap">
     </a>

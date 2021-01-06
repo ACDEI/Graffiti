@@ -72,9 +72,11 @@
               <div class="col">
                 <div class="form-group">
                   <label for="themesSelector"><strong>Categorías</strong></label>
+                  <!--
                   <ng-multiselect-dropdown name = 'themesSelector' [placeholder]="'Seleccionadas'" [data]="themesList" [(ngModel)]="themesSelector" 
                     [settings]="themesSettings">
                   </ng-multiselect-dropdown>
+                  -->
                 </div>
               </div>
             </div>
@@ -87,6 +89,18 @@
                   </select>
                 </div>
               </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                  <label for="statusSelector"><strong>Localización</strong></label>
+                  <div id="form-map">
+                    <app-modal-map></app-modal-map>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
               <div class="col">
                 <div class="form-group">
                   <label for="selectPhoto"><strong>Seleccionar Foto</strong></label>

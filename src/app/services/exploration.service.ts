@@ -83,7 +83,7 @@ export class ExplorationService {
     this.location.getPosition().then(pos => {
       //this.position = pos;
       this.position = {lat: 36.71860991, lng: -4.42016};
-      this.map.buildMap(this.position.lng, this.position.lat, false);
+      this.map.buildMap(this.position.lng, this.position.lat, null);
       this.map.map.setPadding({left: 0, right: 0, top: 400, bottom: 0});
       this.map.map.setPitch(60);
 
