@@ -67,7 +67,6 @@ export class NavbarComponent implements OnInit {
     this.arreglarModal();
 
     this.cogerFlickrTokens();
-
     //this.conectadoFlickr = JSON.parse(window.sessionStorage.getItem("oauth_verifier"));
     //console.log(this.conectadoFlickr);
     //this.oauth_verifier = JSON.parse(window.sessionStorage.getItem("flickr_oauth_verifier"));
@@ -77,6 +76,8 @@ export class NavbarComponent implements OnInit {
   }
 
   cogerFlickrTokens(){
+    console.log("Hola buenas");
+    
     //Obtener Tokens de la URL
     if(this.aroute.snapshot.queryParams != null){
       this.oauth_token = this.aroute.snapshot.queryParams.oauth_token;
@@ -88,6 +89,8 @@ export class NavbarComponent implements OnInit {
       //¿Guardar Tokens?
       this.fs.flickr_oauth_token = this.oauth_token;
       this.fs.flickr_oauth_token_secret = this.oauth_verifier;
+
+      console.log(this.oauth_token);
     }
 
     if(this.fs.flickr_oauth_token != null && this.fs.flickr_oauth_token_secret != null){
@@ -99,6 +102,7 @@ export class NavbarComponent implements OnInit {
       //console.log(this.oauth_token);
     }
     else this.conectadoFlickr = false;
+    
   }
 
   obtenerTematicas(){
@@ -116,6 +120,7 @@ export class NavbarComponent implements OnInit {
       this.themesList = data;
     });
   }
+  
 
   arreglarModal(){  //Habra que modificar, pero bueno
     document.getElementsByClassName('dropdown-list')[0].setAttribute('id', 'dowp');
@@ -149,15 +154,30 @@ export class NavbarComponent implements OnInit {
 
     let url = "http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/flickr/conectar";
   
-    let result = this.http.get<any>(url,{headers});
+    
+    //let result = 
+    
+    this.http.get<any>(url,{headers}).toPromise().then( data => {
+      console.log(data.url);
+      self.token_secret = data.token_secret; 
+      ///Si el usuario acepta flickr devolverá un callback a la home del usuario en malagart
+      //this.route.navigateByUrl(data.url);
+      window.location.href = data.url; 
+      self.cogerFlickrTokens();
+    }).catch( error => {
+      console.log(error)
+    });
 
+    /*
     result.subscribe(data =>{
       console.log(data.url);
       self.token_secret = data.token_secret; 
       ///Si el usuario acepta flickr devolverá un callback a la home del usuario en malagart
       //this.route.navigateByUrl(data.url);
       window.location.href = data.url; 
+      self.cogerFlickrTokens();
     })
+    */
     
   }
 
