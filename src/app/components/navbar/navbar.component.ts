@@ -73,7 +73,6 @@ export class NavbarComponent implements OnInit {
   }
 
   cogerFlickrTokens(){
-    
     //Obtener Tokens de la URL
     if(this.aroute.snapshot.queryParams != null){
       this.oauth_token = this.aroute.snapshot.queryParams.oauth_token;
@@ -84,7 +83,7 @@ export class NavbarComponent implements OnInit {
 
       //¿Guardar Tokens?
       this.fs.flickr_oauth_token = this.oauth_token;
-      this.fs.flickr_oauth_token_secret = this.oauth_verifier;
+      this.fs.flickr_oauth_token_secret = window.sessionStorage.getItem("flickr_oauth_token_secret");
 
       //console.log(this.oauth_token);
     }
@@ -130,7 +129,6 @@ export class NavbarComponent implements OnInit {
 
   async conectarFlickr(){
     this.fs.conectarFlickr(window.location.href);
-    console.log(this.fs.tokenFirebase);
 
   /* QUITAR CUANDO SEPAMOS QUE FUNCIONA
     let self = this; 
@@ -158,13 +156,19 @@ export class NavbarComponent implements OnInit {
 
   }
 
+  logData() {
+    console.log("oauth_verifier",this.oauth_verifier)
+    console.log("flickr_oauth_token",this.fs.flickr_oauth_token)
+    console.log("flickr_oauth_token_secret",JSON.parse(window.sessionStorage.getItem("flickr_oauth_token_secret")))
+  }
+
 
   async subirImagen(){
     console.log(this.fs.flickr_oauth_token_secret);
 
     const formData : FormData = new FormData();  
     formData.append('file', this.selectedFile, this.selectedFile.name);
-    formData.append('oauth_token', this.oauth_token);
+    formData.append('oauth_token', this.fs.flickr_oauth_token);
     formData.append('oauth_verifier', this.oauth_verifier);
     formData.append('title', this.title);
     formData.append('token_secret', this.fs.flickr_oauth_token_secret);

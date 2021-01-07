@@ -24,17 +24,30 @@ export class FlickrService {
   conectarFlickr(url) {
     let self = this;
 
+    console.log("Holaaaaaaaa")
+
     if(this.tokenFirebase == null) this.oauthUser();
     const httpOpt = {
-      headers: new HttpHeaders({'Authorization': 'Bearer ' + this.tokenFirebase }),
+      //headers: new HttpHeaders({'Authorization': 'Bearer ' + this.tokenFirebase }),
       params: new HttpParams().set('url', url)
     }
-    this.http.get<any>(this.flickUrl + 'conectar', httpOpt).toPromise().then( data => {
+    this.http.get<any>(this.flickUrl + 'conectar', httpOpt).subscribe( data => {
+      console.log('dataURL: ' + data.url, 'tsecret', data.token_secret);
+      //self.flickr_oauth_token_secret = data.token_secret;
+      window.sessionStorage.setItem("flickr_oauth_token_secret", JSON.stringify(data.token_secret));
+      ///Si el usuario acepta flickr devolverá un callback a la home del usuario en malagart
+      window.location.href = data.url;
+    })
+    
+    /*
+    .toPromise().then( data => {
       console.log('dataURL: ' + data.url, 'tsecret', + data.token_secret);
       self.flickr_oauth_token_secret = data.token_secret;
       ///Si el usuario acepta flickr devolverá un callback a la home del usuario en malagart
       window.location.href = data.url; 
     });
+
+    */
   }
 
   async subirFlickr(formData, photo) {
@@ -48,21 +61,29 @@ export class FlickrService {
     //console.log('ABC: ' + photo);
     let result = await this.http.post<any>(this.flickUrl + 'upload', formData, httpOpt);
 
-    await result.toPromise().then(data =>{
+    await result.subscribe( data => {
+      let urlFoto = "https://live.staticflickr.com/"+ data.photo.server + "/"+ data.photo.id +"_"+ data.photo.secret +".jpg" ;
+      photo = { ...photo, 'photoURL' : urlFoto};
+      this.http.post<any>("http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/publications", photo, httpOpt).subscribe();
+    })
+    
+    /*
+    .toPromise().then(data =>{
+      console.log(data)
       //self.idFoto = data.id ;
       //console.log(data);
-      let urlFoto = "https://live.staticflickr.com/"+ data.photo.server + "/"+ data.photo.id +"_"+ data.photo.secret +".jpg" ;
+      //let urlFoto = "https://live.staticflickr.com/"+ data.photo.server + "/"+ data.photo.id +"_"+ data.photo.secret +".jpg" ;
       //console.log(urlFoto);
 
-      photo = { ...photo, 'photoURL' : urlFoto};
+      //photo = { ...photo, 'photoURL' : urlFoto};
       //console.log('p: ' + JSON.stringify(photo));
 
       //HASTA QUE SUBAMOS LAS FUNCTIONS, ASI FUNCIONA
-      this.http.post<any>("http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/publications", photo, httpOpt).subscribe();
+      //this.http.post<any>("http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/publications", photo, httpOpt).subscribe();
 
       //this.ps.postPublicationCF(photo).subscribe();
     })
-
+*/
 
   }
 
