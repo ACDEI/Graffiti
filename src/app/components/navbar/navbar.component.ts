@@ -54,8 +54,8 @@ export class NavbarComponent implements OnInit {
 
   constructor(private mapService: MapService, private auth: AuthService, private http: HttpClient, 
       private route: Router, private aroute : ActivatedRoute, 
-      private userService: UserService, private themeService: ThemeService, 
-      private fs : FlickrService, private ts: ToastrService , private ps: PublicationsService) {
+      private themeService: ThemeService, 
+      private fs : FlickrService, private ts: ToastrService) {
    }
 
   ngOnInit(): void {

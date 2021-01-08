@@ -35,12 +35,15 @@ export class ScrollPaginationPublicationsService {
     data: Observable<any>;
     done: Observable<boolean> = this._done.asObservable();
     loading: Observable<boolean> = this._loading.asObservable();
+    sizePrev: any;
+    sizePost: any;
   
-  
-    constructor(private afs: AngularFirestore) { }
+    constructor(private afs: AngularFirestore) {
+    }
   
     // Initial query sets options and defines the Observable
     init(path, field, opts?) {
+
       this.query = { 
         path,
         field,
@@ -54,7 +57,6 @@ export class ScrollPaginationPublicationsService {
         ...opts
       }
   
-      //console.log('fafasf: ' + JSON.stringify(this.query));
       const first = this.afs.collection(this.query.path, ref => {
         let q = ref
                     .orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
@@ -123,7 +125,7 @@ export class ScrollPaginationPublicationsService {
   
       // loading
       this._loading.next(true)
-  
+
       // Map snapshot with doc ref (needed for cursor)
       return col.snapshotChanges()
         .do(arr => {
@@ -136,6 +138,9 @@ export class ScrollPaginationPublicationsService {
             else return;
           })
           values = values.filter(v => v != null);
+          if(this.sizePost != 0) this.sizePrev = this.sizePost;
+          this.sizePost += values.length;
+          console.log(values);
     
           // If prepending, reverse array
           values = this.query.prepend ? values.reverse() : values
@@ -159,6 +164,8 @@ export class ScrollPaginationPublicationsService {
     reset() {
       this._data.next([])
       this._done.next(false)
+      this.sizePost = 0;
+      this.sizePrev = 0;
     }
 
 }

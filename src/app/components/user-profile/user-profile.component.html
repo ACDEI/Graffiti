@@ -37,16 +37,16 @@
 
         <div class="tab-pane conf fade text-center" id="v-pills-myGraffitis" role="tabpanel" aria-labelledby="v-pills-myGraffitis-tab">
             <div class="row">
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6" *ngFor="let pub of pubList">
-                    <app-card-publication [pubR]='pub'></app-card-publication>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6" *ngFor="let pubU of pubList">
+                    <app-card-publication [pubR]='pubU'></app-card-publication>
                 </div>
             </div>
         </div>     
         
         <div class="tab-pane conf fade" id="v-pills-favourites" role="tabpanel" aria-labelledby="v-pills-favourites-tab">
             <div class="row">
-                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6" *ngFor="let pub of likesList">
-                    <app-card-publication-profile [pubR]='pub'></app-card-publication-profile>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6" *ngFor="let pubU of likesList">
+                    <app-card-publication-profile [pubR]='pubU'></app-card-publication-profile>
                 </div>
             </div>
         </div>  
@@ -54,9 +54,9 @@
         <div class="tab-pane conf fade" id="v-pills-visited" appScrollable (scrollPosition)="scrollHandler($event)"
             role="tabpanel" aria-labelledby="v-pills-visited-tab">
           
-          <app-loading-spinner  *ngIf="page.loading | async"></app-loading-spinner>  
+          <app-loading-spinner  *ngIf="pages.loading | async"></app-loading-spinner>  
             
-          <div *ngFor="let vd of page.data | async" class="media border p-3 bg-light rounded mb-1">
+          <div *ngFor="let vd of pages.data | async" class="media border p-3 bg-light rounded mb-1">
             <div class="container">
               <div class="row align-items-center">
                 <div class="col-3">
@@ -75,9 +75,9 @@
         <div class="tab-pane conf fade" appScrollable (scrollPosition)="scrollHandler($event)" 
           id="v-pills-followers" role="tabpanel" aria-labelledby="v-pills-followers-tab">
           
-          <app-loading-spinner  *ngIf="page.loading | async"></app-loading-spinner>  
+          <app-loading-spinner  *ngIf="pages.loading | async"></app-loading-spinner>  
           
-          <div *ngFor="let fw of page.data | async" class="media border p-3 bg-light rounded mb-2">
+          <div *ngFor="let fw of pages.data | async" class="media border p-3 bg-light rounded mb-2">
               <div class="container">
                 <div class="row align-items-center">
                   <div class="col-lg col-md col-sm">
@@ -106,9 +106,9 @@
         <div class="tab-pane conf fade" appScrollable (scrollPosition)="scrollHandler($event)"
             id="v-pills-followed" role="tabpanel" aria-labelledby="v-pills-followed-tab">
 
-            <app-loading-spinner  *ngIf="page.loading | async"></app-loading-spinner>  
+            <app-loading-spinner  *ngIf="pages.loading | async"></app-loading-spinner>  
 
-            <div *ngFor="let fd of page.data | async" class="media border p-3 bg-light rounded mb-1">
+            <div *ngFor="let fd of pages.data | async" class="media border p-3 bg-light rounded mb-1">
               <div class="container">
                 <div class="row align-items-center">
                   <div class="col-lg col-md col-sm">

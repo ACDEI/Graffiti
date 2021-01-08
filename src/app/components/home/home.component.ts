@@ -1,13 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { ThemeService } from '@core/services/classes_services/theme.service';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { Publication } from '@core/models/publication';
-import { Theme } from '../../models/theme.model';
 import { map } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
-import * as firebase from 'firebase';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ScrollPaginationPublicationsService } from '@core/services/scroll-pagination-publications.service';
 import { ToastrService } from 'ngx-toastr';
 import { LocationService } from '@core/services/location.service';
@@ -47,18 +42,14 @@ export class HomeComponent implements OnInit {
 
   constructor(private locationService: LocationService, private mapService:MapService, 
     private themeService: ThemeService, private route: ActivatedRoute, 
-    private http: HttpClient, public page : ScrollPaginationPublicationsService, 
-    private ts : ToastrService) {}
+    public page : ScrollPaginationPublicationsService, private ts : ToastrService) {}
  
   ngOnInit(): void {
     
     this.resetAll();
-
-    this.getPublications();
     this.obtenerTematicas();
 
     this.locationService.getPosition().then( data => {
-      console.log(data)
       this.mapService.buildMap(data.lng, data.lat, true);
     })
   }
@@ -70,6 +61,8 @@ export class HomeComponent implements OnInit {
     this.title = '';
     this.isFilter = false;
     this.loadAll = false;
+    this.getPublications();
+    
   }
 
   obtenerTematicas(){
@@ -112,23 +105,27 @@ export class HomeComponent implements OnInit {
   getPublications(){
     this.theme = '';
     this.status = '';
+    this.title = '';
+    this.graffiter = '';
     let opts : any = {
       limit : this.pubsPerPage,
       prepend : false,
-      reverse : false
+      reverse : true
     }
     this.isFilter = false;
     this.loadAll = false;
     this.page.reset();
-    this.page.init('publications', 'date', {...opts})
+    this.page.init('publications', 'date', {...opts});
   }
 
   loadMore(){
     var prev : any, post : any;
-    this.page.data.subscribe(l => { prev = l.length; });
     this.page.more();
-    this.page.data.subscribe(l => { post = l.length; });
-    if(prev == post) {
+
+    prev = this.page.sizePrev;
+    post = this.page.sizePost;
+
+    if(prev === post) {
       this.loadAll = true;
       this.ts.info('Parece que no hay más que ver... ¡Anímate a subir algo!', '', {timeOut: 1000}); 
     }

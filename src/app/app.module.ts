@@ -69,7 +69,6 @@ import { ScrollableDirective } from './directives/scrollable.directive';
 import { LoadingSpinnerComponent } from './components/user-profile/loading-spinner/loading-spinner.component';
 import { ModalMapComponent } from './components/navbar/map/modal-map/modal-map.component';
 
-
 @NgModule({
   declarations: [
     AppComponent,

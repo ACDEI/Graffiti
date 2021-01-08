@@ -55,6 +55,10 @@
     <!--ngFor de cards solo si es necesario-->
     <div class="col-lg-9">
         <div id="showResultList" class="row mt-5">
+
+            
+            <app-loading-spinner  *ngIf="page.loading | async"></app-loading-spinner>
+
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6" loading="lazy" *ngFor="let pub of page.data | async">
                 <app-card-publication [pubR]='pub'></app-card-publication>
             </div>

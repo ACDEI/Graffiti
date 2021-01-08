@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '@core/models/user.model';
 import { AuthService } from '@core/services/auth.service';
@@ -13,6 +13,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./user-profile.component.css']
 })
 export class UserProfileComponent implements OnInit {
+
+  s : any;  //PARA LAS SUSCRIPCIONES DE LOS HUEVOS
 
   user: User;
   usuarioSesion: any;
@@ -34,7 +36,7 @@ export class UserProfileComponent implements OnInit {
   constructor(private route: ActivatedRoute, private as: AuthService, 
     private us: UserService, private ps: PublicationsService,
     private ts : ToastrService, private r: Router, 
-    public page : ScrollPaginationService) { }
+    public pages : ScrollPaginationService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -57,6 +59,10 @@ export class UserProfileComponent implements OnInit {
     //this.followedList = [];
     //this.followerList = [];
     this.likesList = [];
+  }
+
+  ngOnDestroy(){
+    this.s.unsubscribe(); //ME CAGO EN LA PUTÍSIMA OSTIA. TOMA UNSUBSCRIBE. TE QUEDAS SIN NETFLIX AHORA
   }
 
   saveChanges(){
@@ -88,7 +94,7 @@ export class UserProfileComponent implements OnInit {
 
   scrollHandler(e) {
     if (e === 'bottom') {
-      this.page.more()
+      this.pages.more()
     }
   }
 
@@ -101,7 +107,7 @@ export class UserProfileComponent implements OnInit {
 
   //Publicaciones
   obtenerPublicaciones(){
-    this.ps.getUserPublications(this.user.uid).subscribe( 
+    this.s = this.ps.getUserPublications(this.user.uid).subscribe( 
       data => { this.pubList = data; }
     );
   }
@@ -130,8 +136,8 @@ export class UserProfileComponent implements OnInit {
 
   //Followers
   obtenerFollowers(){
-    this.page.reset()
-    this.page.init('users/' + this.user.uid + '/followers', 'nick', { limit: 5, reverse: false, prepend: false });
+    this.pages.reset()
+    this.pages.init('users/' + this.user.uid + '/followers', 'nick', { limit: 5, reverse: false, prepend: false });
     //this.us.getFollowersPerUser(this.user.uid).subscribe( data => {
     //  this.followerList = data;
     //});
@@ -139,8 +145,8 @@ export class UserProfileComponent implements OnInit {
 
   //Followed
   obtenerFollowed(){
-    this.page.reset()
-    this.page.init('users/' + this.user.uid + '/followed', 'nick', { limit: 5, reverse: false, prepend: false });
+    this.pages.reset()
+    this.pages.init('users/' + this.user.uid + '/followed', 'nick', { limit: 5, reverse: false, prepend: false });
     //this.us.getFollowedPerUser(this.user.uid).subscribe( data => {
     //  this.followedList = data;
     //});
@@ -199,8 +205,8 @@ export class UserProfileComponent implements OnInit {
 
   //VISITADOS
   obtenerVisitados(){
-    this.page.reset()
-    this.page.init('users/' + this.user.uid + '/visitados', 'pid', { limit: 5, reverse: false, prepend: false });
+    this.pages.reset()
+    this.pages.init('users/' + this.user.uid + '/visitados', 'pid', { limit: 5, reverse: false, prepend: false });
     //this.us.getVisitadosPerUser(this.user.uid).subscribe( data => {
     //  this.visitedList = data;
     //});
