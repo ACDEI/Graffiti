@@ -75,26 +75,26 @@ export class NavbarComponent implements OnInit {
   cogerFlickrTokens(){
     //Obtener Tokens de la URL
     if(this.aroute.snapshot.queryParams != null){
-      this.oauth_token = this.aroute.snapshot.queryParams.oauth_token;
-      this.oauth_verifier = this.aroute.snapshot.queryParams.oauth_verifier;
-      window.sessionStorage.setItem("flickr_oauth_token", JSON.stringify(this.oauth_token));
-      window.sessionStorage.setItem("flickr_oauth_verifier", JSON.stringify(this.oauth_verifier));
+      this.fs.flickr_oauth_verifier = this.aroute.snapshot.queryParams.oauth_verifier;
       //console.log("vefifier -------> " + this.oauth_verifier);
 
       //¿Guardar Tokens?
-      this.fs.flickr_oauth_token = this.oauth_token;
+      this.fs.flickr_oauth_token = this.aroute.snapshot.queryParams.oauth_token;
       this.fs.flickr_oauth_token_secret = window.sessionStorage.getItem("flickr_oauth_token_secret");
-
       //console.log(this.oauth_token);
     }
 
-    if(this.fs.flickr_oauth_token != null && this.fs.flickr_oauth_token_secret != null){
+    console.log(this.usuarioSesion)
+
+    if(this.usuarioSesion.flickrTokens != null || this.fs.flickr_oauth_token != null && this.fs.flickr_oauth_token_secret != null){
       this.conectadoFlickr = true;
+      /*
 
       this.oauth_verifier = JSON.parse(window.sessionStorage.getItem("flickr_oauth_verifier"));
       //console.log("verifier------------> " + this.oauth_verifier);
       this.oauth_token = JSON.parse(window.sessionStorage.getItem("flickr_oauth_token"));
       //console.log(this.oauth_token);
+      */
     }
     else this.conectadoFlickr = false;
     
@@ -169,7 +169,7 @@ export class NavbarComponent implements OnInit {
     const formData : FormData = new FormData();  
     formData.append('file', this.selectedFile, this.selectedFile.name);
     formData.append('oauth_token', this.fs.flickr_oauth_token);
-    formData.append('oauth_verifier', this.oauth_verifier);
+    formData.append('oauth_verifier', this.fs.flickr_oauth_verifier);
     formData.append('title', this.title);
     formData.append('token_secret', this.fs.flickr_oauth_token_secret);
 

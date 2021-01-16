@@ -25,8 +25,8 @@ export class UserProfileComponent implements OnInit {
   pubList: any[]; //Publications
   followedListSesion: any[];
   likesList : any[];  //Likes
-  //followerList : any[]; //Followers
-  //followedList : any[]; //Followed
+  followerList : any[]; //Followers
+  followedList : any[]; //Followed
   //visitedList : any[]; //Visitados
 
   //Account Settings
@@ -136,20 +136,22 @@ export class UserProfileComponent implements OnInit {
 
   //Followers
   obtenerFollowers(){
+    /*
     this.pages.reset()
     this.pages.init('users/' + this.user.uid + '/followers', 'nick', { limit: 5, reverse: false, prepend: false });
-    //this.us.getFollowersPerUser(this.user.uid).subscribe( data => {
-    //  this.followerList = data;
-    //});
+    */
+    this.us.getFollowersPerUser(this.user.uid).subscribe( data => {
+      this.followerList = data;
+    });
   }
 
   //Followed
   obtenerFollowed(){
-    this.pages.reset()
-    this.pages.init('users/' + this.user.uid + '/followed', 'nick', { limit: 5, reverse: false, prepend: false });
-    //this.us.getFollowedPerUser(this.user.uid).subscribe( data => {
-    //  this.followedList = data;
-    //});
+    //this.pages.reset()
+    //this.pages.init('users/' + this.user.uid + '/followed', 'nick', { limit: 5, reverse: false, prepend: false });
+    this.us.getFollowedPerUser(this.user.uid).subscribe( data => {
+      this.followedList = data;
+    });
   }
 
   obtenerFollowedSesion(){
@@ -183,6 +185,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   followUser(uidF: string, imageF: string, nickF: string){
+    console.log(nickF)
     var data = {
         "uid": uidF,
         "nick": nickF,
@@ -196,6 +199,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   unfollowUser(uidF: string, nickF : string){
+    console.log(uidF, nickF)
     this.us.deleteFollowedPerUserCF(this.uidUsuarioSesion, uidF).subscribe(
       data => { this.ts.success("Ha dejado de seguir a " + nickF, "", {timeOut: 1000}); },
       err => { this.ts.error("Ups...", "Ha Habido un problema al dejar de seguir." 

@@ -102,7 +102,7 @@ export class ExplorationService {
           if(this.getKilometros(pos) < 0.3) {
             self.lastUpdatePosition = pos;
             self.markerList = [];
-            this.cargarMarkers()
+            self.cargarMarkers()
           }
           self.position = {lng: pos.coords.longitude, lat: pos.coords.latitude};
           self.updatePosMarker(self.map.map);

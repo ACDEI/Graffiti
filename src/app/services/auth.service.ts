@@ -9,6 +9,7 @@ import { UserService } from './classes_services/user.service';
 import { AdminInicioComponent } from '@core/components/adminView/admin-inicio/admin-inicio.component';
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireAuth } from '@angular/fire/auth';
+import { HttpHeaders } from '@angular/common/http';
 
 
 @Injectable({
@@ -172,6 +173,22 @@ checkTokenFacebook(){
 
   
 
+}
+
+async getHeader(): Promise<{headers:HttpHeaders}> {
+  return new Promise( async (res,rej) => {
+    let user = await firebase.auth().currentUser;
+    if(user){
+      let idtoken = await user.getIdToken(false);
+      if(idtoken) {
+        res({headers: new HttpHeaders({'Authorization': 'Bearer ' + idtoken })});
+      }else{
+        res(null);
+      }
+    }else{
+      res(null);
+    }
+  })
 }
 
 

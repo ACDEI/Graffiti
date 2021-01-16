@@ -73,7 +73,8 @@ export class UserService {
           nickName: u.get("nickName"),
           photoURL: u.get("photoURL"),
           isAdmin: u.get("isAdmin"),
-          nVisitados: u.get("nVisitados")
+          nVisitados: u.get("nVisitados"),
+          flickrTokens: u.get("flickrTokens")
         }
       } else {
         var nickName : string;
@@ -89,7 +90,8 @@ export class UserService {
           nickName: nickName,
           photoURL: user.photoURL,
           isAdmin: false,
-          nVisitados: 0
+          nVisitados: 0,
+          flickrTokens: null
         }
         this.fs.doc('users/' + user.uid).set(res)
       }
