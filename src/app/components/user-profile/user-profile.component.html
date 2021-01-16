@@ -143,7 +143,12 @@
                   <label for="profile_fullname">Nombre Completo:</label>
                 </div>
                 <div class="col-lg-6">
-                  <input type="text" id="profile_fullname" class="form-control" [(ngModel)]="profile_fullname" name="profile_fullname" placeholder={{user?.fullName}}/>
+                  <div *ngIf="miPerfil">
+                    <input type="text" id="profile_fullname" class="form-control" [(ngModel)]="profile_fullname" name="profile_fullname" placeholder={{user?.fullName}}/>
+                  </div>
+                  <div *ngIf="!miPerfil">
+                    <input type="text" id="profile_fullname" class="form-control" [(ngModel)]="profile_fullname" name="profile_fullname" placeholder={{user?.fullName}} disabled/>
+                  </div>
                 </div>
               </div>
               <div class="row mb-3">
@@ -151,7 +156,12 @@
                   <label for="profile_username">Nombre de Usuario:</label>
                 </div>
                 <div class="col-lg-6">
-                  <input type="text" id="profile_username" class="form-control" [(ngModel)]="profile_username" name="profile_username" placeholder={{user?.nickName}}/>
+                  <div *ngIf="miPerfil">
+                    <input type="text" id="profile_username" class="form-control" [(ngModel)]="profile_username" name="profile_username" placeholder={{user?.nickName}}/>
+                  </div>
+                  <div *ngIf="!miPerfil">
+                    <input type="text" id="profile_username" class="form-control" [(ngModel)]="profile_username" name="profile_username" placeholder={{user?.nickName}} disabled/>
+                  </div>
                 </div>
               </div>
               <div class="row mb-3">

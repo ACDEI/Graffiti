@@ -57,6 +57,11 @@ export class UserService {
     });
   }
 
+  async addTokens(accessToken : string,tokenSecret: string, uid: string){
+    await this.fs.doc('users/'+uid).update({accessToken: accessToken, tokenSecret: tokenSecret});
+
+  }
+
   async loginUser(user: firebase.User): Promise<UserI> {
     var res: UserI;
     await this.fs.doc('users/' + user.uid).get().toPromise().then( u => {

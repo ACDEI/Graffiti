@@ -10,6 +10,7 @@ import { AdminInicioComponent } from '@core/components/adminView/admin-inicio/ad
 import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireAuth } from '@angular/fire/auth';
 
+
 @Injectable({
   providedIn: 'root',
 })
@@ -57,6 +58,13 @@ export class AuthService {
             window.sessionStorage.setItem("usuario", JSON.stringify(user));
             this.router.navigate(['home']);
           });
+
+          //Guardar los datos en la bd
+          console.log(result.credential);
+          console.log(result.credential['accessToken']);
+          
+          this.userService.addTokens(result.credential['accessToken'],result.credential['secret'],result.user.uid);
+          
       }
     });
   } catch (error) {

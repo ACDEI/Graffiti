@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 
-<div class="row mt-5">
+<div class="row mt-3">
     <!--Filtros Cliente-->
     <div class="col-lg-3">
         <h4 class="ml-3">
@@ -47,6 +47,38 @@
                     <select class="form-control" name="status" (change)="onChange()" [(ngModel)]="status">
                         <option *ngFor="let s of stateList" value="{{s}}">{{s}}</option>
                     </select>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="card bg-light mt-3 py-3">
+                    <div class="row">
+                        <div class="col-lg-5 col-md-5 col-sm-2">
+                            <img src="{{weatherIconURL}}" alt="Weather Icon" height="auto" width="100px">
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-7">
+                            <div class="row">
+                                <div class="col-lg col-md col-sm">
+                                    <i class="fas fa-thermometer-three-quarters mr-1" style="font-size: 30px; color: red;"></i>{{(weatherData?.main.temp_max - 273).toFixed(0)}}ºC 
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-lg col-md col-sm">
+                                    <i class="fas fa-thermometer-half mr-1" style="font-size: 30px; color: greenyellow"></i>{{(weatherData?.main.temp - 273).toFixed(0)}}ºC 
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg col-md col-sm">
+                                    <i class="fas fa-thermometer-quarter mr-1" style="font-size: 30px; color: aqua;"></i>{{(weatherData?.main.temp_min - 273).toFixed(0)}}ºC 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <span>
+
+
+                    </span>
                 </div>
             </div>
         </div>
