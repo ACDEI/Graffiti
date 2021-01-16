@@ -68,6 +68,8 @@ import { CardUserNormalComponent } from './components/cards/card-user-normal/car
 import { ScrollableDirective } from './directives/scrollable.directive';
 import { LoadingSpinnerComponent } from './components/user-profile/loading-spinner/loading-spinner.component';
 import { ModalMapComponent } from './components/navbar/map/modal-map/modal-map.component';
+import { FilterHomePubsPipe } from './pipes/filter-home-pubs.pipe';
+import { WeatherViewComponent } from './components/weather-view/weather-view.component';
 
 @NgModule({
   declarations: [
@@ -107,6 +109,8 @@ import { ModalMapComponent } from './components/navbar/map/modal-map/modal-map.c
     ScrollableDirective,
     LoadingSpinnerComponent,
     ModalMapComponent,
+    FilterHomePubsPipe,
+    WeatherViewComponent,
   ],
   imports: [
     BrowserModule,

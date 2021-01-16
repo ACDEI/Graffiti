@@ -31,10 +31,10 @@ const routes: Routes = [
   {path: "publication-view/:pid", component: PublicationViewComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }},
   {path: "user-profile/:uid", component: UserProfileComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }},
   {path: "admin", component: AdminLoginComponent},
-  {path: "admin/home", component: AdminInicioComponent, canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }},
-  {path: "admin/user_gest", component: UserGestionComponent, canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }},
-  {path: "admin/publ_gest", component: PhotoGestionComponent , canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }},
-  {path: "admin/theme_gest", component: ThemeGestionComponent , canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }}
+  {path: "admin/home", component: AdminInicioComponent},//, canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }},
+  {path: "admin/user_gest", component: UserGestionComponent},//, canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }},
+  {path: "admin/publ_gest", component: PhotoGestionComponent},// , canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }},
+  {path: "admin/theme_gest", component: ThemeGestionComponent},// , canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }}
 ];
 
 @NgModule({

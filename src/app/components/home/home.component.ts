@@ -8,6 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 import { LocationService } from '@core/services/location.service';
 import { MapService } from '@core/services/map.service';
 import { WeatherService } from '@core/services/weather.service';
+import { PublicationsService } from '@core/services/classes_services/publications.service';
 
 @Component({
   selector: 'app-home',
@@ -18,12 +19,8 @@ export class HomeComponent implements OnInit {
 
   stateList : string[] = ['Perfect', 'Legible', 'Illegible', 'Deteriorated'];
   themesList: any[];
-  pubsPerPage = 12;
-  isFilter: boolean; 
-  loadAll: boolean;
-  prev: any;
-  post: any;
-
+  pubsPerPage = 6;
+  isFilter: boolean;
 
   config: any = {
     itemsPerPage: this.pubsPerPage,
@@ -31,38 +28,27 @@ export class HomeComponent implements OnInit {
     totalItems: 0
   }
 
-  plist: any;
-  //Form
+  publicationList: any;
+
+  //Filters
   graffiter: string;
   theme: string;
   status: string;
   title: string;
 
-  uid:string;
-  //Tokens flickr
-  oauth_token:string;
-  oauth_verifier:string; 
-  //token firebase
-  token:string; 
-
-  //Accuweather
-  weatherData: any;
-  weatherIconURL: string;
-
   constructor(private locationService: LocationService, private mapService:MapService, 
     private themeService: ThemeService, private route: ActivatedRoute, 
-    public page : ScrollPaginationPublicationsService, private ts : ToastrService, private weatherService: WeatherService) {}
+    private ps : PublicationsService,
+    private ts : ToastrService) {}
  
   ngOnInit(): void {
     
     this.resetAll();
     this.obtenerTematicas();
-    this.uploadSizes();
 
     this.locationService.getPosition().then( data => {
       this.mapService.buildMap(data.lng, data.lat, true);
     });
-    this.getWeatherData();
   }
 
   resetAll(){
@@ -71,20 +57,7 @@ export class HomeComponent implements OnInit {
     this.theme = '';
     this.title = '';
     this.isFilter = false;
-    this.loadAll = false;
     this.getPublications();
-  }
-
-  uploadSizes(){
-    //SIZES
-    this.page.sizePrev.subscribe(sz => {
-      this.prev = sz;
-      this.checkSizes();
-    }
-      );
-    this.page.sizePost.subscribe(sz => {
-      this.post = sz
-    });
   }
 
   obtenerTematicas(){
@@ -103,25 +76,11 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  
   onChange(event?){
-
     if(this.theme.trim() === '' && this.status.trim() === ''
-        && this.title.trim() === '' && this.graffiter.trim() === '') this.getPublications();
-    else {
-      let opts : any = {
-        limit : this.pubsPerPage,
-        prepend : false,
-        reverse : true
-      }
-      if(this.theme != null && this.theme !== '') opts = { ...opts, themes : [this.theme]}
-      if(this.status != null && this.status !== '') opts = { ...opts, state : this.status}
-      if(this.title != null && this.title !== '') opts = { ...opts, title : this.title}
-      if(this.graffiter != null && this.graffiter !== '') opts = { ...opts, graffiter : this.graffiter}
-      this.page.reset();
-      this.page.init('publications', 'date', {...opts});
-      this.isFilter = true;
-      this.loadAll = false;
-    }
+        && this.title.trim() === '' && this.graffiter.trim() === '') this.isFilter = false;//this.getPublications();
+    else this.isFilter = true;
   }
 
   getPublications(){
@@ -129,26 +88,12 @@ export class HomeComponent implements OnInit {
     this.status = '';
     this.title = '';
     this.graffiter = '';
-    let opts : any = {
-      limit : this.pubsPerPage,
-      prepend : false,
-      reverse : true
-    }
     this.isFilter = false;
-    this.loadAll = false;
-    this.page.reset();
-    this.page.init('publications', 'date', {...opts});
+    this.ps.getAllPublications().subscribe((data) => { this.publicationList = data; });
   }
 
-  loadMore(){
-    this.page.more();
-  }
-
-  checkSizes(){
-    if(this.prev == this.post) {
-      this.loadAll = true;
-      this.ts.info('Parece que no hay más que ver... ¡Anímate a subir algo!', '', {timeOut: 1000}); 
-    }
+  pageChanged(event){
+    this.config.currentPage = event;
   }
 
   clear(n : number) {
@@ -158,16 +103,8 @@ export class HomeComponent implements OnInit {
     if(n == 4) this.status = '';
 
     if(this.title === '' && this.graffiter === '' 
-        && this.theme === '' && this.status === '') this.getPublications()
-    else this.onChange();
-  }
-
-  async getWeatherData() {
-    await this.weatherService.getWeather().then(values => {
-      this.weatherData = values;
-    });
-    var icon = this.weatherData.weather[0].icon;
-    this.weatherIconURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
+        && this.theme === '' && this.status === '') this.isFilter = false;
+    else this.isFilter = true;
   }
 
 }
