@@ -3,6 +3,7 @@ import { Publication } from '@core/models/publication';
 import { User } from '@core/models/user.model';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { UserService } from '@core/services/classes_services/user.service';
+import { TwitterService } from '@core/services/twitter.service';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 
@@ -20,7 +21,7 @@ export class CardPublicationComponent implements OnInit {
   usuarioSesion: any;
 
   constructor(private us: UserService, private pb: PublicationsService,
-    private ts : ToastrService) { }
+    private ts : ToastrService, private tws :  TwitterService) { }
 
   ngOnInit(): void {
     this.us.getUser(this.pubR.uid).then(user => { this.user = user });
@@ -66,6 +67,11 @@ export class CardPublicationComponent implements OnInit {
       err => { this.ts.error("Ups...", "Ha Habido un problema al eliminar Like." 
         + " Pruebe de nuevo", {timeOut: 1000}); }
     );
+  }
+
+  sendTweet(title : string){
+
+    this.tws.sendTweet("Me ha gustado la publicación "+title+" #MalagArt");
   }
 
 }

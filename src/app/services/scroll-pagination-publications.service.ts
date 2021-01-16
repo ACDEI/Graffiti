@@ -149,10 +149,10 @@ export class ScrollPaginationPublicationsService {
           let values = arr.map(snap => {
             const data = snap.payload.doc.data()
             const doc = snap.payload.doc
-            //if(data.title.toLowerCase().includes(this.query.title.toLowerCase())
-            //    && data.graffiter.toLowerCase().includes(this.query.graffiter.toLowerCase())) 
+            if(data.title.toLowerCase().includes(this.query.title.toLowerCase())
+                && data.graffiter.toLowerCase().includes(this.query.graffiter.toLowerCase())) 
               return { ...data, doc }
-            //else return;
+            else return;
           })
           values = values.filter(v => v != null);
 

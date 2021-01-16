@@ -34,12 +34,13 @@
             </a>
             <div *ngIf="isLiked(pubR.pid)">
                <button class="btn-social" (click)="unlikePhoto(pubR.pid)"><i class="fas fa-heart colorred"></i></button>
-               <button class="btn-social"><i class="fab fa-twitter colorblue"></i></button> 
+               <button class="btn-social" (click)="sendTweet(pubR.pid)"><i class="fab fa-twitter colorblue"></i></button> 
             </div>
             <div *ngIf="!isLiked(pubR.pid)">
-                <button class="btn-social" (click)="likePhoto(pubR.pid)"><i class="far fa-heart colorred"></i></button>
-                <button class="btn-social"><i class="fab fa-twitter colorblue"></i></button> 
+                <button class="btn-social" (click)="likePhoto(pubR.title)"><i class="far fa-heart colorred"></i></button>
+                <button class="btn-social" (click)="sendTweet(pubR.title)"><i class="fab fa-twitter colorblue"></i></button> 
             </div>
+            
         </div>
     </div>
 </div>
