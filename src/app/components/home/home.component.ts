@@ -7,6 +7,7 @@ import { ScrollPaginationPublicationsService } from '@core/services/scroll-pagin
 import { ToastrService } from 'ngx-toastr';
 import { LocationService } from '@core/services/location.service';
 import { MapService } from '@core/services/map.service';
+import { WeatherService } from '@core/services/weather.service';
 
 @Component({
   selector: 'app-home',
@@ -40,9 +41,13 @@ export class HomeComponent implements OnInit {
   //token firebase
   token:string; 
 
+  //Accuweather
+  weatherData: any;
+  weatherIconURL: string;
+
   constructor(private locationService: LocationService, private mapService:MapService, 
     private themeService: ThemeService, private route: ActivatedRoute, 
-    public page : ScrollPaginationPublicationsService, private ts : ToastrService) {}
+    public page : ScrollPaginationPublicationsService, private ts : ToastrService, private weatherService: WeatherService) {}
  
   ngOnInit(): void {
     
@@ -51,7 +56,8 @@ export class HomeComponent implements OnInit {
 
     this.locationService.getPosition().then( data => {
       this.mapService.buildMap(data.lng, data.lat, true);
-    })
+    });
+    this.getWeatherData();
   }
 
   resetAll(){
@@ -140,6 +146,14 @@ export class HomeComponent implements OnInit {
     if(this.title === '' && this.graffiter === '' 
         && this.theme === '' && this.status === '') this.getPublications()
     else this.onChange();
+  }
+
+  async getWeatherData() {
+    await this.weatherService.getWeather().then(values => {
+      this.weatherData = values;
+    });
+    var icon = this.weatherData.weather[0].icon;
+    this.weatherIconURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
   }
 
 }
