@@ -9,6 +9,7 @@ import { auth } from 'firebase';
   styleUrls: ['./stats.component.css']
 })
 export class StatsComponent implements OnInit {
+  userid:string;
   photo:string;
   name:string;
   level: number;
@@ -19,6 +20,7 @@ export class StatsComponent implements OnInit {
   ngOnInit(): void {
     var usuario= JSON.parse(window.sessionStorage.getItem("usuario"));
 
+    this.userid = usuario.uid;
     this.name = usuario.nickName;
     this.photo = usuario.photoURL;
 

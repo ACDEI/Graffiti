@@ -47,6 +47,7 @@ export class MapService {
         maxZoom: 19,
         minZoom: 18,
         dragPan: false,
+        dragRotate: true
       });
     }else if(!interact){
       this.map = new mapboxgl.Map({

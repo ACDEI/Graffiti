@@ -67,10 +67,15 @@ const DISTANCIA:number = 10;
   providedIn: 'root'
 })
 export class ExplorationService {
+
+  lastUpdatePosition: {lng: number, lat: number};
+
   position: {lng: number, lat: number};
   posMarker:mapboxgl.Marker = undefined;
 
   selPub: SelectedPub = undefined;
+
+  markerList:mapboxgl.Marker[] = [];
 
   markerDictionary:Map<string, mapboxgl.Marker> = new Map<string, mapboxgl.Marker>();
 
@@ -81,8 +86,9 @@ export class ExplorationService {
     //this.colleccionFotos = firestore.collection("fotos");
 
     this.location.getPosition().then(pos => {
-      //this.position = pos;
-      this.position = {lat: 36.71860991, lng: -4.42016};
+      this.lastUpdatePosition = pos;
+      this.position = pos;
+      //this.position = {lat: 36.71860991, lng: -4.42016};
       this.map.buildMap(this.position.lng, this.position.lat, null);
       this.map.map.setPadding({left: 0, right: 0, top: 400, bottom: 0});
       this.map.map.setPitch(60);
@@ -90,10 +96,14 @@ export class ExplorationService {
       this.updatePosMarker(this.map.map);
 
       let self = this;
-
-      /*
+      
       this.location.watchPosition().subscribe({
         next(pos) {
+          if(this.getKilometros(pos) < 0.3) {
+            self.lastUpdatePosition = pos;
+            self.markerList = [];
+            this.cargarMarkers()
+          }
           self.position = {lng: pos.coords.longitude, lat: pos.coords.latitude};
           self.updatePosMarker(self.map.map);
           self.map.map.flyTo({center: [pos.coords.longitude, pos.coords.latitude],
@@ -101,71 +111,11 @@ export class ExplorationService {
           });
         }
       });
-      */
 
-      getJSON("https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/near/" + this.position.lat + "&" + this.position.lng + "&" + DISTANCIA).then( data => {
-
-        data.forEach( pc => {
-          let e:boolean = gameService.visitadosDictionary.get(pc.id) != undefined;
-
-          this.firestoreDB.doc("publications/"+pc.id).get().toPromise().then( p => {
-            var json:PublicationJSON = <PublicationJSON>p.data();
-
-            let v = {
-              pid:json.pid,
-              uid:json.uid,
-              title:json.title,
-              graffiter:json.graffiter,
-              photoURL:json.photoURL,
-              coordinates:new firestore.GeoPoint(json.g.geopoint.u_,json.g.geopoint.h_),
-              date:new Date(),
-              state:json.state,
-              themes:json.themes
-            };
-
-            if(e){
-              this.showVisitedMarker(v, false);
-            }else{
-              var near = pc.distance <= 0.15;
-              this.showMarker(v, near);
-            }
-
-          });
-
-        })
-
-      });
-
-      getJSON("https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/openData/landmarks/near/" + this.position.lat + "&" + this.position.lng + "&" + DISTANCIA * 1000).then ( data => {
-
-        data.forEach(element => {
-          let json:MonumentJSON = element;
-          let e:boolean = gameService.visitadosDictionary.get(String(json.id)) != undefined;
-
-          let v = {
-            pid:String(json.id),
-            uid:undefined,
-            title:json.name,
-            graffiter:undefined,
-            photoURL: "assets/logo_aytomalaga.jpg",
-            coordinates:new firestore.GeoPoint(json.coordinates._latitude,json.coordinates._longitude),
-            date:new Date(),
-            state:undefined,
-            themes:undefined
-          };
-
-          if(e){
-            this.showVisitedMarker(v, false);
-          }else{
-            var near = json.distancia <= 0.15 * 1000;
-            this.showMarker(v, near);
-          }
-
-        });
-
-      });
-
-    })
+      this.cargarMarkers()
+      
+    });
+      
 
     gameService.data.subscribe( publication => {
       if(publication != undefined){
@@ -174,6 +124,72 @@ export class ExplorationService {
       
     })
 
+  }
+
+  cargarMarkers(){
+    let self = this;
+
+    getJSON("https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/near/" + this.position.lat + "&" + this.position.lng + "&" + DISTANCIA).then( data => {
+
+      data.forEach( pc => {
+        let e:boolean = this.gameService.visitadosDictionary.get(pc.id) != undefined;
+
+        this.firestoreDB.doc("publications/"+pc.id).get().toPromise().then( p => {
+          var json:PublicationJSON = <PublicationJSON>p.data();
+
+          let v = {
+            pid:json.pid,
+            uid:json.uid,
+            title:json.title,
+            graffiter:json.graffiter,
+            photoURL:json.photoURL,
+            coordinates:new firestore.GeoPoint(json.g.geopoint.u_,json.g.geopoint.h_),
+            date:new Date(),
+            state:json.state,
+            themes:json.themes
+          };
+
+          if(e){
+            this.showVisitedMarker(v, false);
+          }else{
+            var near = pc.distance <= 0.15;
+            this.showMarker(v, near);
+          }
+
+        });
+
+      })
+
+    });
+
+    getJSON("https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/openData/landmarks/near/" + this.position.lat + "&" + this.position.lng + "&" + DISTANCIA * 1000).then ( data => {
+
+      data.forEach(element => {
+        let json:MonumentJSON = element;
+        let e:boolean = this.gameService.visitadosDictionary.get(String(json.id)) != undefined;
+
+        let v = {
+          pid:String(json.id),
+          uid:undefined,
+          title:json.name,
+          graffiter:undefined,
+          photoURL: "assets/logo_aytomalaga.jpg",
+          coordinates:new firestore.GeoPoint(json.coordinates._latitude,json.coordinates._longitude),
+          date:new Date(),
+          state:undefined,
+          themes:undefined
+        };
+
+        if(e){
+          this.showVisitedMarker(v, false);
+        }else{
+          var near = json.distancia <= 0.15 * 1000;
+          this.showMarker(v, near);
+        }
+
+      });
+
+    });
   }
 
   showMarker(pub: PublicationI, near: boolean) {
@@ -189,9 +205,11 @@ export class ExplorationService {
 
     console.log("Publicacion: " + pub.title + "->",pub);
 
-    this.markerDictionary.set(pub.pid, new mapboxgl.Marker(el)
-      .setLngLat([pub.coordinates.longitude, pub.coordinates.latitude])
-      .addTo(this.map.map));
+    let marker = new mapboxgl.Marker(el).setLngLat([pub.coordinates.longitude, pub.coordinates.latitude]).addTo(this.map.map);
+
+    this.markerList.push(marker)
+
+    this.markerDictionary.set(pub.pid, marker);
   }
 
   showVisitedMarker(pub: PublicationI, near: boolean) {
@@ -205,9 +223,9 @@ export class ExplorationService {
       this.showModal(pub, near);
     })
 
-    new mapboxgl.Marker(el)
-      .setLngLat([pub.coordinates.longitude, pub.coordinates.latitude])
-      .addTo(this.map.map);
+    let marker = new mapboxgl.Marker(el).setLngLat([pub.coordinates.longitude, pub.coordinates.latitude]).addTo(this.map.map);
+
+    this.markerList.push(marker);
   }
 
   visitMarker(pub: PublicationI){
@@ -244,6 +262,17 @@ export class ExplorationService {
     this.posMarker = new mapboxgl.Marker(el)
       .setLngLat([this.position.lng, this.position.lat])
       .addTo(m);
+  }
+
+  getKilometros(pos:{lat:number,lng:number}) {
+    let rad = function(x) {return x*Math.PI/180;}
+    var R = 6378.137; //Radio de la tierra en km
+    var dLat = rad( this.lastUpdatePosition.lat - pos.lat );
+    var dLong = rad( this.lastUpdatePosition.lng - pos.lng );
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(rad(pos.lat)) * Math.cos(rad(this.lastUpdatePosition.lat)) * Math.sin(dLong/2) * Math.sin(dLong/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    var d = R * c;
+    return d.toFixed(3); //Retorna tres decimales
   }
 
 }

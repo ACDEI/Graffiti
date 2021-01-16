@@ -1,5 +1,8 @@
-<div class="frame">
-    <div class="user-profile">
+<div class="home-container">
+    <i [routerLink]='["/home"]' class="home-icon fas fa-home"></i>
+</div>
+<div class="frame" >
+    <div [routerLink]='["/user-profile", userid]' class="user-profile">
         <img src="{{photo}}">
         <div class="name-container">
             <p>{{name}}</p>
