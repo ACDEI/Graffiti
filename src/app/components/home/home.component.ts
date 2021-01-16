@@ -7,6 +7,7 @@ import { ScrollPaginationPublicationsService } from '@core/services/scroll-pagin
 import { ToastrService } from 'ngx-toastr';
 import { LocationService } from '@core/services/location.service';
 import { MapService } from '@core/services/map.service';
+import { PublicationsService } from '@core/services/classes_services/publications.service';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,9 @@ export class HomeComponent implements OnInit {
   pubsPerPage = 12;
   isFilter: boolean; 
   loadAll: boolean;
+  prev: any;
+  post: any;
+
 
   config: any = {
     itemsPerPage: this.pubsPerPage,
@@ -27,6 +31,7 @@ export class HomeComponent implements OnInit {
     totalItems: 0
   }
 
+  plist: any;
   //Form
   graffiter: string;
   theme: string;
@@ -48,6 +53,7 @@ export class HomeComponent implements OnInit {
     
     this.resetAll();
     this.obtenerTematicas();
+    this.uploadSizes();
 
     this.locationService.getPosition().then( data => {
       this.mapService.buildMap(data.lng, data.lat, true);
@@ -62,7 +68,18 @@ export class HomeComponent implements OnInit {
     this.isFilter = false;
     this.loadAll = false;
     this.getPublications();
-    
+  }
+
+  uploadSizes(){
+    //SIZES
+    this.page.sizePrev.subscribe(sz => {
+      this.prev = sz;
+      this.checkSizes();
+    }
+      );
+    this.page.sizePost.subscribe(sz => {
+      this.post = sz
+    });
   }
 
   obtenerTematicas(){
@@ -89,7 +106,7 @@ export class HomeComponent implements OnInit {
       let opts : any = {
         limit : this.pubsPerPage,
         prepend : false,
-        reverse : false
+        reverse : true
       }
       if(this.theme != null && this.theme !== '') opts = { ...opts, themes : [this.theme]}
       if(this.status != null && this.status !== '') opts = { ...opts, state : this.status}
@@ -119,13 +136,11 @@ export class HomeComponent implements OnInit {
   }
 
   loadMore(){
-    var prev : any, post : any;
     this.page.more();
+  }
 
-    prev = this.page.sizePrev;
-    post = this.page.sizePost;
-
-    if(prev === post) {
+  checkSizes(){
+    if(this.prev == this.post) {
       this.loadAll = true;
       this.ts.info('Parece que no hay más que ver... ¡Anímate a subir algo!', '', {timeOut: 1000}); 
     }

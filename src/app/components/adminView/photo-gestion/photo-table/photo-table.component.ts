@@ -33,15 +33,6 @@ export class PhotoTableComponent implements OnInit {
   obtenerPublicaciones(): void {
     this.publicationService
       .getAllPublications()
-      .snapshotChanges()
-      .pipe(
-        map((changes) =>
-          changes.map((c) => ({
-            id: c.payload.doc.id,
-            ...c.payload.doc.data(),
-          }))
-        )
-      )
       .subscribe((data) => {
         this.publicationList = data;
         console.log(this.publicationList);

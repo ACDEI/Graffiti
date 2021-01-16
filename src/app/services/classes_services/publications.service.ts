@@ -15,11 +15,11 @@ export class PublicationsService {
   private path = 'publications';
 
   constructor(private fs: AngularFirestore, private http: HttpClient) { 
-    this.publicationCollection = fs.collection(this.path);
   }
 
-  getAllPublications() : AngularFirestoreCollection<Publication> {
-    return this.publicationCollection;
+  getAllPublications() : Observable<any>{
+    return this.fs.collection('publications', ref => ref.orderBy('date', 'desc'))
+                  .valueChanges().pipe(map(c => c));
   }
 
   async getPublication(pid : string): Promise<any> {

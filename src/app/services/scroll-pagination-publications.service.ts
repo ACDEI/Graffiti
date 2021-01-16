@@ -28,15 +28,17 @@ export class ScrollPaginationPublicationsService {
     private _done = new BehaviorSubject(false);
     private _loading = new BehaviorSubject(false);
     private _data = new BehaviorSubject([]);
-  
+    private _sizePrev = new BehaviorSubject(-1);
+    private _sizePost = new BehaviorSubject(0);
+
     private query: QueryConfig;
   
     // Observable data
     data: Observable<any>;
     done: Observable<boolean> = this._done.asObservable();
     loading: Observable<boolean> = this._loading.asObservable();
-    sizePrev: any;
-    sizePost: any;
+    sizePrev: Observable<number> = this._sizePrev.asObservable();
+    sizePost: Observable<number> =  this._sizePost.asObservable();
   
     constructor(private afs: AngularFirestore) {
     }
@@ -58,8 +60,7 @@ export class ScrollPaginationPublicationsService {
       }
   
       const first = this.afs.collection(this.query.path, ref => {
-        let q = ref
-                    .orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
+        let q = ref.orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
                     .limit(this.query.limit);
         if(this.query.state != null && this.query.state !== '') {
           q = q.where('state', '==', this.query.state);
@@ -70,7 +71,15 @@ export class ScrollPaginationPublicationsService {
           q = q.where('themes', 'array-contains', this.query.themes[0]);
           //console.log('in Theme');
         }
-        
+
+        /*
+        if(this.query.title != null && this.query.title !== '') 
+          q = q.where('title', '>=', this.query.title);
+
+        if(this.query.graffiter != null && this.query.graffiter !== '') 
+          q = q.where('graffiter', '>=', this.query.graffiter);
+        */
+
         //console.log(q);
         return q;
       })
@@ -94,14 +103,22 @@ export class ScrollPaginationPublicationsService {
         
         let q = ref.orderBy(this.query.field, this.query.reverse ? 'desc' : 'asc')
                     .limit(this.query.limit)
-                    .startAfter(cursor)
+                    .startAfter(cursor);
 
         if(this.query.state != null && this.query.state !== '') 
           q = q.where('state', '==', this.query.state);
 
         if(this.query.themes != null && this.query.themes.length != 0) 
           q = q.where('themes', 'array-contains', this.query.themes[0]);
-                
+        
+        /*
+        if(this.query.title != null && this.query.title !== '') 
+          q = q.where('title', '>=', this.query.title);
+
+        if(this.query.graffiter != null && this.query.graffiter !== '') 
+          q = q.where('graffiter', '>=', this.query.graffiter);
+        */
+       
         return q;
       })
       this.mapAndUpdate(more)
@@ -132,15 +149,22 @@ export class ScrollPaginationPublicationsService {
           let values = arr.map(snap => {
             const data = snap.payload.doc.data()
             const doc = snap.payload.doc
-            if(data.title.toLowerCase().includes(this.query.title.toLowerCase())
-                && data.graffiter.toLowerCase().includes(this.query.graffiter.toLowerCase())) 
+            //if(data.title.toLowerCase().includes(this.query.title.toLowerCase())
+            //    && data.graffiter.toLowerCase().includes(this.query.graffiter.toLowerCase())) 
               return { ...data, doc }
-            else return;
+            //else return;
           })
           values = values.filter(v => v != null);
-          if(this.sizePost != 0) this.sizePrev = this.sizePost;
-          this.sizePost += values.length;
-          console.log(values);
+
+          //SHOW TOAST NO MAS
+          if(values.length == 0) this._sizePrev.next(this._sizePost.value);
+          else {
+            var value = this._sizePost.value;
+            this._sizePost.next(this._sizePost.value + values.length);
+
+            if(value != 0 && this._sizePrev.value == -1) this._sizePrev.next(value);
+            else if(value != 0 && this._sizePrev.value != -1) this._sizePrev.next(this._sizePrev.value + value);
+          }
     
           // If prepending, reverse array
           values = this.query.prepend ? values.reverse() : values
@@ -164,8 +188,8 @@ export class ScrollPaginationPublicationsService {
     reset() {
       this._data.next([])
       this._done.next(false)
-      this.sizePost = 0;
-      this.sizePrev = 0;
+      this._sizePost.next(0);
+      this._sizePrev.next(-1);
     }
 
 }

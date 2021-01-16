@@ -86,6 +86,8 @@ export class UsersSearchComponent implements OnInit {
     this.usersList.reset();
     this.usersList.init('users', 'nickName', {...opts});
     this.isFilter = false;
+    this.fullName = '';
+    this.nickName = '';
   }
 
   @HostListener('window:scroll', ['$event'])
