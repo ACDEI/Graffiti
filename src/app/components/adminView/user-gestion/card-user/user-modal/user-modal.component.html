@@ -56,17 +56,17 @@
                                     <div class="media-body">
                                         <h4>{{pub.title}}</h4>
                                         <p>{{pub.graffiter}}</p>
-                                        <div *ngIf="pub.state == 'Buen Estado'">
-                                            <span class="badge badge-success">Buen Estado</span> 
+                                        <div *ngIf="pub.state == 'Perfect'">
+                                            <span class="badge badge-success">Perfect</span> 
                                          </div>
                                          <div *ngIf="pub.state == 'Legible'">
                                              <span class="badge badge-warning">Legible</span> 
                                          </div>
-                                         <div *ngIf="pub.state == 'Deteriorado'">
-                                             <span class="badge badge-danger">Deteriorado</span> 
+                                         <div *ngIf="pub.state == 'Deteriorated'">
+                                             <span class="badge badge-danger">Deteriorated</span> 
                                          </div>
-                                         <div *ngIf="pub.state == 'Ilegible'">
-                                             <span class="badge badge-dark">Ilegible</span> 
+                                         <div *ngIf="pub.state == 'Illegible'">
+                                             <span class="badge badge-dark">Illegible</span> 
                                          </div>
                                     </div>
                                 </div>
@@ -75,10 +75,10 @@
                             <div class="tab-pane conf fadeM2" id="v-pills-followers" role="tabpanel" aria-labelledby="v-pills-followers-tab">
                                 <div *ngFor="let fw of followersList" class="media border p-3 bg-white rounded mb-1">
                                     <div class="row">
-                                        <div class="col-lg">
+                                        <div class="col-lg col-md-4 col-sm-4">
                                           <img src="{{fw.image}}" alt="fd-avatar" class="rounded-circle" width="80px">
                                         </div>
-                                        <div class="col-lg">
+                                        <div class="col-lg col-md-8 col-sm-8">
                                           <div class="media-body mt-3">
                                             <h4>{{fw.nick}}</h4>
                                           </div>
@@ -90,10 +90,10 @@
                             <div class="tab-pane conf fadeM3" id="v-pills-followed" role="tabpanel" aria-labelledby="v-pills-followed-tab">
                                 <div *ngFor="let fd of followedList" class="media border p-3 bg-white rounded mb-1">
                                     <div class="row">
-                                        <div class="col-lg">
+                                        <div class="col-lg col-md-4 col-sm-4">
                                           <img src="{{fd.image}}" alt="fd-avatar" class="rounded-circle" width="80px">
                                         </div>
-                                        <div class="col-lg">
+                                        <div class="col-lg col-md-8 col-sm-8">
                                           <div class="media-body mt-3">
                                             <h4>{{fd.nick}}</h4>
                                           </div>

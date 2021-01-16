@@ -236,6 +236,7 @@ export class NavbarComponent implements OnInit {
    }
 
   onFileSelected(event){
+    console.log("tt");
     this.showButton = true; 
     this.selectedFile = <File>event.target.files[0];
   }

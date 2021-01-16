@@ -4,3 +4,12 @@
     overflow-x: hidden;
     width: 100%;
 }
+
+.nav-link.active {
+    background-color: #333333;
+    color: #ffffff;
+}
+
+.nav-link{
+    color: #333333
+}
