@@ -11,13 +11,15 @@ export class TwitterService {
   constructor(private http : HttpClient) { }
 
 
-  async sendTweet(tweet : string){
+  async sendTweet(tweet : string,url : string,lat : number,long :number){
 
     var data =JSON.parse(window.sessionStorage.getItem('usuario'));
     var uid = data.uid;
     console.log(tweet);
     console.log(this.api+uid);
-    await this.http.post(this.api+uid,{"status" : tweet}).subscribe(result => {
+    let status = {"status" : tweet+ " "+url,
+     "lat" : lat ,"long" : long, "display_coordinates" : true,"geo_enabled" : true}
+    await this.http.post(this.api+uid,status).subscribe(result => {
       console.log(result)
   });
     

@@ -69,9 +69,9 @@ export class CardPublicationComponent implements OnInit {
     );
   }
 
-  sendTweet(title : string){
+  sendTweet(title : string,url :string,lat : number,long : number){
 
-    this.tws.sendTweet("Me ha gustado la publicación "+title+" #MalagArt");
+    this.tws.sendTweet("Me ha gustado la publicación "+title+" #MalagArt",url,lat,long);
   }
 
 }
