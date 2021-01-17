@@ -161,7 +161,6 @@ signOut(){
     self.roleAs = '';
     localStorage.setItem('STATE', 'false');
     localStorage.setItem('ROLE', '');
-    console.log('HAGO LOGOUT', self.roleAs);
     self.router.navigate(['']);
   }).catch(function(error) { // An error happened.
     console.log('ERROR', error);
