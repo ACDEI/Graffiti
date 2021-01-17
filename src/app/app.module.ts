@@ -53,8 +53,6 @@ import { TableThemeComponent } from './components/adminView/theme-gestion/table-
 import { PhotoModalComponent } from './components/adminView/photo-gestion/photo-card/photo-modal/photo-modal.component';
 import { UserModalComponent } from './components/adminView/user-gestion/card-user/user-modal/user-modal.component';
 import { ExplModalComponent } from './components/explore/expl-modal/expl-modal.component';
-import { AngularFireAuthGuard } from '@angular/fire/auth-guard';
-import { AdminGuard } from './guard/admin.guard';
 import { StatsComponent } from './components/explore/stats/stats.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { CardPublicationComponent } from './components/cards/card-publication/card-publication.component';
@@ -132,8 +130,7 @@ import { WeatherViewComponent } from './components/weather-view/weather-view.com
               PublicationsService,
               User,
               ThemeService,
-              AngularFireAuthGuard, 
-              AdminGuard],
+              ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

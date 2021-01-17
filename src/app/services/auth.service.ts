@@ -17,6 +17,8 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class AuthService {
 
+  isLogin = false;
+  roleAs: string;
   coleccionUsuarios: AngularFirestoreCollection<User>;
   usuariosObservables: Observable<any[]>;
   userSelected: User = new User();
@@ -32,6 +34,9 @@ export class AuthService {
         .then(result => {
           this.userService.loginUser(result.user).then( user => {
             window.sessionStorage.setItem("usuario",JSON.stringify(user));
+            localStorage.setItem('STATE', 'true');
+            this.roleAs = "USER";
+            localStorage.setItem('ROLE', this.roleAs);
             this.router.navigate(['home']);
           });
         });
@@ -57,6 +62,10 @@ export class AuthService {
             // var secret = result.credential.secret;
           this.userService.loginUser(result.user).then( user => {
             window.sessionStorage.setItem("usuario", JSON.stringify(user));
+            localStorage.setItem('STATE', 'true');
+            this.roleAs = "USER";
+            localStorage.setItem('ROLE', this.roleAs);
+            this.router.navigate(['home']);
             this.router.navigate(['home']);
           });
 
@@ -86,8 +95,12 @@ export class AuthService {
       return this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then( result => {
         
         this.userService.loginUser(result.user).then( user => {
-          window.sessionStorage.setItem("usuario", JSON.stringify(user));
-          this.router.navigate(['home']);
+            window.sessionStorage.setItem("usuario", JSON.stringify(user));
+            localStorage.setItem('STATE', 'true');
+            this.roleAs = "USER";
+            localStorage.setItem('ROLE', this.roleAs);
+            this.router.navigate(['home']);
+            this.router.navigate(['home']);
         });
 
       });
@@ -130,6 +143,9 @@ export class AuthService {
          self.userSelected = {"uid":firebaseUser.user.uid, "email":firebaseUser.user.email, "fullName":firebaseUser.user.displayName,
                               "nickName": "", "photoURL": "", "isAdmin": true, "nVisitados" : 0 };
          console.log(self.userSelected);
+         localStorage.setItem('STATE', 'true');
+         this.roleAs = "ADMIN";
+         localStorage.setItem('ROLE', this.roleAs);
          self.router.navigate(["admin/home"]);
       }).catch(function(error) { // Error Handling
         var error = error.code;
@@ -142,6 +158,10 @@ signOut(){
   window.sessionStorage.clear(); 
   this.userSelected = null;
   let self = this;
+  this.isLogin = false;
+  this.roleAs = '';
+  localStorage.setItem('STATE', 'false');
+  localStorage.setItem('ROLE', '');
   firebase.auth().signOut().then(function() { // Sign-out successful. 
     self.router.navigate(['']);
   }).catch(function(error) { // An error happened.
@@ -244,4 +264,17 @@ signOutFacebook(){
   
 }
 */
+isLoggedIn() {
+  const loggedIn = localStorage.getItem('STATE');
+  if (loggedIn == 'true')
+    this.isLogin = true;
+  else
+    this.isLogin = false;
+  return this.isLogin;
+}
+
+getRole() {
+  this.roleAs = localStorage.getItem('ROLE');
+  return this.roleAs;
+}
 }
