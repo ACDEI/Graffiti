@@ -4,6 +4,7 @@ import { Publication } from '@core/models/publication';
 import { Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { map } from 'rxjs/operators';
+import { AuthService } from '../auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class PublicationsService {
 
   private path = 'publications';
 
-  constructor(private fs: AngularFirestore, private http: HttpClient) { 
+  constructor(private fs: AngularFirestore, private http: HttpClient,
+    private auth: AuthService) { 
   }
 
   getAllPublications() : Observable<any>{
@@ -88,36 +90,44 @@ export class PublicationsService {
   private pubsUrl = 'https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/publications/';  // URL to web api
 
   //GET
-  getAllPublicationsCF() : Observable<any[]>{
-    return this.http.get<any[]>(this.pubsUrl);
+  async getAllPublicationsCF() : Promise<Observable<any[]>>{
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.pubsUrl, httpOpt);
   }
 
-  getPublicationByPidCF(pid : any) : Observable<any[]> {
-    return this.http.get<any[]>(this.pubsUrl + pid);
+  async getPublicationByPidCF(pid : any) : Promise<Observable<any[]>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.pubsUrl + pid, httpOpt);
   }
 
-  getPublicationsByTitleCF(title: any) : Observable<any[]> {
-    return this.http.get<any[]>(this.pubsUrl + "title/" + title);
+  async getPublicationsByTitleCF(title: any) : Promise<Observable<any[]>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.pubsUrl + "title/" + title, httpOpt);
   }
 
-  getPublicationsByRangeCF(from: any, to: any) : Observable<any[]> {
-    return this.http.get<any[]>(this.pubsUrl + "range/" + from + '/' + to);
+  async getPublicationsByRangeCF(from: any, to: any) : Promise<Observable<any[]>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.pubsUrl + "range/" + from + '/' + to, httpOpt);
   }
 
-  getPublicationsCountCF() : Observable<any> {
-    return this.http.get<any>(this.pubsUrl + "count");
+  async getPublicationsCountCF() : Promise<Observable<any>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any>(this.pubsUrl + "count", httpOpt);
   }
 
-  getPublicationsByUserUidCF(uid : any) : Observable<any[]> {
-    return this.http.get<any[]>(this.pubsUrl + "user/" + uid);
+  async getPublicationsByUserUidCF(uid : any) : Promise<Observable<any[]>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.pubsUrl + "user/" + uid, httpOpt);
   }
 
-  getPublicationsByGraffiterCF(graffiter : any) : Observable<any[]> {
-    return this.http.get<any[]>(this.pubsUrl + "graffiter/" + graffiter);
+  async getPublicationsByGraffiterCF(graffiter : any) : Promise<Observable<any[]>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.pubsUrl + "graffiter/" + graffiter, httpOpt);
   }
 
-  getPublicationsByThemeCF(theme : any) : Observable<any[]> {
-    return this.http.get<any[]>(this.pubsUrl + "themes/" + theme);
+  async getPublicationsByThemeCF(theme : any) : Promise<Observable<any[]>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.pubsUrl + "themes/" + theme, httpOpt);
   }
 
   //PUT
@@ -126,8 +136,9 @@ export class PublicationsService {
       * pid : Publication PID
       * pub : Publication Data
   */
-  putPublicationCF(pid : any, pub : any) {
-    return this.http.put(this.pubsUrl + pid, pub);
+  async putPublicationCF(pid : any, pub : any) {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.put(this.pubsUrl + pid, pub, httpOpt).subscribe();
   }
 
   //POST
@@ -135,8 +146,9 @@ export class PublicationsService {
     Post a Publication
       * pub : Publication Data
   */
-  postPublicationCF(pub : any) {
-    return this.http.post(this.pubsUrl, pub);
+  async postPublicationCF(pub : any) {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.post(this.pubsUrl, pub, httpOpt).subscribe();
   }
 
   //DELETE
@@ -144,18 +156,21 @@ export class PublicationsService {
     Delete a Publication
       * pid : Publication PID
   */
-  deletePublicationCF(pid : any) {
-    return this.http.delete(this.pubsUrl + pid);
+  async deletePublicationCF(pid : any) {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.delete(this.pubsUrl + pid, httpOpt).subscribe();
   }
 
   //SUBCOLECCION LIKES
   //GET
-  getPublicationLikesCF(pid : any): Observable<any[]> {
-    return this.http.get<any[]>(this.pubsUrl + "likes/" + pid);
+  async getPublicationLikesCF(pid : any): Promise<Observable<any[]>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.pubsUrl + "likes/" + pid, httpOpt);
   }
 
-  getPublicationLikesCountCF(pid : any): Observable<Number> {
-    return this.http.get<Number>(this.pubsUrl + "likescount/" + pid);
+  async getPublicationLikesCountCF(pid : any): Promise<Observable<Number>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<Number>(this.pubsUrl + "likescount/" + pid, httpOpt);
   }
 
   //PUT
@@ -165,8 +180,9 @@ export class PublicationsService {
       * pid : Publication PID
       * pub : Publication Data
   */
-  putPublicationLikeFromUserCF(uid : any, pid : any, pub : any) {
-    return this.http.put(this.pubsUrl + "likes/" + uid + "&" + pid, pub);
+  async putPublicationLikeFromUserCF(uid : any, pid : any, pub : any) {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.put(this.pubsUrl + "likes/" + uid + "&" + pid, pub, httpOpt).subscribe();
   }
 
   //POST
@@ -175,8 +191,9 @@ export class PublicationsService {
       * pid : Publication PID
       * user : User Data
   */
-  postPublicationLikeCF(pid : any, user: any) {
-    return this.http.post(this.pubsUrl + "likes/" + pid, user);
+  async postPublicationLikeCF(pid : any, user: any) {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.post(this.pubsUrl + "likes/" + pid, user, httpOpt).subscribe();
   }
 
   //DELETE
@@ -185,7 +202,8 @@ export class PublicationsService {
       * uid : User UID
       * pid : Publication PID
   */
-  deletePublicationLikeCF(uid : any, pid : any){
-    return this.http.delete(this.pubsUrl + "likes/" + uid + "&" + pid);
+  async deletePublicationLikeCF(uid : any, pid : any){
+    let httpOpt = await this.auth.getHeader();
+    return this.http.delete(this.pubsUrl + "likes/" + uid + "&" + pid, httpOpt).subscribe();
   }
 }

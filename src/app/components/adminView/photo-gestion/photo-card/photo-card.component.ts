@@ -6,7 +6,6 @@ import { PublicationsService } from '@core/services/classes_services/publication
 import { ThemeService } from '@core/services/classes_services/theme.service';
 import { UserService } from '@core/services/classes_services/user.service';
 import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 import { PhotoModalComponent } from './photo-modal/photo-modal.component';
 
@@ -37,10 +36,11 @@ export class PhotoCardComponent implements OnInit {
   }
 
   deletePublication(pid: string){
-    this.publicationService.deletePublicationCF(pid).subscribe(
-      data => { this.toastr.success("Publicación Eliminada Correctamente", "", {timeOut: 1000}); },
-      err => { this.toastr.error("Ups...", "Parece que ha habido un problema", {timeOut: 1000}); }
-    );
+    this.publicationService.deletePublicationCF(pid).then(data => { 
+      this.toastr.success("Publicación Eliminada Correctamente", "", {timeOut: 1000});
+    }).catch(err => { 
+      this.toastr.error("Ups...", "Parece que ha habido un problema", {timeOut: 1000});
+    });
   }
 
   cambiarModal(){

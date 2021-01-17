@@ -5,11 +5,9 @@ import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} 
 import { Observable } from 'rxjs';
 
 import { User, UserI } from '../models/user.model';
-import { UserService } from './classes_services/user.service';
-import { AdminInicioComponent } from '@core/components/adminView/admin-inicio/admin-inicio.component';
-import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { HttpHeaders } from '@angular/common/http';
+import { AuxiliarUserService } from './auxiliar-user.service';
 
 
 @Injectable({
@@ -22,7 +20,7 @@ export class AuthService {
   userSelected: User = new User();
 
   constructor(private router: Router, public firestore: AngularFirestore
-              , public userService: UserService, private afAuth: AngularFireAuth) { }
+              , public userService: AuxiliarUserService, private afAuth: AngularFireAuth) { }
 
   //Facebook LogIn
   loginFacebook(){
@@ -41,7 +39,7 @@ export class AuthService {
       var errorMessage = error.message;
       var email = error.email;  // The email of the user's account used.
       var credential = error.credential;  // The firebase.auth.AuthCredential type that was used.
-      console.log(errorMessage);
+      //console.log(errorMessage);
     }
   }
 
@@ -61,10 +59,10 @@ export class AuthService {
           });
 
           //Guardar los datos en la bd
-          console.log(result.credential);
-          console.log(result.credential['accessToken']);
+          //console.log(result.credential);
+          //console.log(result.credential['accessToken']);
           
-          this.userService.addTokens(result.credential['accessToken'],result.credential['secret'],result.user.uid);
+          this.userService.addTokens(result.credential['accessToken'], result.credential['secret'], result.user.uid);
           
       }
     });
@@ -74,7 +72,7 @@ export class AuthService {
     var errorMessage = error.message;
     var email = error.email;  // The email of the user's account used.
     var credential = error.credential;  // The firebase.auth.AuthCredential type that was used.
-    console.log(errorMessage);
+    //console.log(errorMessage);
     }
   }
   
@@ -96,7 +94,7 @@ export class AuthService {
       var errorMessage = error.message;
       var email = error.email;  // The email of the user's account used.
       var credential = error.credential;  // The firebase.auth.AuthCredential type that was used.
-      console.log("Service " + errorMessage);
+      //console.log("Service " + errorMessage);
     }
     
   }
@@ -108,7 +106,7 @@ export class AuthService {
     return firebase.auth().createUserWithEmailAndPassword(email, password)
       .then((result) => {
         //window.alert("You have been successfully registered!");
-        console.log(result.user);
+        //console.log(result.user);
 
         self.userSelected = {"uid":result.user.uid, "email":result.user.email, "fullName":"",
                             "nickName": "", "photoURL": "", "isAdmin": false, 
@@ -116,7 +114,7 @@ export class AuthService {
 
         self.userService.createUser(self.userSelected);
       }).catch((error) => {
-        console.log(error);
+        //console.log(error);
         throw error;
       })
   }
@@ -129,20 +127,21 @@ export class AuthService {
         
          self.userSelected = {"uid":firebaseUser.user.uid, "email":firebaseUser.user.email, "fullName":firebaseUser.user.displayName,
                               "nickName": "", "photoURL": "", "isAdmin": true, "nVisitados" : 0 };
-         console.log(self.userSelected);
+         //console.log(self.userSelected);
          self.router.navigate(["admin/home"]);
       }).catch(function(error) { // Error Handling
         var error = error.code;
         var errorMessage = error.message;
-        console.log(error);
+        //console.log(error);
   });
 }
 
 signOut(){
-  window.sessionStorage.clear(); 
-  this.userSelected = null;
+
   let self = this;
   firebase.auth().signOut().then(function() { // Sign-out successful. 
+    window.sessionStorage.clear(); 
+    this.userSelected = null;
     self.router.navigate(['']);
   }).catch(function(error) { // An error happened.
     
@@ -156,92 +155,38 @@ checkTokenFacebook(){
   
   var refresh = usuario.refreshToken; 
 
+  /*
   console.log(refresh);
-
   console.log("---------");
-
   console.log(usuario.getIdToken(true));
-
   console.log("---------");
+  */
 
   var token = usuario.getIdTokenResult(true);
   token.then(el => {
+    /*
     console.log("cuando caduca el token" + el.expirationTime);
     console.log(el.token);
     console.log(el.signInProvider);
+    */
   })
-
-  
 
 }
 
-async getHeader(): Promise<{headers:HttpHeaders}> {
-  return new Promise( async (res,rej) => {
-    let user = await firebase.auth().currentUser;
-    if(user){
-      let idtoken = await user.getIdToken(false);
-      if(idtoken) {
-        res({headers: new HttpHeaders({'Authorization': 'Bearer ' + idtoken })});
+  async getHeader(): Promise<{headers:HttpHeaders}> {
+    return new Promise( async (res,rej) => {
+      let user = await firebase.auth().currentUser;
+      if(user){
+        let idtoken = await user.getIdToken(false);
+        if(idtoken) {
+          res({headers: new HttpHeaders({'Authorization': 'Bearer ' + idtoken })});
+        }else{
+          res(null);
+        }
       }else{
         res(null);
       }
-    }else{
-      res(null);
-    }
-  })
-}
-
-
-/*
-verifyIdToken(){
-  let checkRevoked = true;
-  let usuario = firebase.auth().currentUser;
-  let result = usuario.getIdToken(true); 
-  var tokenId ; 
-  result.then( element => {
-    tokenId = element.toString();
-  }
-  );
-
-
-  admin.auth().verifyIdToken(tokenId,checkRevoked).then(
-    payload =>{
-
-      console.log("token id Válido no es necesario volver a autenticar");
-
-    }).catch(error => {
-      if (error.code == 'auth/id-token-revoked') {
-        // Token has been revoked. Inform the user to reauthenticate or signOut() the user.
-        console.log("Es necesario reautenticar");
-        var socialProvider = firebase.auth().currentUser.providerId;
-        console.log(socialProvider);
-
-        if(socialProvider == "facebook.com"){
-          this.signOutFacebook();
-        }
-      } else {
-        // Token is invalid.
-        console.log("Token invalido");
-        var socialProvider = firebase.auth().currentUser.providerId;
-        console.log(socialProvider);
-        
-        if(socialProvider == "facebook.com"){
-          this.signOutFacebook();
-        }
-      }
     })
-}
-*/
-/*
-signOutFacebook(){
+  }
 
-  let self = this;
-  firebase.auth().signOut().then(function() { // Sign-out successful.
-    self.router.navigate(['']);
-  }).catch(function(error) { // An error happened.
-    
-  });
-  
-}
-*/
 }

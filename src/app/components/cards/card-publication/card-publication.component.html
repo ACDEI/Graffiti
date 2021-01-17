@@ -37,7 +37,7 @@
                <button class="btn-social" (click)="sendTweet(pubR.title,pubR.photoURL,pubR.coordinates.latitude,pubR.coordinates.longitude)"><i class="fab fa-twitter colorblue"></i></button> 
             </div>
             <div *ngIf="!isLiked(pubR.pid)">
-                <button class="btn-social" (click)="likePhoto(pubR.title,pubR.photoURL)"><i class="far fa-heart colorred"></i></button>
+                <button class="btn-social" (click)="likePhoto(pubR.pid,pubR.photoURL)"><i class="far fa-heart colorred"></i></button>
                 <button class="btn-social" (click)="sendTweet(pubR.title,pubR.photoURL,pubR.coordinates.latitude,pubR.coordinates.longitude)"><i class="fab fa-twitter colorblue"></i></button> 
             </div>
             

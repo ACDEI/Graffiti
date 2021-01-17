@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '@core/services/auth.service';
 
 @Component({
   selector: 'app-admin-login',
@@ -7,15 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminLoginComponent implements OnInit {
 
-  constructor() { }
+  constructor(private auth: AuthService) { }
 
-  wantRegister: boolean = false;
+  //wantRegister: boolean = false;
 
   ngOnInit(): void {
+    this.auth.signOut();
   }
 
+  /*
   viewRegister(show : boolean){
     this.wantRegister = show;
   }
+  */
 
 }

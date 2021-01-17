@@ -10,6 +10,7 @@ import { MapService } from '@core/services/map.service';
 import { ToastrService } from 'ngx-toastr';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { ThemeService } from '@core/services/classes_services/theme.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-publication-view',
@@ -21,7 +22,7 @@ export class PublicationViewComponent implements OnInit {
   pub: Publication;
   user: User;
   pubThemes: string[];
-  themesList: any[];
+  themesList: Observable<any[]>;
   usuarioSesion : any;
   publicacionesSesion: any[];
   commentsSesion: any[];
@@ -64,7 +65,7 @@ export class PublicationViewComponent implements OnInit {
         this.us.getUser(this.pub.uid).then(user => { this.user = user });
         this.pubThemes = this.pub.themes;
         this.editThemes = this.pubThemes;
-        this.themesService.getAllThemesCF().subscribe(values => {
+        this.themesService.getAllThemesCF().then(values => {
           this.themesList = values;
         });
         this.isLiked();
@@ -81,15 +82,12 @@ export class PublicationViewComponent implements OnInit {
     });
   }
 
-  onChange(){
-    console.log(this.editState);
-  }
+  onChange(){}
 
   //Comments
   obtenerComments(){
     this.cs.getCommentsByPublication(this.pub.pid).subscribe(data => {
       this.commentsList = data;
-      //console.log(this.commentsList);
     });
   }
 
@@ -103,8 +101,9 @@ export class PublicationViewComponent implements OnInit {
       image : this.usuarioSesion.photoURL
     }
 
-    this.cs.postCommentCF(comment).subscribe(
-      data => { this.ts.success("Comentario publicado correctamente", "", {timeOut: 1000}); },
+    this.cs.postCommentCF(comment).then(
+      data => { this.ts.success("Comentario publicado correctamente", "", {timeOut: 1000}); })
+      .catch(
       err => { this.ts.error("Ups...", "Ha Habido un problema al publicar el comentario." 
         + " Recargue y pruebe de nuevo", {timeOut: 1000}); }
     );
@@ -129,8 +128,12 @@ export class PublicationViewComponent implements OnInit {
   }
 
   deletePublication(){
-    this.ps.deletePublicationCF(this.pub.pid).subscribe();
-    this.r.navigate(['home']);
+    this.ps.deletePublicationCF(this.pub.pid).then(data => {
+      this.ts.success('Publicación Eliminada', '', {timeOut: 1500});
+      this.r.navigate(['home']);
+    }).catch(err => {
+      this.ts.error('Error al eliminar la Publicación', '', {timeOut: 1500});
+    });
   }
 
   saveChanges() {
@@ -150,10 +153,11 @@ export class PublicationViewComponent implements OnInit {
         "state": this.editState,
         "themes": this.editThemes
       };
-      this.ps.putPublicationCF(this.pub.pid, data).subscribe(
-        success => {this.ts.success("Cambios realizados correctamente", "", {timeOut:1000});},
-        err => {this.ts.error("Lo sentimos", "No se han podido guardar los cambios", {timeOut:2000});}
-      );
+      this.ps.putPublicationCF(this.pub.pid, data).then( success => {
+        this.ts.success("Cambios realizados correctamente", "", {timeOut:1000});
+      }).catch( err => {
+        this.ts.error("Lo sentimos", "No se han podido guardar los cambios", {timeOut:2000});
+      });
       this.editTitle = "";
       this.editGraffiter = "";
       this.editThemes = [];
@@ -224,25 +228,23 @@ export class PublicationViewComponent implements OnInit {
       "nickName": this.usuarioSesion.nickName,
       "photoURL": this.usuarioSesion.photoURL
     };
-    this.ps.postPublicationLikeCF(this.pub.pid, data).subscribe(
-      data => { 
-        this.ts.success("Favorito añadido correctamente", "", {timeOut: 1000}); 
-        this.hasLike = true; 
-      },
-      err => { this.ts.error("Ups...", "Ha Habido un problema al dar Like." 
-        + " Pruebe de nuevo", {timeOut: 1000}); }
-    );
+    this.ps.postPublicationLikeCF(this.pub.pid, data).then( data => { 
+      this.ts.success("Favorito añadido correctamente", "", {timeOut: 1000}); 
+      this.hasLike = true; 
+    }).catch(err => { 
+      this.ts.error("Ups...", "Ha Habido un problema al dar Like." 
+        + " Pruebe de nuevo", {timeOut: 1000});
+    });
   }
 
   unlikePhoto(){
-    this.ps.deletePublicationLikeCF(this.usuarioSesion.uid, this.pub.pid).subscribe(
-      data => { 
-        this.ts.success("Favorito eliminado correctamente", "", {timeOut: 1000}); 
-        this.hasLike = false;
-      },
-      err => { this.ts.error("Ups...", "Ha Habido un problema al eliminar Like." 
-        + " Pruebe de nuevo", {timeOut: 1000}); }
-    );
+    this.ps.deletePublicationLikeCF(this.usuarioSesion.uid, this.pub.pid).then( data => { 
+      this.ts.success("Favorito eliminado correctamente", "", {timeOut: 1000}); 
+      this.hasLike = false;
+    }).catch( err => { 
+      this.ts.error("Ups...", "Ha Habido un problema al eliminar Like." 
+        + " Pruebe de nuevo", {timeOut: 1000});
+    });
   }
 
 }

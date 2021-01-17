@@ -51,18 +51,15 @@ export class TableThemeComponent implements OnInit {
   }
 
   deleteTheme(tid: string){
-    this.themeService.deleteThemeByTidFC(tid).subscribe(
-      data => { this.toastr.success("Temática Eliminada Correctamente", "", {timeOut: 1000}); },
-      err => { this.toastr.error("Ups...", "No se ha podido eliminar la temática", {timeOut: 1000}); }
-    );
-    
+    this.themeService.deleteThemeByTidFC(tid).then(data => { 
+      this.toastr.success("Temática Eliminada Correctamente", "", {timeOut: 1000}); 
+    }).catch(err => { 
+      this.toastr.error("Ups...", "No se ha podido eliminar la temática", {timeOut: 1000}); 
+    });
   }
 
   addTheme(){
-    const lastId : number = Number(this.themesList[this.themesList.length-1].tid);
-    const theme: Theme = {tid: (lastId+1).toString(), 
-                    themeName: this.fbNew,
-                    publications: []};
+    const theme: any = {name: this.fbNew};
     this.themeService.createTheme(theme);
     this.fbNew = '';
     this.toastr.success("Añadido Correctamente", "", {timeOut: 1000});

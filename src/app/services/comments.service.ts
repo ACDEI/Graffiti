@@ -23,7 +23,6 @@ export class CommentsService {
   }
 
   getCommentsByPublication(pid : any) : Observable<any> {
-    //console.log(pid);
       return this.fs.collection('comments', ref => ref.where('pid', '==', pid.toString())
         .orderBy('timestamp', 'desc'))
       .valueChanges()
@@ -50,20 +49,24 @@ export class CommentsService {
   private comURL = "https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/comments/";
 
   //GET
-  getAllCommentsCF() : Observable<any[]> {
-    return this.http.get<any[]>(this.comURL);
+  async getAllCommentsCF() : Promise<Observable<any[]>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.comURL, httpOpt);
   }
 
-  getCommentByCidCF(cid : any) : Observable<any[]> {
-    return this.http.get<any[]>(this.comURL + cid);
+  async getCommentByCidCF(cid : any) : Promise<Observable<any[]>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.comURL + cid, httpOpt);
   }
 
-  getCommentsPerUserCF(uid : any) : Observable<any[]>{
-    return this.http.get<any[]>(this.comURL + "user/" + uid);
+  async getCommentsPerUserCF(uid : any) : Promise<Observable<any[]>>{
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.comURL + "user/" + uid, httpOpt);
   }
 
-  getCommentsPerPublicationCF(pid : any) : Observable<any[]> {
-    return this.http.get<any[]>(this.comURL + "publication/" + pid);
+  async getCommentsPerPublicationCF(pid : any) : Promise<Observable<any[]>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.comURL + "publication/" + pid, httpOpt);
   }
 
   //PUT
@@ -72,8 +75,9 @@ export class CommentsService {
       * cid : Comment CID
       * comment : Comment Data
   */
-  putCommentFC(cid : any, comment : any) {
-    return this.http.put(this.comURL + cid, comment);
+  async putCommentFC(cid : any, comment : any) {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.put(this.comURL + cid, comment, httpOpt).subscribe();
   }
 
   //POST
@@ -81,8 +85,9 @@ export class CommentsService {
     Post a comment
       * comment : Comment Data
   */
-  postCommentCF(comment: any){
-    return this.http.post(this.comURL, comment);
+  async postCommentCF(comment: any){
+    let httpOpt = await this.auth.getHeader();
+    return this.http.post(this.comURL, comment, httpOpt).subscribe();
   }
 
   //DELETE
@@ -90,8 +95,9 @@ export class CommentsService {
     Delete a Comment
       * cid : Comment CID
   */
-  deleteCommentByCidCF(cid : any){
-    return this.http.delete(this.comURL + cid);
+  async deleteCommentByCidCF(cid : any){
+    let httpOpt = await this.auth.getHeader();
+    return this.http.delete(this.comURL + cid, httpOpt).subscribe();
   }
 
 }

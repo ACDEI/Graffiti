@@ -1,12 +1,5 @@
-import { Injectable, Query } from '@angular/core';
-import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from "angularfire2/firestore";
-import * as firebase from 'firebase/app';
-import { firestore } from 'firebase';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { AngularFireModule } from '@angular/fire';
-import { LngLatLike } from 'mapbox-gl';
-import { MapService } from './map.service';
 
 @Injectable({
   providedIn: 'root'

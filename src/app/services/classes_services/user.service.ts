@@ -4,6 +4,7 @@ import { AngularFirestore, AngularFirestoreCollection} from '@angular/fire/fires
 import { User, UserI } from '@core/models/user.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AuthService } from '../auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class UserService {
 
   private path = 'users';
 
-  constructor(private fs: AngularFirestore, private http : HttpClient) { 
+  constructor(private fs: AngularFirestore, private http : HttpClient, 
+    private auth: AuthService) { 
     this.userCollection = fs.collection(this.path);
   }
 
@@ -59,7 +61,6 @@ export class UserService {
 
   async addTokens(accessToken : string,tokenSecret: string, uid: string){
     await this.fs.doc('users/'+uid).update({accessToken: accessToken, tokenSecret: tokenSecret});
-
   }
 
   async loginUser(user: firebase.User): Promise<UserI> {
@@ -174,28 +175,34 @@ export class UserService {
   //GETS
   private api = 'https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/users/';
 
-  getAllUsersCF() : Observable<any[]> { //Get All Users
-    return this.http.get<any[]>(this.api);
+  async getAllUsersCF() : Promise<Observable<any[]>> { //Get All Users
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.api, httpOpt);
   }
 
-  getUserByUidCF(uid : any) : Observable<any[]> { //Get USer By UID
-    return this.http.get<any[]>(this.api + uid);
+  async getUserByUidCF(uid : any) : Promise<Observable<any[]>> { //Get USer By UID
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.api + uid, httpOpt);
   }
 
-  getUserByEmailCF(email : any) : Observable<any[]> { //Get User By Email
-    return this.http.get<any[]>(this.api + 'email/' + email);
+  async getUserByEmailCF(email : any) : Promise<Observable<any[]>> { //Get User By Email
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.api + 'email/' + email, httpOpt);
   }
 
-  getUserByAdminCF(admin : Number) : Observable<any[]> { //Get List of (no) Admin : 1 (isAdmin), 0 (!isAdmin)
-    return this.http.get<any[]>(this.api + 'admin/' + admin);
+  async getUserByAdminCF(admin : Number) : Promise<Observable<any[]>> { //Get List of (no) Admin : 1 (isAdmin), 0 (!isAdmin)
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.api + 'admin/' + admin, httpOpt);
   }
 
-  getUsersByRangeCF(from : Number, to : Number) : Observable<any[]> { //Get Users By Range : From-To
-    return this.http.get<any>(this.api + 'range/' + from + '/' + to);
+  async getUsersByRangeCF(from : Number, to : Number) : Promise<Observable<any[]>> { //Get Users By Range : From-To
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any>(this.api + 'range/' + from + '/' + to, httpOpt);
   }
 
-  getUsersCountCF() : Observable<Number> { //Get Quantity of Users
-    return this.http.get<Number>(this.api + 'count');
+  async getUsersCountCF() : Promise<Observable<Number>> { //Get Quantity of Users
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<Number>(this.api + 'count', httpOpt);
   }
 
   async getUsersCount(): Promise<any> {
@@ -210,25 +217,29 @@ export class UserService {
     });
   }
 
-  getUsersByNameCF(name : any) : Observable<any[]> { //Get Users By Name (fragment)
-    return this.http.get<any[]>(this.api + 'name/' + name);
+  async getUsersByNameCF(name : any) : Promise<Observable<any[]>> { //Get Users By Name (fragment)
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.api + 'name/' + name, httpOpt);
   }
 
   //Mirar la innecesaria
 
   //PUT
-  putUsersCF(uid : any, usr : any) { //Update a User
-    return this.http.put(this.api + uid, usr);
+  async putUsersCF(uid : any, usr : any) { //Update a User
+    let httpOpt = await this.auth.getHeader();
+    return this.http.put(this.api + uid, usr, httpOpt).subscribe();
   }
 
   //POST
-  postUsersCF(usr : any) { //Post a User
-    return this.http.post(this.api, usr);
+  async postUsersCF(usr : any) { //Post a User
+    let httpOpt = await this.auth.getHeader();
+    return this.http.post(this.api, usr, httpOpt).subscribe();
   }
 
   //DELETE
-  deleteUsersCF(uid : any) { //Delete a User
-    return this.http.delete(this.api + uid);
+  async deleteUsersCF(uid : any) { //Delete a User
+    let httpOpt = await this.auth.getHeader();
+    return this.http.delete(this.api + uid, httpOpt).subscribe();
   }
 
   //FOLLOWERS
@@ -237,12 +248,14 @@ export class UserService {
   
   
   //GET
-  getFollowersPerUserCF(uid : any) : Observable<any[]> {  //Followers by User UID 
-    return this.http.get<any[]>(this.apiFollowers + uid);
+  async getFollowersPerUserCF(uid : any) : Promise<Observable<any[]>> {  //Followers by User UID 
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.apiFollowers + uid, httpOpt);
   }
 
-  getFollowersCountPerUserCF(uid : any) : Observable<Number> {  //Quantity of Followers By UID
-    return this.http.get<Number>(this.apiFollowers + 'count/' + uid);
+  async getFollowersCountPerUserCF(uid : any) : Promise<Observable<Number>> {  //Quantity of Followers By UID
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<Number>(this.apiFollowers + 'count/' + uid, httpOpt);
   }
 
   //PUT
@@ -252,8 +265,9 @@ export class UserService {
       * uidF : Follower UID
       * usr : Follower Data
   */
-  putFollowerPerUser(uid : any, uidF : any, usr : any) {  
-    return this.http.put(this.apiFollowers + uid + '&' + uidF, usr);
+  async putFollowerPerUser(uid : any, uidF : any, usr : any) {  
+    let httpOpt = await this.auth.getHeader();
+    return this.http.put(this.apiFollowers + uid + '&' + uidF, usr, httpOpt).subscribe();
   }
 
   //POST
@@ -262,8 +276,9 @@ export class UserService {
       * uid : Main User UID
       * uidF : Follower Data
   */
-  postFollowerPerUser(uid : any, usrF : any) { //
-    return this.http.post(this.apiFollowers + uid, usrF);
+  async postFollowerPerUser(uid : any, usrF : any) { //
+    let httpOpt = await this.auth.getHeader();
+    return this.http.post(this.apiFollowers + uid, usrF, httpOpt).subscribe();
   }
 
   //DELETE
@@ -272,8 +287,9 @@ export class UserService {
       * uid : Main User UID   
       * uidF : Follower UID
   */
-  deleteFollowerPerUser(uid : any, uidF : any) {
-    return this.http.delete(this.apiFollowers + uid + '&' + uidF);
+  async deleteFollowerPerUser(uid : any, uidF : any) {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.delete(this.apiFollowers + uid + '&' + uidF, httpOpt).subscribe();
   }
 
   //FOLLOWED
@@ -281,12 +297,14 @@ export class UserService {
   private apiFollowed = 'https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/followed/';
   
   //GET
-  getFollowedPerUserCF(uid : any) : Observable<any[]> {
-    return this.http.get<any[]>(this.apiFollowed + uid);
+  async getFollowedPerUserCF(uid : any) : Promise<Observable<any[]>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.apiFollowed + uid, httpOpt);
   }
 
-  getFollowedCountPerUserCF(uid : any) : Observable<Number> {
-    return this.http.get<Number>(this.apiFollowed + 'count/' + uid);
+  async getFollowedCountPerUserCF(uid : any) : Promise<Observable<Number>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<Number>(this.apiFollowed + 'count/' + uid, httpOpt);
   }
 
   //PUT
@@ -296,8 +314,9 @@ export class UserService {
       * uidF : Followed UID
       * usr : Followed
   */
-  putFollowedPerUserCF(uid : any, uidF : any, usr : any) {
-    return this.http.put(this.apiFollowed + uid + '&' + uidF, usr);
+  async putFollowedPerUserCF(uid : any, uidF : any, usr : any) {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.put(this.apiFollowed + uid + '&' + uidF, usr, httpOpt).subscribe();
   }
 
   //POST
@@ -306,8 +325,9 @@ export class UserService {
       * uid : Main User UID
       * uidF : Followed Data
   */
-  postFollowedPerUserCF(uid : any, usrF : any) {
-    return this.http.post(this.apiFollowed + uid, usrF);
+  async postFollowedPerUserCF(uid : any, usrF : any) {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.post(this.apiFollowed + uid, usrF, httpOpt).subscribe();
   }
 
   //DELETE
@@ -316,20 +336,23 @@ export class UserService {
       * uid : Main User UID
       * uidF : Followed UID
   */
-  deleteFollowedPerUserCF(uid : any, uidF : any) {
-    return this.http.delete(this.apiFollowed + uid + '&' + uidF);
+  async deleteFollowedPerUserCF(uid : any, uidF : any) {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.delete(this.apiFollowed + uid + '&' + uidF, httpOpt).subscribe();
   }
 
   //LIKES
   
   private apiLikes = 'https://us-central1-graffiti-9b570.cloudfunctions.net/MalagArtApiWeb/users/likes';
   
-  getLikesPerUserCF(uid : any) : Observable<any[]> {
-    return this.http.get<any[]>(this.apiLikes + '/' + uid);
+  async getLikesPerUserCF(uid : any) : Promise<Observable<any[]>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.apiLikes + '/' + uid, httpOpt);
   }
 
-  getLikesCountPerUserCF(uid : any) : Observable<Number> {
-    return this.http.get<Number>(this.apiLikes + 'count/' + uid);
+  async getLikesCountPerUserCF(uid : any) : Promise<Observable<Number>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<Number>(this.apiLikes + 'count/' + uid, httpOpt);
   }
 
   //PUT
@@ -339,8 +362,9 @@ export class UserService {
       * pid : Publication PID
       * pub : Publication Data
   */
-  putLikeToUserCF(uid : any, pid : any, pub : any) {
-    return this.http.put(this.apiLikes + '/' + uid + '&' + pid, pub);
+  async putLikeToUserCF(uid : any, pid : any, pub : any) {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.put(this.apiLikes + '/' + uid + '&' + pid, pub, httpOpt).subscribe();
   }
 
   //POST
@@ -349,8 +373,9 @@ export class UserService {
       * uid : Main User UID
       * pub : Publication Data
   */
-  postLikeToUserCF(uid : any, pub : any) {
-    return this.http.post(this.apiLikes + '/' + uid, pub);
+  async postLikeToUserCF(uid : any, pub : any) {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.post(this.apiLikes + '/' + uid, pub, httpOpt).subscribe();
   }
 
   //DELETE
@@ -359,8 +384,9 @@ export class UserService {
       * uid : Main User UID
       * pid : Publication PID
   */
-  deleteLikeFromUserCF(uid : any, pid : any) {
-    return this.http.delete(this.apiLikes + '/' + uid + '&' + pid);
+  async deleteLikeFromUserCF(uid : any, pid : any) {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.delete(this.apiLikes + '/' + uid + '&' + pid, httpOpt).subscribe();
   }
 
 }

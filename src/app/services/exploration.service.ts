@@ -1,14 +1,10 @@
-import { ComponentFactoryResolver, ComponentRef, Injectable, ReflectiveInjector, ViewContainerRef } from '@angular/core';
+import { ComponentFactoryResolver, Injectable } from '@angular/core';
 import { LocationService } from './location.service';
-//import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from "angularfire2/firestore";
 import { MapService } from './map.service';
 import { firestore } from 'firebase';
-import * as geofirestore from 'geofirestore';
-import { GeolocateControl, LngLat } from 'mapbox-gl';
 import { getJSON } from 'jquery';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { deflate } from 'zlib';
 import { Publication, PublicationI } from '@core/models/publication';
 import mapboxgl from 'mapbox-gl';
 import { GameService } from './game.service';
@@ -203,7 +199,7 @@ export class ExplorationService {
       this.showModal(pub, near);
     })
 
-    console.log("Publicacion: " + pub.title + "->",pub);
+    //console.log("Publicacion: " + pub.title + "->",pub);
 
     let marker = new mapboxgl.Marker(el).setLngLat([pub.coordinates.longitude, pub.coordinates.latitude]).addTo(this.map.map);
 

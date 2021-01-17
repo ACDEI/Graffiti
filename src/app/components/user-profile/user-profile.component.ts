@@ -14,7 +14,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class UserProfileComponent implements OnInit {
 
-  s : any;  //PARA LAS SUSCRIPCIONES DE LOS HUEVOS
+  s : any;
 
   user: User;
   usuarioSesion: any;
@@ -56,13 +56,13 @@ export class UserProfileComponent implements OnInit {
     });
 
     //this.pubList = [];
-    //this.followedList = [];
-    //this.followerList = [];
+    this.followedList = [];
+    this.followerList = [];
     this.likesList = [];
   }
 
   ngOnDestroy(){
-    this.s.unsubscribe(); //ME CAGO EN LA PUTÍSIMA OSTIA. TOMA UNSUBSCRIBE. TE QUEDAS SIN NETFLIX AHORA
+    this.s.unsubscribe();
   }
 
   saveChanges(){
@@ -75,21 +75,19 @@ export class UserProfileComponent implements OnInit {
         "nickName" : this.profile_username,
         "photoURL" : this.user.photoURL
       };
-      this.us.putUsersCF(this.uidUsuarioSesion, data).subscribe(
-        success => {
-          this.ts.success("Cambios realizados con Éxito.", "", {timeOut:1000});
-          window.sessionStorage.removeItem("usuario");
-          this.us.loginUser(data).then( user => {
-            window.sessionStorage.setItem("usuario",JSON.stringify(user));
-          });
-        },
-        err => {this.ts.error("Lo sentimos", "Ha habido un problema al guardar los cambios.", {timeOut:2000});}
-      );
+      this.us.putUsersCF(this.uidUsuarioSesion, data).then(success => {
+        this.ts.success("Cambios realizados con Éxito.", "", {timeOut:1000});
+        window.sessionStorage.removeItem("usuario");
+        this.us.loginUser(data).then( user => {
+          window.sessionStorage.setItem("usuario",JSON.stringify(user));
+        });
+      }).catch(err => {
+        this.ts.error("Lo sentimos", "Ha habido un problema al " 
+          + " guardar los cambios.", {timeOut:2000});
+      });
       this.profile_fullname = "";
       this.profile_username = "";
-    } else {
-      this.ts.warning("Atención", "No se han detectado cambios", {timeOut:2000});
-    }
+    } else this.ts.warning("Atención", "No se han detectado cambios", {timeOut:2000});
   }
 
   scrollHandler(e) {
@@ -99,10 +97,12 @@ export class UserProfileComponent implements OnInit {
   }
 
   deleteAccount(){
-    this.us.deleteUsersCF(this.uidUsuarioSesion).subscribe(
-      data => {this.r.navigate([''])},
-      err => {this.ts.error("Lo sentimos", "Ha habido un problema al eliminar su cuenta. Inténtelo más tarde.", {timeOut: 1500});}
-    );
+    this.us.deleteUsersCF(this.uidUsuarioSesion).then( data => {
+      this.r.navigate([''])
+    }).catch(err => {
+      this.ts.error("Lo sentimos", "Ha habido un problema " 
+        + " al eliminar su cuenta. Inténtelo más tarde.", {timeOut: 1500});
+    });
   }
 
   //Publicaciones
@@ -113,10 +113,11 @@ export class UserProfileComponent implements OnInit {
   }
 
   deletePublicacion(pid : string){
-    this.ps.deletePublicationCF(pid).subscribe(
-      data => { this.ts.success("Publicación eliminada correctamente", "", {timeOut: 1000}); },
-      err => { this.ts.error("Lo sentimos", "Ha Habido un problema al eliminar publicación.", {timeOut: 1000}); }
-    );
+    this.ps.deletePublicationCF(pid).then(data => { 
+      this.ts.success("Publicación eliminada correctamente", "", {timeOut: 1000});
+    }).catch(err => { 
+      this.ts.error("Lo sentimos", "Ha Habido un problema al eliminar publicación.", {timeOut: 1000});
+    });
   }
 
   //Likes
@@ -127,19 +128,16 @@ export class UserProfileComponent implements OnInit {
   }
 
   deleteLike(pid : string){
-    this.us.deleteLikeFromUserCF(this.user.uid, pid).subscribe(
-      data => { this.ts.success("Favorito eliminado correctamente", "", {timeOut: 1000}); },
-      err => { this.ts.error("Ups...", "Ha Habido un problema al eliminar Like." 
-        + " Pruebe de nuevo", {timeOut: 1000}); }
-    );
+    this.us.deleteLikeFromUserCF(this.user.uid, pid).then( data => { 
+      this.ts.success("Favorito eliminado correctamente", "", {timeOut: 1000});
+    }).catch( err => { 
+      this.ts.error("Ups...", "Ha Habido un problema al eliminar Like." 
+        + " Pruebe de nuevo", {timeOut: 1000});
+    });
   }
 
   //Followers
   obtenerFollowers(){
-    /*
-    this.pages.reset()
-    this.pages.init('users/' + this.user.uid + '/followers', 'nick', { limit: 5, reverse: false, prepend: false });
-    */
     this.us.getFollowersPerUser(this.user.uid).subscribe( data => {
       this.followerList = data;
     });
@@ -147,8 +145,6 @@ export class UserProfileComponent implements OnInit {
 
   //Followed
   obtenerFollowed(){
-    //this.pages.reset()
-    //this.pages.init('users/' + this.user.uid + '/followed', 'nick', { limit: 5, reverse: false, prepend: false });
     this.us.getFollowedPerUser(this.user.uid).subscribe( data => {
       this.followedList = data;
     });
@@ -185,26 +181,26 @@ export class UserProfileComponent implements OnInit {
   }
 
   followUser(uidF: string, imageF: string, nickF: string){
-    console.log(nickF)
     var data = {
         "uid": uidF,
         "nick": nickF,
         "image": imageF
     };
-    this.us.postFollowedPerUserCF(this.uidUsuarioSesion, data).subscribe(
-      data => { this.ts.info("Ahora sigues a " + nickF, "", {timeOut: 1000}); },
-      err => { this.ts.error("Ups...", "Ha Habido un problema al seguir." 
-        + " Pruebe de nuevo más tarde", {timeOut: 1000}); }
-    );
+    this.us.postFollowedPerUserCF(this.uidUsuarioSesion, data).then( data => { 
+      this.ts.info("Ahora sigues a " + nickF, "", {timeOut: 1000});
+    }).catch( err => { 
+      this.ts.error("Ups...", "Ha Habido un problema al seguir." 
+        + " Pruebe de nuevo más tarde", {timeOut: 1000});
+    });
   }
 
   unfollowUser(uidF: string, nickF : string){
-    console.log(uidF, nickF)
-    this.us.deleteFollowedPerUserCF(this.uidUsuarioSesion, uidF).subscribe(
-      data => { this.ts.success("Ha dejado de seguir a " + nickF, "", {timeOut: 1000}); },
-      err => { this.ts.error("Ups...", "Ha Habido un problema al dejar de seguir." 
-        + " Pruebe de nuevo más tarde", {timeOut: 1000}); }
-    );
+    this.us.deleteFollowedPerUserCF(this.uidUsuarioSesion, uidF).then( data => { 
+      this.ts.success("Ha dejado de seguir a " + nickF, "", {timeOut: 1000});
+    }).catch( err => { 
+      this.ts.error("Ups...", "Ha Habido un problema al dejar de seguir." 
+        + " Pruebe de nuevo más tarde", {timeOut: 1000});
+    });
   }
 
   //VISITADOS

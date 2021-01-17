@@ -3,6 +3,7 @@ import { Publication } from '@core/models/publication';
 import { User } from '@core/models/user.model';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { UserService } from '@core/services/classes_services/user.service';
+import { TwitterService } from '@core/services/twitter.service';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
 
@@ -20,7 +21,7 @@ export class CardPublicationProfileComponent implements OnInit {
   usuarioSesion: any;
 
   constructor(private us: UserService, private pb: PublicationsService,
-      private ts : ToastrService) { }
+      private ts : ToastrService, private tws :  TwitterService) { }
 
   ngOnInit(): void {
     this.us.getUser(this.pubR.upl_uid).then(user => { this.user = user });
@@ -53,19 +54,25 @@ export class CardPublicationProfileComponent implements OnInit {
       "nickName": this.usuarioSesion.nickName,
       "photoURL": this.usuarioSesion.photoURL
     };
-    this.pb.postPublicationLikeCF(pid, data).subscribe(
-      data => { this.ts.success("Favorito añadido correctamente", "", {timeOut: 1000}); },
-      err => { this.ts.error("Ups...", "Ha Habido un problema al dar Like." 
-        + " Pruebe de nuevo", {timeOut: 1000}); }
+    this.pb.postPublicationLikeCF(pid, data).then(data => { 
+        this.ts.success("Favorito añadido correctamente", "", {timeOut: 1000}); 
+      }).catch(err => { 
+        this.ts.error("Ups...", "Ha Habido un problema al dar Like." + " Pruebe de nuevo", {timeOut: 1000});
+      }
     );
   }
 
   unlikePhoto(pid: string){
-    this.pb.deletePublicationLikeCF(this.usuarioSesion.uid, pid).subscribe(
-      data => { this.ts.success("Favorito añadido correctamente", "", {timeOut: 1000}); },
-      err => { this.ts.error("Ups...", "Ha Habido un problema al dar Like." 
+    this.pb.deletePublicationLikeCF(this.usuarioSesion.uid, pid).then(data => { 
+      this.ts.success("Favorito añadido correctamente", "", {timeOut: 1000});
+    }).catch(err => {
+      this.ts.error("Ups...", "Ha Habido un problema al dar Like." 
         + " Pruebe de nuevo", {timeOut: 1000}); }
     );
+  }
+
+  sendTweet(title: string ,url: string, lat: number, long: number){
+    this.tws.sendTweet("Me ha gustado la publicación "+title+" #MalagArt",url,lat,long);
   }
 
 }

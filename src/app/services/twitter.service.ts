@@ -14,14 +14,14 @@ export class TwitterService {
 
   async sendTweet(tweet : string,url : string,lat : number,long :number){
     let httpOpt = await this.auth.getHeader();
-    var data =JSON.parse(window.sessionStorage.getItem('usuario'));
+    var data = JSON.parse(window.sessionStorage.getItem('usuario'));
     var uid = data.uid;
-    console.log(tweet);
-    console.log(this.api+uid);
+    //console.log(tweet);
+    //console.log(this.api+uid);
     let status = {"status" : tweet+ " "+url,
      "lat" : lat ,"long" : long, "display_coordinates" : true,"geo_enabled" : true}
-    await this.http.post(this.api+uid,status,httpOpt).subscribe(result => {
-      console.log(result)
+    await this.http.post(this.api + uid, status, httpOpt).subscribe(result => {
+      //console.log(result)
   });
     
 

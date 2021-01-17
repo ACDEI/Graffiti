@@ -29,7 +29,7 @@ export class ButtonLoginComponent implements OnInit {
     try{
       this.authService.loginGoogle();
     }catch(error){
-      console.log("Button login" + error)
+      //console.log("Button login" + error)
     }
   }
 }

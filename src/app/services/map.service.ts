@@ -84,7 +84,7 @@ export class MapService {
 
     this.map.on("click", function (e) {
 
-      console.log(e.lngLat);
+      //console.log(e.lngLat);
 
       self.selectedPosition = e.lngLat;
 

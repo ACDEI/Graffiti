@@ -109,11 +109,12 @@ export class PhotoModalComponent implements OnInit {
       "state": this.state,
       "themes": this.themes
     };
-    this.ps.putPublicationCF(this.pubR.pid, pub).subscribe(
-      data => { this.ts.success("Publicación Actualizada Correctamente", "", {timeOut: 1000}); },
-      err => { this.ts.error("Ups...", "No se ha podido actualizar."
-        + " Pruebe de nuevo más tarde", {timeOut: 1000}); }
-    );
+    this.ps.putPublicationCF(this.pubR.pid, pub).then( data => { 
+      this.ts.success("Publicación Actualizada Correctamente", "", {timeOut: 1000});
+    }).catch(err => { 
+      this.ts.error("Ups...", "No se ha podido actualizar."
+        + " Pruebe de nuevo más tarde", {timeOut: 1000});
+    });
   }
 
   //Cambiar el Estado

@@ -24,7 +24,7 @@ export class LoginFormComponent implements OnInit {
 
   constructor(public authService: AuthService, private router: Router) { }
 
-  @Output() wantRegister: EventEmitter<boolean> = new EventEmitter<boolean>();
+  //@Output() wantRegister: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   ngOnInit(): void {}
 
@@ -40,12 +40,14 @@ export class LoginFormComponent implements OnInit {
     this.password = "";
   }
 
+  /*
   goingBack(){
     this.wantRegister.emit(true);
  
     //let self = this;
     //self.router.navigate(['']);
   }
+  */
 
   clearErrorMessage(){
     this.errorMessage = "";

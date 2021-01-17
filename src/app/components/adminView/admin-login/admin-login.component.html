@@ -2,7 +2,10 @@
     
     <div class="container">
         <p style="text-align: center;"><b>Acceso Privado para Administradores</b></p>
-        <app-login-form *ngIf="!wantRegister" (wantRegister)="viewRegister($event)"></app-login-form>
-        <app-register-form *ngIf="wantRegister" (wantRegister)="viewRegister($event)"></app-register-form>
+        <app-login-form></app-login-form>
+        <!--
+            <app-login-form *ngIf="!wantRegister" (wantRegister)="viewRegister($event)"></app-login-form>
+            <app-register-form *ngIf="wantRegister" (wantRegister)="viewRegister($event)"></app-register-form>
+        -->
     </div>
 </section>

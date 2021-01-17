@@ -35,7 +35,7 @@ export class PhotoTableComponent implements OnInit {
       .getAllPublications()
       .subscribe((data) => {
         this.publicationList = data;
-        console.log(this.publicationList);
+        //console.log(this.publicationList);
       });
   }
 

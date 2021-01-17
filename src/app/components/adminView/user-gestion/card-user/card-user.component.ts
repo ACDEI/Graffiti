@@ -22,11 +22,12 @@ export class CardUserComponent implements OnInit {
   }
 
   deleteUser(uid: string){
-    this.us.deleteUsersCF(uid).subscribe(
-      data => { this.toastr.success("Usuario Eliminado Correctamente", "", {timeOut: 1000}); },
-      err => { this.toastr.error("Ups...", "Parece que ha habido un problema"
-        + " al eliminar el usuario. Pruebe de nuevo.", {timeOut: 1000}); }
-    );
+    this.us.deleteUsersCF(uid).then( data => { 
+      this.toastr.success("Usuario Eliminado Correctamente", "", {timeOut: 1000});
+    }).catch(err => { 
+        this.toastr.error("Ups...", "Parece que ha habido un problema"
+        + " al eliminar el usuario. Pruebe de nuevo.", {timeOut: 1000});
+    });
   }
 
   cambiarModal(){

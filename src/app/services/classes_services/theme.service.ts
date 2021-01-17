@@ -4,6 +4,7 @@ import { Theme } from '../../models/theme.model';
 import { Observable } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
+import { AuthService } from '../auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class ThemeService {
 
   private path = "themes";
 
-  constructor(private http: HttpClient, private fs: AngularFirestore, private publicationService: PublicationsService) { 
+  constructor(private http: HttpClient, private fs: AngularFirestore, 
+    private publicationService: PublicationsService, private auth: AuthService) { 
     this.themeCollection = fs.collection(this.path);
   }
 
@@ -26,8 +28,8 @@ export class ThemeService {
     return this.fs.doc<Theme>(`publications/${tid}`).valueChanges();
   }
 
-  createTheme(theme: Theme): any{
-    return this.fs.collection(this.path).doc(theme.tid).set(theme);
+  createTheme(theme: any): any{
+    return this.fs.collection(this.path).doc(theme.name).set(theme);
   }
 
   /*
@@ -43,12 +45,14 @@ export class ThemeService {
 
   //CLOUD FUNCTIONS THEMES
   //GET
-  getAllThemesCF() : Observable<any[]>{
-    return this.http.get<any[]>(this.themesUrl);
+  async getAllThemesCF() : Promise<Observable<any[]>>{
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.themesUrl, httpOpt);
   }
 
-  getThemeByTidCF(tid : any): Observable<any[]> {
-    return this.http.get<any[]>(this.themesUrl + tid);
+  async getThemeByTidCF(tid : any): Promise<Observable<any[]>> {
+    let httpOpt = await this.auth.getHeader();
+    return this.http.get<any[]>(this.themesUrl + tid, httpOpt);
   }
 
   //PUT
@@ -57,8 +61,9 @@ export class ThemeService {
       * tid : Theme TID
       * theme : Theme Data
   */
-  updateThemeByTidCF(tid : any, theme : any){
-    return this.http.put(this.themesUrl + tid, theme);
+  async updateThemeByTidCF(tid : any, theme : any){
+    let httpOpt = await this.auth.getHeader();
+    return this.http.put(this.themesUrl + tid, theme, httpOpt).subscribe();
   }
 
   //POST
@@ -66,8 +71,9 @@ export class ThemeService {
     Post a Theme:
       * theme : Theme Data
   */
-  postThemeCF(theme : any){
-    return this.http.post(this.themesUrl, theme);
+  async postThemeCF(theme : any){
+    let httpOpt = await this.auth.getHeader();
+    return this.http.post(this.themesUrl, theme, httpOpt).subscribe();
   }
 
   //DELETE
@@ -75,8 +81,9 @@ export class ThemeService {
     Delete a Theme:
       * tid : Theme TID
   */
-  deleteThemeByTidFC(tid : any){
-    return this.http.delete(this.themesUrl + tid);
+  async deleteThemeByTidFC(tid : any){
+    let httpOpt = await this.auth.getHeader();
+    return this.http.delete(this.themesUrl + tid, httpOpt).subscribe();
   }
 
 }
