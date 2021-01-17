@@ -16,13 +16,13 @@ import { AuxiliarUserService } from './auxiliar-user.service';
 export class AuthService {
 
   isLogin = false;
-  roleAs: string;
+  roleAs: string = '';
   coleccionUsuarios: AngularFirestoreCollection<User>;
   usuariosObservables: Observable<any[]>;
   userSelected: User = new User();
 
-  constructor(private router: Router, public firestore: AngularFirestore
-              , public userService: AuxiliarUserService, private afAuth: AngularFireAuth) { }
+  constructor(private router: Router, public firestore: AngularFirestore, 
+    public userService: AuxiliarUserService, private afAuth: AngularFireAuth) { }
 
   //Facebook LogIn
   loginFacebook(){
@@ -98,7 +98,6 @@ export class AuthService {
             this.roleAs = "USER";
             localStorage.setItem('ROLE', this.roleAs);
             this.router.navigate(['home']);
-            this.router.navigate(['home']);
         });
 
       });
@@ -157,15 +156,15 @@ signOut(){
   let self = this;
   firebase.auth().signOut().then(function() { // Sign-out successful. 
     window.sessionStorage.clear(); 
-    this.userSelected = null;
-    this.isLogin = false;
-    this.roleAs = '';
-    localStorage.clear();
-    //localStorage.setItem('STATE', 'false');
-    //localStorage.setItem('ROLE', '');
+    self.userSelected = null;
+    self.isLogin = false;
+    self.roleAs = '';
+    localStorage.setItem('STATE', 'false');
+    localStorage.setItem('ROLE', '');
+    console.log('HAGO LOGOUT', self.roleAs);
     self.router.navigate(['']);
   }).catch(function(error) { // An error happened.
-    
+    console.log('ERROR', error);
   });
   
 }

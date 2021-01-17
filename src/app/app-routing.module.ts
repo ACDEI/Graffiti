@@ -21,7 +21,11 @@ import { AuthGuard } from '../app/guard/auth.guard';
 
 
 const routes: Routes = [
-  {path:"" , component: InicioComponent},
+  {path:"" , component: InicioComponent, canActivate: [AuthGuard],
+      data: {
+        role: ''
+      }
+  },
   {path: "user-search", component: UsersSearchComponent ,  canActivate: [AuthGuard],
       data: {
         role: 'USER'
@@ -47,7 +51,11 @@ const routes: Routes = [
       role: 'USER'
     }
   },
-  {path: "admin", component: AdminLoginComponent},
+  {path: "admin", component: AdminLoginComponent, canActivate: [AuthGuard],
+    data: {
+      role: ''
+    }
+  },
   {path: "admin/home", component: AdminInicioComponent , canActivate: [AuthGuard],
     data: {
       role: 'ADMIN'
