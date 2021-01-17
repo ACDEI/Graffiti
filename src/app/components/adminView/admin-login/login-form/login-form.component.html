@@ -1,4 +1,4 @@
-<form #loginForm="ngForm"  (ngSubmit)="signIn()">
+<form #loginForm="ngForm">
     <div class="form-group">
         <input type="email"
         class="form-control"
@@ -17,7 +17,7 @@
         required>
     </div>
     <div class="form-group">
-        <button id="entrar" class="btn" type="submit">Entrar</button>
+        <button id="entrar" class="btn" (click)='signIn()'>Iniciar Sesión</button>
         <!--<button id="back" class="btn" (click)="goingBack()" >Register</button>-->
         <button id="reset" class="btn" type="reset" (click)="resetForm()">Reset</button>
     </div>

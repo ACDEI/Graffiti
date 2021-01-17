@@ -13,7 +13,7 @@ export class AdminLoginComponent implements OnInit {
   //wantRegister: boolean = false;
 
   ngOnInit(): void {
-    this.auth.signOut();
+    this.auth.signOut(true);
   }
 
   /*

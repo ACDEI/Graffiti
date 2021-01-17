@@ -160,7 +160,7 @@ export class AuthService {
     }
 }
 
-signOut(){
+signOut(b? : boolean){
 
   let self = this;
   firebase.auth().signOut().then(function() { // Sign-out successful. 
@@ -170,7 +170,8 @@ signOut(){
     self.roleAs = '';
     localStorage.setItem('STATE', 'false');
     localStorage.setItem('ROLE', '');
-    self.router.navigate(['']);
+    if(b != null && b) self.router.navigate(['admin']);
+    else self.router.navigate(['']);
   }).catch(function(error) { // An error happened.
     console.log('ERROR', error);
   });

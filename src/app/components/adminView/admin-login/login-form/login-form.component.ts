@@ -26,28 +26,13 @@ export class LoginFormComponent implements OnInit {
 
   //@Output() wantRegister: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  ngOnInit(): void {}
-
-  /*
-  onSubmit(loginForm: NgForm){
-    this.loginService.insertUser(loginForm.value);
-    this.resetForm(loginForm);
+  ngOnInit(): void {
   }
-  */
   
   resetForm(){
     this.email = "";
     this.password = "";
   }
-
-  /*
-  goingBack(){
-    this.wantRegister.emit(true);
- 
-    //let self = this;
-    //self.router.navigate(['']);
-  }
-  */
 
   clearErrorMessage(){
     this.errorMessage = "";
@@ -57,22 +42,21 @@ export class LoginFormComponent implements OnInit {
   signIn(){
     
     this.clearErrorMessage();
-    console.log('hola');
     if(this.validateForm(this.email, this.password)){
-      this.authService.signIn(this.email, this.password);//.then().catch( _error => {
-      //  this.error = _error;
-      //  this.resetForm();
-      //})
+      this.authService.signIn(this.email, this.password).then().catch( _error => {
+        this.error = _error;
+        this.resetForm();
+      })
     } else this.resetForm();
   }
 
   validateForm(email, pass){
     if(email.length === 0 || pass.length === 0) {
-      this.errorMessage="Complete both fields.";
+      this.errorMessage="Rellena ambos campos.";
       return false;
     }
     if(pass.length < 6) {
-      this.errorMessage = "Password must have 6 characters at least.";
+      this.errorMessage = "La contraseña debe tener al menos 6 carácteres";
       return false;
     }
     this.errorMessage='';

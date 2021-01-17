@@ -67,7 +67,8 @@ export class PublicationsService {
   */
  
   getUserPublications(uid: string): Observable<any> {
-    return this.fs.collection(this.path, ref => ref.where('uid', '==', uid.toString()))
+    return this.fs.collection(this.path, ref => ref.where('uid', '==', uid.toString())
+    .orderBy('date', 'desc'))
     .valueChanges()
     .pipe( map(c => c) );
   }
