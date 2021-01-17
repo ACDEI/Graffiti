@@ -15,6 +15,8 @@ import { AuxiliarUserService } from './auxiliar-user.service';
 })
 export class AuthService {
 
+  isLogin = false;
+  roleAs: string;
   coleccionUsuarios: AngularFirestoreCollection<User>;
   usuariosObservables: Observable<any[]>;
   userSelected: User = new User();
@@ -30,6 +32,9 @@ export class AuthService {
         .then(result => {
           this.userService.loginUser(result.user).then( user => {
             window.sessionStorage.setItem("usuario",JSON.stringify(user));
+            localStorage.setItem('STATE', 'true');
+            this.roleAs = "USER";
+            localStorage.setItem('ROLE', this.roleAs);
             this.router.navigate(['home']);
           });
         });
@@ -55,6 +60,10 @@ export class AuthService {
             // var secret = result.credential.secret;
           this.userService.loginUser(result.user).then( user => {
             window.sessionStorage.setItem("usuario", JSON.stringify(user));
+            localStorage.setItem('STATE', 'true');
+            this.roleAs = "USER";
+            localStorage.setItem('ROLE', this.roleAs);
+            this.router.navigate(['home']);
             this.router.navigate(['home']);
           });
 
@@ -84,8 +93,12 @@ export class AuthService {
       return this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then( result => {
         
         this.userService.loginUser(result.user).then( user => {
-          window.sessionStorage.setItem("usuario", JSON.stringify(user));
-          this.router.navigate(['home']);
+            window.sessionStorage.setItem("usuario", JSON.stringify(user));
+            localStorage.setItem('STATE', 'true');
+            this.roleAs = "USER";
+            localStorage.setItem('ROLE', this.roleAs);
+            this.router.navigate(['home']);
+            this.router.navigate(['home']);
         });
 
       });
@@ -128,6 +141,9 @@ export class AuthService {
          self.userSelected = {"uid":firebaseUser.user.uid, "email":firebaseUser.user.email, "fullName":firebaseUser.user.displayName,
                               "nickName": "", "photoURL": "", "isAdmin": true, "nVisitados" : 0 };
          //console.log(self.userSelected);
+         localStorage.setItem('STATE', 'true');
+         this.roleAs = "ADMIN";
+         localStorage.setItem('ROLE', this.roleAs);
          self.router.navigate(["admin/home"]);
       }).catch(function(error) { // Error Handling
         var error = error.code;
@@ -142,35 +158,16 @@ signOut(){
   firebase.auth().signOut().then(function() { // Sign-out successful. 
     window.sessionStorage.clear(); 
     this.userSelected = null;
+    this.isLogin = false;
+    this.roleAs = '';
+    localStorage.clear();
+    //localStorage.setItem('STATE', 'false');
+    //localStorage.setItem('ROLE', '');
     self.router.navigate(['']);
   }).catch(function(error) { // An error happened.
     
   });
   
-}
-
-checkTokenFacebook(){
-
-  var usuario = firebase.auth().currentUser;
-  
-  var refresh = usuario.refreshToken; 
-
-  /*
-  console.log(refresh);
-  console.log("---------");
-  console.log(usuario.getIdToken(true));
-  console.log("---------");
-  */
-
-  var token = usuario.getIdTokenResult(true);
-  token.then(el => {
-    /*
-    console.log("cuando caduca el token" + el.expirationTime);
-    console.log(el.token);
-    console.log(el.signInProvider);
-    */
-  })
-
 }
 
   async getHeader(): Promise<{headers:HttpHeaders}> {
@@ -189,4 +186,17 @@ checkTokenFacebook(){
     })
   }
 
+  isLoggedIn() {
+    const loggedIn = localStorage.getItem('STATE');
+    if (loggedIn == 'true')
+      this.isLogin = true;
+    else
+      this.isLogin = false;
+    return this.isLogin;
+  }
+
+  getRole() {
+    this.roleAs = localStorage.getItem('ROLE');
+    return this.roleAs;
+  }
 }

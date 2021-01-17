@@ -12,29 +12,62 @@ import { TableUserComponent } from './components/adminView/user-gestion/table-us
 import { UserGestionComponent } from './components/adminView/user-gestion/user-gestion.component';
 import { PhotoTableComponent } from './components/adminView/photo-gestion/photo-table/photo-table.component';
 import { PhotoGestionComponent } from './components/adminView/photo-gestion/photo-gestion.component';
-import { ThemeGestionComponent } from './components/adminView/theme-gestion/theme-gestion.component';
-import {AngularFireAuthGuard, hasCustomClaim, redirectUnauthorizedTo, redirectLoggedInTo} from '@angular/fire/auth-guard';
-import {AdminGuard} from './guard/admin.guard';
 import { PublicationViewComponent } from './components/publication-view/publication-view.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { UsersSearchComponent } from './components/users-search/users-search.component';
+import {ThemeGestionComponent} from './components/adminView/theme-gestion/theme-gestion.component';
+import { AuthGuard } from '../app/guard/auth.guard';
 
-const adminOnly = () => hasCustomClaim('admin');
-const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo([""]);
-const redirectUnauthorizedAdmin = () => redirectUnauthorizedTo([""]);
+
 
 const routes: Routes = [
   {path:"" , component: InicioComponent},
-  {path: "user-search", component: UsersSearchComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }},
-  {path: "explore", component: ExploreComponent},
-  {path: "home", component: HomeComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }},
-  {path: "publication-view/:pid", component: PublicationViewComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }},
-  {path: "user-profile/:uid", component: UserProfileComponent, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }},
+  {path: "user-search", component: UsersSearchComponent ,  canActivate: [AuthGuard],
+      data: {
+        role: 'USER'
+      }
+  },//, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }
+  {path: "explore", component: ExploreComponent ,  canActivate: [AuthGuard],
+    data: {
+      role: 'USER'
+    }
+  },
+  {path: "home", component: HomeComponent ,  canActivate: [AuthGuard],
+    data: {
+      role: 'USER'
+    }
+   },///, canActivate: [AngularFireAuthGuard], data: { authGuardPipe: redirectUnauthorizedToLogin }
+  {path: "publication-view/:pid", component: PublicationViewComponent ,  canActivate: [AuthGuard],
+    data: {
+      role: 'USER'
+    } 
+  },
+  {path: "user-profile/:uid", component: UserProfileComponent,canActivate: [AuthGuard],
+    data: {
+      role: 'USER'
+    }
+  },
   {path: "admin", component: AdminLoginComponent},
-  {path: "admin/home", component: AdminInicioComponent},//, canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }},
-  {path: "admin/user_gest", component: UserGestionComponent},//, canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }},
-  {path: "admin/publ_gest", component: PhotoGestionComponent},// , canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }},
-  {path: "admin/theme_gest", component: ThemeGestionComponent},// , canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }}
+  {path: "admin/home", component: AdminInicioComponent , canActivate: [AuthGuard],
+    data: {
+      role: 'ADMIN'
+    }
+  },//, canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }},
+  {path: "admin/user_gest", component: UserGestionComponent ,  canActivate: [AuthGuard],
+    data: {
+      role: 'ADMIN'
+    }
+  },//, canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }},
+  {path: "admin/publ_gest", component: PhotoGestionComponent ,  canActivate: [AuthGuard],
+    data: {
+      role: 'ADMIN'
+    }
+  },// , canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }},
+  {path: "admin/theme_gest", component: ThemeGestionComponent ,  canActivate: [AuthGuard],
+    data: {
+      role: 'ADMIN'
+    }
+  },// , canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }}
 ];
 
 @NgModule({
