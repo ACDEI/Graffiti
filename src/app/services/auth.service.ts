@@ -16,7 +16,7 @@ import { AuxiliarUserService } from './auxiliar-user.service';
 export class AuthService {
 
   isLogin = false;
-  roleAs: string = '';
+  roleAs: string;
   coleccionUsuarios: AngularFirestoreCollection<User>;
   usuariosObservables: Observable<any[]>;
   userSelected: User = new User();
@@ -31,7 +31,7 @@ export class AuthService {
       return this.afAuth.signInWithPopup(new firebase.auth.FacebookAuthProvider())
         .then(result => {
           this.userService.loginUser(result.user).then( user => {
-            window.sessionStorage.setItem("usuario",JSON.stringify(user));
+            window.sessionStorage.setItem("usuario", JSON.stringify(user));
             localStorage.setItem('STATE', 'true');
             this.roleAs = "USER";
             localStorage.setItem('ROLE', this.roleAs);
@@ -111,6 +111,7 @@ export class AuthService {
     
   }
   
+  /*
   //Admin (Email, Pass) 
     // Register  
   signUp(email: string, password: string){
@@ -130,25 +131,33 @@ export class AuthService {
         throw error;
       })
   }
+  */
     // LogIn - LogOut
   signIn(email: string, pass: string){
 
-    let self = this;
-    return firebase.auth().signInWithEmailAndPassword(email, pass)
-      .then(function(firebaseUser) {  // Success 
-        
-         self.userSelected = {"uid":firebaseUser.user.uid, "email":firebaseUser.user.email, "fullName":firebaseUser.user.displayName,
-                              "nickName": "", "photoURL": "", "isAdmin": true, "nVisitados" : 0 };
-         //console.log(self.userSelected);
-         localStorage.setItem('STATE', 'true');
-         this.roleAs = "ADMIN";
-         localStorage.setItem('ROLE', this.roleAs);
-         self.router.navigate(["admin/home"]);
-      }).catch(function(error) { // Error Handling
-        var error = error.code;
-        var errorMessage = error.message;
-        //console.log(error);
-  });
+    try{
+      console.log('email', email);
+      return this.afAuth.signInWithEmailAndPassword(email, pass).then( result => {
+        console.log('result', result);
+        this.userService.loginAdmin(result.user).then( user => {
+          if(user == null) this.router.navigate(["admin"]);
+          else {
+            window.sessionStorage.setItem("usuario", JSON.stringify(user));
+            localStorage.setItem('STATE', 'true');
+            this.roleAs = "ADMIN";
+            localStorage.setItem('ROLE', this.roleAs);
+            this.router.navigate(["admin/home"]);
+          }
+        });
+        console.log('result:', result);
+      });
+    }catch(error){
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      var emailCopy = error.email;  // The email of the user's account used.
+      var credential = error.credential;  // The firebase.auth.AuthCredential type that was used.
+      console.log("Service " + errorMessage);
+    }
 }
 
 signOut(){
@@ -169,27 +178,26 @@ signOut(){
 }
 
   async getHeader(): Promise<{headers:HttpHeaders}> {
+    
     return new Promise( async (res,rej) => {
       let user = await firebase.auth().currentUser;
+      
       if(user){
         let idtoken = await user.getIdToken(false);
-        if(idtoken) {
-          res({headers: new HttpHeaders({'Authorization': 'Bearer ' + idtoken })});
-        }else{
-          res(null);
-        }
-      }else{
-        res(null);
-      }
+        
+        if(idtoken) res({headers: new HttpHeaders({'Authorization': 'Bearer ' + idtoken })});
+        else res(null);
+      
+      } else res(null);
+
     })
   }
 
   isLoggedIn() {
     const loggedIn = localStorage.getItem('STATE');
-    if (loggedIn == 'true')
-      this.isLogin = true;
-    else
-      this.isLogin = false;
+    if (loggedIn == 'true') this.isLogin = true;
+    else this.isLogin = false;
+    
     return this.isLogin;
   }
 

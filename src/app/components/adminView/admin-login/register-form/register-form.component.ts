@@ -40,6 +40,7 @@ export class RegisterFormComponent implements OnInit {
     this.error = {name: "", message: ""};
   }
 
+  /*
   async signUp(){
     this.clearErrorMessage();
     if(this.validateForm(this.email, this.password)){
@@ -53,6 +54,7 @@ export class RegisterFormComponent implements OnInit {
       this.resetForm();
     }
   }
+  */
 
   validateForm(email, pass){
     if(email.length === 0 || pass.length === 0) {

@@ -49,6 +49,34 @@ export class AuxiliarUserService {
     });
   }
 
+  async loginAdmin(user: firebase.User): Promise<UserI> {
+    var res: UserI;
+    await this.fs.doc('users/' + user.uid).get().toPromise().then( u => {
+      if(u.exists){
+        var isAdmin = u.get('isAdmin');
+        console.log(isAdmin);
+        if(isAdmin){
+          res = {
+            uid: u.get("uid"),
+            email: u.get("email"),
+            fullName: u.get("fullName"),
+            nickName: u.get("nickName"),
+            photoURL: u.get("photoURL"),
+            isAdmin: u.get("isAdmin"),
+            nVisitados: u.get("nVisitados"),
+            flickrTokens: u.get("flickrTokens")
+          }
+        } else res = null;
+      } else {
+        res = null;
+      }
+    })
+ 
+    return new Promise<any>( (resolve,reject) => {
+      resolve(res);
+    });
+  }
+
   async addTokens(accessToken : string,tokenSecret: string, uid: string){
     await this.fs.doc('users/'+uid).update({accessToken: accessToken, tokenSecret: tokenSecret});
   }

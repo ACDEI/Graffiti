@@ -54,17 +54,16 @@ export class LoginFormComponent implements OnInit {
     this.error = {name: "", message: ""};
   }
 
-  async signIn(){
+  signIn(){
     
     this.clearErrorMessage();
+    console.log('hola');
     if(this.validateForm(this.email, this.password)){
-      this.authService.signIn(this.email, this.password).then().catch( _error => {
-        this.error = _error;
-        this.resetForm();
-      })
-    } else {
-      this.resetForm();
-    }
+      this.authService.signIn(this.email, this.password);//.then().catch( _error => {
+      //  this.error = _error;
+      //  this.resetForm();
+      //})
+    } else this.resetForm();
   }
 
   validateForm(email, pass){
