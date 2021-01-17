@@ -11,6 +11,8 @@ export class WeatherViewComponent implements OnInit {
   //Accuweather
   weatherData: any;
   weatherIconURL: string;
+  isWeather: boolean = false;
+  error : string = '';
 
   constructor(private weatherService: WeatherService) { }
 
@@ -21,9 +23,14 @@ export class WeatherViewComponent implements OnInit {
   async getWeatherData() {
     await this.weatherService.getWeather().then(values => {
       this.weatherData = values;
+      var icon = this.weatherData.weather[0].icon;
+      this.weatherIconURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
+      this.isWeather = true;
+    }).catch(err => {
+      this.isWeather = false;
+      this.error = 'No hay datos en la zona'
     });
-    var icon = this.weatherData.weather[0].icon;
-    this.weatherIconURL = "http://openweathermap.org/img/wn/" + icon + "@2x.png";
+    
   }
 
 }

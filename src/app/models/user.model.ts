@@ -12,6 +12,8 @@ export interface UserI {
     //followed: string[];
     nVisitados: number;
     flickrTokens: {oauth: string, secret: string};
+    accessToken: string;
+    tokenSecret: string;
 }
 
 export class User {

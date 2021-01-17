@@ -49,24 +49,14 @@
     display: none;
 }
 
-.btn {
+#twitter {
     margin-top: 4%;
     margin-bottom: 4%;
-    font-size: 150%;
-    font-weight: bold;
     text-align: left;
-    padding-top: 2%;
-    width: 92%;
-    font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-      "Lucida Sans", Arial, sans-serif;
-      background-color: rgb(29, 161, 242);
-      color: white;
-    margin-left: 4%;
-      
-  }
+    background-color: rgb(29, 161, 242);
+    color: white;
+}
   
-
-
-  .fab {
+.twitterIcon {
     margin-right: 5%;
-  }
+}

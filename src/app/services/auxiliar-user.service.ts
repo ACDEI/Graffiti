@@ -21,7 +21,9 @@ export class AuxiliarUserService {
           photoURL: u.get("photoURL"),
           isAdmin: u.get("isAdmin"),
           nVisitados: u.get("nVisitados"),
-          flickrTokens: u.get("flickrTokens")
+          flickrTokens: u.get("flickrTokens"),
+          accessToken: u.get('accessToken'),
+          tokenSecret: u.get('tokenSecret')
         }
       } else {
         var nickName : string;
@@ -38,7 +40,9 @@ export class AuxiliarUserService {
           photoURL: user.photoURL,
           isAdmin: false,
           nVisitados: 0,
-          flickrTokens: null
+          flickrTokens: null,
+          accessToken: null,
+          tokenSecret: null
         }
         this.fs.doc('users/' + user.uid).set(res)
       }
@@ -64,7 +68,9 @@ export class AuxiliarUserService {
             photoURL: u.get("photoURL"),
             isAdmin: u.get("isAdmin"),
             nVisitados: u.get("nVisitados"),
-            flickrTokens: u.get("flickrTokens")
+            flickrTokens: u.get("flickrTokens"),
+            accessToken: u.get('accessToken'),
+            tokenSecret: u.get('tokenSecret')
           }
         } else res = null;
       } else {
@@ -77,8 +83,13 @@ export class AuxiliarUserService {
     });
   }
 
-  async addTokens(accessToken : string,tokenSecret: string, uid: string){
-    await this.fs.doc('users/'+uid).update({accessToken: accessToken, tokenSecret: tokenSecret});
+  addTokens(accessToken: string, tokenSecret: string, uid: string){
+    var res = false;
+    this.fs.doc('users/'+uid).update({accessToken: accessToken, tokenSecret: tokenSecret}).then(
+      success => { res = true; },
+      err => { res = false; }
+    );
+    return res;
   }
 
   

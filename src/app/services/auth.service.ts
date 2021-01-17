@@ -8,6 +8,7 @@ import { User, UserI } from '../models/user.model';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { HttpHeaders } from '@angular/common/http';
 import { AuxiliarUserService } from './auxiliar-user.service';
+import { ToastrService } from 'ngx-toastr';
 
 
 @Injectable({
@@ -19,10 +20,12 @@ export class AuthService {
   roleAs: string;
   coleccionUsuarios: AngularFirestoreCollection<User>;
   usuariosObservables: Observable<any[]>;
-  userSelected: User = new User();
+  userSelected : User = null;
+  isTwitterConnected : boolean = false;
 
   constructor(private router: Router, public firestore: AngularFirestore, 
-    public userService: AuxiliarUserService, private afAuth: AngularFireAuth) { }
+    public userService: AuxiliarUserService, private afAuth: AngularFireAuth, 
+    private ts: ToastrService) { }
 
   //Facebook LogIn
   loginFacebook(){
@@ -31,12 +34,15 @@ export class AuthService {
       return this.afAuth.signInWithPopup(new firebase.auth.FacebookAuthProvider())
         .then(result => {
           this.userService.loginUser(result.user).then( user => {
+            this.isTwitterConnected = (user.accessToken != null && user.tokenSecret != null);
             window.sessionStorage.setItem("usuario", JSON.stringify(user));
             localStorage.setItem('STATE', 'true');
             this.roleAs = "USER";
             localStorage.setItem('ROLE', this.roleAs);
             this.router.navigate(['home']);
           });
+        }).catch(err => {
+          this.ts.error('Error al iniciar sesión', '', {timeOut: 1500});
         });
     } catch(error) {
       // Handle Errors here.
@@ -55,25 +61,24 @@ export class AuthService {
       return this.afAuth.signInWithPopup(new firebase.auth.TwitterAuthProvider())
         .then( result => {
           if (result.credential) {
-            // This gives you a the Twitter OAuth 1.0 Access Token and Secret.
-            // You can use these server side with your app's credentials to access the Twitter API.
-            // var secret = result.credential.secret;
           this.userService.loginUser(result.user).then( user => {
             window.sessionStorage.setItem("usuario", JSON.stringify(user));
             localStorage.setItem('STATE', 'true');
             this.roleAs = "USER";
             localStorage.setItem('ROLE', this.roleAs);
-            this.userService.addTokens(result.credential['accessToken'], result.credential['secret'], result.user.uid);
+            if(user.accessToken == null || user.tokenSecret == null){
+              var at = result.credential['accessToken'];
+              var st = result.credential['secret'];
+              var uid = JSON.parse(window.sessionStorage.getItem('usuario')).uid;
+              this.isTwitterConnected = this.userService.addTokens(at, st, uid);
+            } else { this.isTwitterConnected = true; }
+
+            
             this.router.navigate(['home']);
           });
-
-          //Guardar los datos en la bd
-          //console.log(result.credential);
-          //console.log(result.credential['accessToken']);
-          
-          
-          
       }
+    }).catch(err => {
+      this.ts.error('Error al iniciar sesión', '', {timeOut: 1500});
     });
   } catch (error) {
     // Handle Errors here.
@@ -91,16 +96,20 @@ export class AuthService {
 
       try {
         var twitterProvider = new firebase.auth.TwitterAuthProvider();
-
-
-        await (await this.afAuth.currentUser).linkWithPopup(twitterProvider).then(function(result) {
+        let self = this;
+        let user = (await this.afAuth.currentUser);
+        await user.linkWithPopup(twitterProvider).then(function(result) {
           // Accounts successfully linked.
-
-          this.userService.addTokens(result.credential['accessToken'], result.credential['secret'], JSON.parse(window.sessionStorage.getItem('usuario')).uid);
+          var at = result.credential['accessToken'];
+          var st = result.credential['secret'];
+          var uid = JSON.parse(window.sessionStorage.getItem('usuario')).uid;
+          self.isTwitterConnected = self.userService.addTokens(at, st, uid);
         }).catch(function(error) {
           // Handle Errors here.
+          self.ts.warning('Esta cuenta ya ha sido vinculada a otra existente', 'Atención', {timeOut: 1500});
           throw error;
         });
+        
    
     } catch (error) {
       // Handle Errors here.
@@ -120,6 +129,7 @@ export class AuthService {
       return this.afAuth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then( result => {
         
         this.userService.loginUser(result.user).then( user => {
+            this.isTwitterConnected = (user.accessToken != null && user.tokenSecret != null);
             window.sessionStorage.setItem("usuario", JSON.stringify(user));
             localStorage.setItem('STATE', 'true');
             this.roleAs = "USER";
@@ -127,6 +137,8 @@ export class AuthService {
             this.router.navigate(['home']);
         });
 
+      }).catch(err => {
+        this.ts.error('Error al iniciar sesión', '', {timeOut: 1500});
       });
     }catch(error){
       var errorCode = error.code;
@@ -163,9 +175,7 @@ export class AuthService {
   signIn(email: string, pass: string){
 
     try{
-      console.log('email', email);
       return this.afAuth.signInWithEmailAndPassword(email, pass).then( result => {
-        console.log('result', result);
         this.userService.loginAdmin(result.user).then( user => {
           if(user == null) this.router.navigate(["admin"]);
           else {
@@ -176,8 +186,9 @@ export class AuthService {
             this.router.navigate(["admin/home"]);
           }
         });
-        console.log('result:', result);
-      });
+      }).catch(err => {
+        this.ts.error('Error al iniciar sesión', '', {timeOut: 1500});
+      });;
     }catch(error){
       var errorCode = error.code;
       var errorMessage = error.message;
@@ -192,7 +203,6 @@ signOut(b? : boolean){
   let self = this;
   firebase.auth().signOut().then(function() { // Sign-out successful. 
     window.sessionStorage.clear(); 
-    self.userSelected = null;
     self.isLogin = false;
     self.roleAs = '';
     localStorage.setItem('STATE', 'false');
@@ -233,4 +243,9 @@ signOut(b? : boolean){
     this.roleAs = localStorage.getItem('ROLE');
     return this.roleAs;
   }
+
+  hasTwitter(){
+    return this.isTwitterConnected;
+  }
+
 }

@@ -17,6 +17,8 @@ export class WeatherService {
     var res: any;
     await this.http.get<any>(this.path, httpOpt).toPromise().then(u => {
       res = u;
+    }).catch(u => {
+      res = null;
     });
     return new Promise<any>((resolve, reject) => {
       resolve(res);

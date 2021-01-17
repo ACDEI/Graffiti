@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12">
-        <div class="card mt-3 py-3">
+        <div *ngIf="isWeather" class="card mt-3 py-3">
             <div class="row">
                 <div class="col-lg-5 col-md-5 col-sm-2 text-center">
                     <img src="{{weatherIconURL}}" alt="Weather Icon" height="auto" width="100px">
@@ -21,6 +21,13 @@
                             <i class="fas fa-thermometer-quarter mr-1" style="font-size: 30px; color: aqua;"></i>{{(weatherData?.main.temp_min - 273).toFixed(0)}}ºC 
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!isWeather" class="card mt-3 py-3">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 txt-bold-white">
+                    <p>{{error}}</p>
                 </div>
             </div>
         </div>

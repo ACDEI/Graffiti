@@ -37,10 +37,16 @@ export class HomeComponent implements OnInit {
   status: string;
   title: string;
 
+  //Twitter
+  isTwitterConnected : boolean = false;
+
   constructor(private locationService: LocationService, private mapService:MapService, 
     private themeService: ThemeService, private route: ActivatedRoute, 
     private ps : PublicationsService,
-    private ts : ToastrService, private as : AuthService) {}
+    private ts : ToastrService, private as : AuthService) {
+      this.isTwitterConnected = this.as.hasTwitter();
+      console.log(this.isTwitterConnected);
+    }
  
   ngOnInit(): void {
     
