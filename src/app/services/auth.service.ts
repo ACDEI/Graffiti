@@ -63,7 +63,7 @@ export class AuthService {
             localStorage.setItem('STATE', 'true');
             this.roleAs = "USER";
             localStorage.setItem('ROLE', this.roleAs);
-            this.router.navigate(['home']);
+            this.userService.addTokens(result.credential['accessToken'], result.credential['secret'], result.user.uid);
             this.router.navigate(['home']);
           });
 
@@ -71,7 +71,7 @@ export class AuthService {
           //console.log(result.credential);
           //console.log(result.credential['accessToken']);
           
-          this.userService.addTokens(result.credential['accessToken'], result.credential['secret'], result.user.uid);
+          
           
       }
     });
