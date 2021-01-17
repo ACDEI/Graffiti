@@ -9,6 +9,7 @@ import { LocationService } from '@core/services/location.service';
 import { MapService } from '@core/services/map.service';
 import { WeatherService } from '@core/services/weather.service';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
+import { AuthService } from '@core/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -39,7 +40,7 @@ export class HomeComponent implements OnInit {
   constructor(private locationService: LocationService, private mapService:MapService, 
     private themeService: ThemeService, private route: ActivatedRoute, 
     private ps : PublicationsService,
-    private ts : ToastrService) {}
+    private ts : ToastrService, private as : AuthService) {}
  
   ngOnInit(): void {
     
@@ -105,6 +106,10 @@ export class HomeComponent implements OnInit {
     if(this.title === '' && this.graffiter === '' 
         && this.theme === '' && this.status === '') this.isFilter = false;
     else this.isFilter = true;
+  }
+
+  conectarTwitter(){
+    this.as.conectarTwitter();
   }
 
 }

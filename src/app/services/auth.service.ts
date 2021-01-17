@@ -84,6 +84,30 @@ export class AuthService {
     //console.log(errorMessage);
     }
   }
+
+
+    //Twitter LogIn
+    async conectarTwitter(){
+
+      try {
+        return this.afAuth.signInWithPopup(new firebase.auth.TwitterAuthProvider())
+          .then( result => {
+            if (result.credential) {
+            
+            
+            this.userService.addTokens(result.credential['accessToken'], result.credential['secret'], JSON.parse(window.sessionStorage.getItem('usuario')).uid);
+            
+        }
+      });
+    } catch (error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      var email = error.email;  // The email of the user's account used.
+      var credential = error.credential;  // The firebase.auth.AuthCredential type that was used.
+      //console.log(errorMessage);
+      }
+    }
   
 
   //Google LogIn
