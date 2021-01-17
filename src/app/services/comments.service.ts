@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,8 @@ export class CommentsService {
 
   commentCollection : AngularFirestoreCollection<any>;
 
-  constructor(private fs: AngularFirestore, private http : HttpClient) { 
+  constructor(private fs: AngularFirestore, private http : HttpClient, 
+    private auth: AuthService) { 
     this.commentCollection = fs.collection("comments");
   }
 
