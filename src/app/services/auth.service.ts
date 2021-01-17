@@ -86,19 +86,22 @@ export class AuthService {
   }
 
 
-    //Twitter LogIn
+    //Twitter Connect
     async conectarTwitter(){
 
       try {
-        return this.afAuth.signInWithPopup(new firebase.auth.TwitterAuthProvider())
-          .then( result => {
-            if (result.credential) {
-            
-            
-            this.userService.addTokens(result.credential['accessToken'], result.credential['secret'], JSON.parse(window.sessionStorage.getItem('usuario')).uid);
-            
-        }
-      });
+        var twitterProvider = new firebase.auth.TwitterAuthProvider();
+
+
+        await (await this.afAuth.currentUser).linkWithPopup(twitterProvider).then(function(result) {
+          // Accounts successfully linked.
+
+          this.userService.addTokens(result.credential['accessToken'], result.credential['secret'], JSON.parse(window.sessionStorage.getItem('usuario')).uid);
+        }).catch(function(error) {
+          // Handle Errors here.
+          throw error;
+        });
+   
     } catch (error) {
       // Handle Errors here.
       var errorCode = error.code;
