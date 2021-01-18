@@ -22,7 +22,7 @@ export class PublicationViewComponent implements OnInit {
   pub: Publication;
   user: User;
   pubThemes: string[];
-  themesList: Observable<any[]>;
+  themesList: any;
   usuarioSesion : any;
   publicacionesSesion: any[];
   commentsSesion: any[];
@@ -65,8 +65,10 @@ export class PublicationViewComponent implements OnInit {
         this.us.getUser(this.pub.uid).then(user => { this.user = user });
         this.pubThemes = this.pub.themes;
         this.editThemes = this.pubThemes;
-        this.themesService.getAllThemesCF().then(values => {
-          this.themesList = values;
+        this.themesService.getAllThemesCF().then(async values => {
+          await values.toPromise().then(u => {
+            this.themesList = u;
+          })
         });
         this.isLiked();
         this.miPublicacion = this.usuarioSesion.uid === this.pub.uid;

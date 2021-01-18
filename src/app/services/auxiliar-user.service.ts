@@ -83,10 +83,38 @@ export class AuxiliarUserService {
     });
   }
 
+  async getUser(uid: string): Promise<any>{
+    var res : any;
+    await this.fs.doc(`users/${uid}`).get().toPromise().then( c => {
+      res = {
+        uid : c.get('uid'),
+        nickName : c.get('nickName'),
+        photoURL : c.get('photoURL'),
+        email: c.get("email"),
+        fullName: c.get("fullName"),
+        isAdmin: c.get("isAdmin"),
+        nVisitados: c.get("nVisitados"),
+        accessToken: c.get('accessToken'),
+        tokenSecret: c.get('tokenSecret')
+      }
+
+    });
+    
+    return new Promise<any>( (resolve,reject) => {
+      resolve(res);
+    });
+  }
+
   addTokens(accessToken: string, tokenSecret: string, uid: string){
     var res = false;
     this.fs.doc('users/'+uid).update({accessToken: accessToken, tokenSecret: tokenSecret}).then(
-      success => { res = true; },
+      async success => { 
+        res = true;
+        var u = JSON.parse(window.sessionStorage.getItem('usuario'));
+        await this.getUser(u).then(user => {
+          window.sessionStorage.setItem('usuario', JSON.stringify(user));
+        })
+      },
       err => { res = false; }
     );
     return res;

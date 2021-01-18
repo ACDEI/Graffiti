@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import { PublicationsService } from '@core/services/classes_services/publications.service';
 import { AuthService } from '../auth.service';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,10 @@ export class ThemeService {
 
   getAllThemes(): AngularFirestoreCollection<Theme>{
     return this.themeCollection;
+  }
+
+  getAllThemes_Bi() : Observable<any>{
+    return this.fs.collection('themes').valueChanges().pipe(map(c => c));
   }
 
   getTheme(tid: string): Observable<Theme> {

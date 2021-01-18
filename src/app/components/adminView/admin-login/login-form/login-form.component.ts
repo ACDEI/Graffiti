@@ -39,6 +39,10 @@ export class LoginFormComponent implements OnInit {
     this.error = {name: "", message: ""};
   }
 
+  goingBack(){
+    this.router.navigate(['']);
+  }
+
   signIn(){
     
     this.clearErrorMessage();

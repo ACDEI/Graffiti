@@ -139,6 +139,7 @@ export class PublicationsService {
   */
   async putPublicationCF(pid : any, pub : any) {
     let httpOpt = await this.auth.getHeader();
+    //var apiLocal = "http://localhost:5001/graffiti-9b570/us-central1/MalagArtApiWeb/publications/";
     return this.http.put(this.pubsUrl + pid, pub, httpOpt).subscribe();
   }
 

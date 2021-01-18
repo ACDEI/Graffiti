@@ -21,11 +21,12 @@ export class AuthService {
   coleccionUsuarios: AngularFirestoreCollection<User>;
   usuariosObservables: Observable<any[]>;
   userSelected : User = null;
-  isTwitterConnected : boolean = false;
+  isTwitterConnected : boolean;
 
   constructor(private router: Router, public firestore: AngularFirestore, 
     public userService: AuxiliarUserService, private afAuth: AngularFireAuth, 
-    private ts: ToastrService) { }
+    private ts: ToastrService) { 
+     }
 
   //Facebook LogIn
   loginFacebook(){
@@ -245,6 +246,9 @@ signOut(b? : boolean){
   }
 
   hasTwitter(){
+    var u = JSON.parse(window.sessionStorage.getItem('usuario'));
+    if(u.accessToken == null || u.tokenSecret == null) this.isTwitterConnected = false;
+    else this.isTwitterConnected = true;
     return this.isTwitterConnected;
   }
 
