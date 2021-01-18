@@ -1,1 +1,46 @@
-<p>not-found404 works!</p>
+<div class="bg">
+    <div class="bg-404">
+        <div class="ups-title p-3" style="width: 100vw">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <h1 class="titulo">¡Ups!</h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <p *ngIf="logged === 'b'">Parece que la página que has buscado no existe. Prueba estas:</p>
+                            <p *ngIf="logged !== 'b'">Parece que la página que has buscado no existe. Prueba esta:</p>
+                        </div>
+                    </div>
+                    <div *ngIf="logged === 'b'" class="row">
+                        <div class="col-lg col-md col-sm mb-2">
+                            <a class="btn btn-dark" routerLink="/home">Galería</a>
+                        </div>
+                        <div class="col-lg col-md col-sm mb-2">
+                            <a class="btn btn-dark" routerLink="/explore">Explorar</a>
+                        </div>
+                        <div class="col-lg col-md col-sm mb-2">
+                            <a class="btn btn-dark" routerLink="/user-search">Buscar Usuarios</a>
+                        </div>
+                        <div class="col-lg col-md col-sm mb-2">
+                            <a class="btn btn-dark" [routerLink]="['/user-profile', usuarioSesion.uid]">Perfil</a>
+                        </div>
+                    </div>
+                    <div *ngIf="logged === 'c'" class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <a class="btn btn-dark" routerLink="">Iniciar Sesión</a>
+                        </div>
+                    </div>
+                    <div *ngIf="logged === 'a'" class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <a class="btn btn-dark" routerLink="/admin/home">Iniciar Sesión</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
