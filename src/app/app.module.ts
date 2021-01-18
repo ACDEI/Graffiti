@@ -68,6 +68,7 @@ import { LoadingSpinnerComponent } from './components/user-profile/loading-spinn
 import { ModalMapComponent } from './components/navbar/map/modal-map/modal-map.component';
 import { FilterHomePubsPipe } from './pipes/filter-home-pubs.pipe';
 import { WeatherViewComponent } from './components/weather-view/weather-view.component';
+import { NotFound404Component } from './components/not-found404/not-found404.component';
 
 @NgModule({
   declarations: [
@@ -109,6 +110,7 @@ import { WeatherViewComponent } from './components/weather-view/weather-view.com
     ModalMapComponent,
     FilterHomePubsPipe,
     WeatherViewComponent,
+    NotFound404Component,
   ],
   imports: [
     BrowserModule,

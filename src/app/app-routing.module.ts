@@ -17,6 +17,7 @@ import { UserProfileComponent } from './components/user-profile/user-profile.com
 import { UsersSearchComponent } from './components/users-search/users-search.component';
 import {ThemeGestionComponent} from './components/adminView/theme-gestion/theme-gestion.component';
 import { AuthGuard } from '../app/guard/auth.guard';
+import { NotFound404Component } from './components/not-found404/not-found404.component';
 
 
 
@@ -68,6 +69,8 @@ const routes: Routes = [
       role: 'ADMIN'
     }
   },// , canActivate: [AdminGuard], data: { authGuardPipe: redirectUnauthorizedAdmin }}
+  {path: '404', component: NotFound404Component},
+  {path: '**', redirectTo: '/404'}
 ];
 
 @NgModule({
