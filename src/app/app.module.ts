@@ -69,6 +69,7 @@ import { ModalMapComponent } from './components/navbar/map/modal-map/modal-map.c
 import { FilterHomePubsPipe } from './pipes/filter-home-pubs.pipe';
 import { WeatherViewComponent } from './components/weather-view/weather-view.component';
 import { NotFound404Component } from './components/not-found404/not-found404.component';
+import { ActivatedRouteSnapshot } from '@angular/router';
 
 @NgModule({
   declarations: [

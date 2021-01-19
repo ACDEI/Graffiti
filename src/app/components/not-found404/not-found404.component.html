@@ -10,8 +10,8 @@
                     </div>
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12">
-                            <p *ngIf="logged === 'b'">Parece que la página que has buscado no existe. Prueba estas:</p>
-                            <p *ngIf="logged !== 'b'">Parece que la página que has buscado no existe. Prueba esta:</p>
+                            <p *ngIf="logged === 'b' || logged === 'a'">Parece que la página que has buscado no existe. Prueba estas:</p>
+                            <p *ngIf="logged === 'c'">Parece que la página que has buscado no existe. Prueba esta:</p>
                         </div>
                     </div>
                     <div *ngIf="logged === 'b'" class="row">
@@ -34,8 +34,17 @@
                         </div>
                     </div>
                     <div *ngIf="logged === 'a'" class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <a class="btn btn-dark" routerLink="/admin/home">Iniciar Sesión</a>
+                        <div class="col-lg-12 col-md-12 col-sm-12 mb-2">
+                            <a class="btn btn-dark" routerLink="/admin/home">Home</a>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 mb-2">
+                            <a class="btn btn-dark" routerLink="/admin/user_gest">Gestión de Usuarios</a>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 mb-2">
+                            <a class="btn btn-dark" routerLink="/admin/publ_gest">Gestón de Publicaciones</a>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12 mb-2">
+                            <a class="btn btn-dark" routerLink="/admin/theme_gest">Gestón de Temáticas</a>
                         </div>
                     </div>
                 </div>
